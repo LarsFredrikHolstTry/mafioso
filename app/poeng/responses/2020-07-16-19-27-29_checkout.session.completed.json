@@ -1,0 +1,46 @@
+{
+  "id": "evt_1H5cjsCbflBjJenZ1gTZs9hc",
+  "object": "event",
+  "api_version": "2017-08-15",
+  "created": 1594927648,
+  "data": {
+    "object": {
+      "id": "cs_test_ckN7r8n5wxaSj9KIiBQd4h6lqTgsE6QATbEG5LCr7EcG0z2DwPKJmQMK",
+      "object": "checkout.session",
+      "amount_subtotal": 1350,
+      "amount_total": 1350,
+      "billing_address_collection": null,
+      "cancel_url": "https://kamrankazmi.com/stripe_checkout/index.php",
+      "client_reference_id": "123456",
+      "currency": "usd",
+      "customer": "cus_HewdsRgG3AfrO8",
+      "customer_email": null,
+      "livemode": false,
+      "locale": null,
+      "metadata": {
+      },
+      "mode": "payment",
+      "payment_intent": "pi_1H5cjhCbflBjJenZw6Tof6Ru",
+      "payment_method_types": [
+        "card"
+      ],
+      "setup_intent": null,
+      "shipping": null,
+      "shipping_address_collection": null,
+      "submit_type": null,
+      "subscription": null,
+      "success_url": "https://kamrankazmi.com/stripe_checkout/index.php?status=success",
+      "total_details": {
+        "amount_discount": 0,
+        "amount_tax": 0
+      }
+    }
+  },
+  "livemode": false,
+  "pending_webhooks": 1,
+  "request": {
+    "id": null,
+    "idempotency_key": null
+  },
+  "type": "checkout.session.completed"
+}
