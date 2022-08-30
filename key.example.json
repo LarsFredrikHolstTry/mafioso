@@ -1,0 +1,9 @@
+{
+  "keys": {
+    "public": "pk_test_sGWuWqO4QUnwMHbgO9ERhc2i00Nnmj07eB",
+    "private": "sk_test_GHxvFFxnD2EtfTtQRqwyYkNy00Mi1oc331"
+  },
+  "db": {
+    "name": "poeng_products_test"
+  }
+}
