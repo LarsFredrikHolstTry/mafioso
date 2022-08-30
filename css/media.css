@@ -1,0 +1,39 @@
+@media only screen and (max-width: 1769px) {
+    .lower .action_container .action_icon {
+        display: none;
+    }
+
+    .action_text {
+        margin-right: 1rem;
+        margin-left: 1rem !important;
+    }
+}
+
+@media only screen and (max-width: 1560px) {
+    [class*="col-"] {
+        width: 100% !important;
+    }
+}
+
+@media only screen and (max-width: 1420px) {
+    .mobile_top {
+        display: block !important;
+    }
+    
+    .left_container, .right, .top_bar {
+        display: none !important;
+    }
+    
+    .container {
+        margin-top: 0px !important;
+        width: 100% !important;
+        padding: 0 !important;
+        margin-bottom: 100px;
+    }
+}
+
+@media only screen and (max-width: 895px) {
+    .top_bar {
+        display: none !important;
+    }
+}

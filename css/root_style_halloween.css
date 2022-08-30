@@ -1,0 +1,24 @@
+:root {
+  --main-bg-color: #101010;
+  --container-color: #171717;
+  --button-bg-color: #087fef;
+  --button-bg-color-hover: #50a9fc;
+  --button-color: white;
+  --active-color: #1b1b1b;
+  --text-grey-color: #bdbdbd;
+  --text-white-color: white;
+  --ready-color: #1ed760;
+  --not-ready-color: #ffb800;
+  --left-container-color: #171717;
+  --default-font: "Segoe UI", sans-serif;
+  --font-big: 16px;
+  --font-normal: 14px;
+  --font-small: 12px;
+  --cursor-hover: pointer;
+  --border-radius: 2px;
+  --table-hover: #222222;
+  --table-even: #414141;
+  --table-th-bg: #464646;
+  --table-th-cl: #919191;
+  --shadow_color: rgb(46, 46, 46);
+}
