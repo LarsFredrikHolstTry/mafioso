@@ -85,7 +85,7 @@ if ($sthandler->rowCount() > 0) {
             <?php
 
             $i = 0;
-            $sql = "SELECT * FROM poeng_products_test";
+            $sql = "SELECT * FROM $stripe_db";
 
             $result = $pdo->query($sql);
             if ($result) {

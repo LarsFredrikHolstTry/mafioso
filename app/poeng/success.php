@@ -5,11 +5,6 @@ include 'env.php';
 session_start();
 error_reporting(1);
 
-$db_host = "cpanel84.proisp.no";
-$db_user = "mafiovrx";
-$db_password = "82vH84K24g9m+8";
-$db_name = "mafiovrx_mafiosov2";
-
 try {
     $pdo = new PDO("mysql:host={$db_host};dbname={$db_name}", $db_user, $db_password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -17,28 +12,11 @@ try {
     echo "Connection failed: " . $e->getMessage();
 }
 
-/* LIVE */
 $stripe_public_key = $stripe_public;
 $stripe_private_key = $stripe_private;
-/* LIVE */
-
-/* TEST */  /*
-$stripe_public_key = 'pk_test_sGWuWqO4QUnwMHbgO9ERhc2i00Nnmj07eB';
-$stripe_private_key = 'sk_test_GHxvFFxnD2EtfTtQRqwyYkNy00Mi1oc331';
-/* TEST */
+\Stripe\Stripe::setApiKey($stripe_private_key);
 
 require(__DIR__ . '/lib/init.php');
-
-// Set your secret key. Remember to switch to your live secret key in production!
-// See your keys here: https://dashboard.stripe.com/account/apikeys
-
-/* LIVE */
-\Stripe\Stripe::setApiKey($stripe_private_key);
-/* LIVE */
-
-/* TEST */  /*
-\Stripe\Stripe::setApiKey('sk_test_GHxvFFxnD2EtfTtQRqwyYkNy00Mi1oc331');
-/* TES */
 
 // Retrieve the request's body and parse it as JSON
 $input = @file_get_contents("php://input");
