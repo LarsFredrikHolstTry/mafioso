@@ -1,7 +1,7 @@
 <?php
 
 ob_start();
-include '../../../../db_cred/db_cred.php';
+include '../../../env.php';
 include_once '../../../functions/functions.php';
 
 
@@ -10,5 +10,3 @@ if(isset($_POST['x'])) { //if i have this post
     $stmt= $pdo->prepare($sql);
     $stmt->execute([$_SESSION['ID'], $_POST['x'], $_POST['y'], "kriminalitet", time()]);
 }
-
-?>

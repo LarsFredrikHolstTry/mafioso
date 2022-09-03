@@ -1,7 +1,7 @@
 <?php
 
 ob_start();
-include '../../../db_cred/db_cred.php';
+include '../../env.php';
 include_once '../../functions/functions.php';
 
 // Lagre bedrift-data hvor data faktisk finnes
@@ -47,7 +47,7 @@ $money_prize[4] = 10000000;
 
 $place = 0;
 $best_family = get_best_fam($pdo);
-if($best_family) {
+if ($best_family) {
     $sql =
         "SELECT accounts_stat.AS_id, accounts_stat.AS_daily_exp
         FROM accounts_stat 

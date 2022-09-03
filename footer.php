@@ -1,14 +1,13 @@
 <div class="someDiv" style="color: rgba(255,255,255,.5);">
-    <?php 
+    <?php
 
-$endtime = microtime(true); // Bottom of page
-printf("Nettsiden lastet inn på %f sekunder", $endtime - $starttime );
+    $endtime = microtime(true); // Bottom of page
+    printf("Nettsiden lastet inn på %f sekunder", $endtime - $starttime);
 
-?><br>
+    ?><br>
     Copyright © <?php echo date("Y"); ?> Mafioso. All rights reserved. Laget med <span style='color: hotpink;'>♥</span><br>
-    Org nr. 925 084 611 - Holst-Try Webdesign
-    <br>
-    Utviklere: <a href="?side=profil&id=1">Skitzo</a> & <a href="?side=profil&id=64">The Dude</a>
+    <!-- Org nr. 925 084 611 - Holst-Try Webdesign<br> -->
+    Utviklet av <a href="?side=profil&id=1">Skitzo</a>
 
 </div>
 <style>

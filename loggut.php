@@ -1,7 +1,7 @@
 <?php
 
 ob_start();
-include_once '../db_cred/db_cred.php';
+include_once 'env.php';
 
 if(session_destroy()) {
     $cookie_name = "remember_forever";
@@ -11,5 +11,3 @@ if(session_destroy()) {
     
     header("Location: login.php?act=loggut");
 }
-
-?>

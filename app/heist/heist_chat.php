@@ -1,6 +1,6 @@
 <?php
-if(isset($_GET['getNewMessages'], $_GET['heistID'], $_GET['lastRecievedMessage'])){
-    include_once '../../../db_cred/db_cred.php';
+if (isset($_GET['getNewMessages'], $_GET['heistID'], $_GET['lastRecievedMessage'])) {
+    include_once '../../env.php';
     header('Content-type: application/json');
 
     $sql = "SELECT
@@ -25,20 +25,18 @@ if(isset($_GET['getNewMessages'], $_GET['heistID'], $_GET['lastRecievedMessage']
     $query->execute([$_GET['heistID'], $_GET['lastRecievedMessage']]);
     $messages = $query->fetchAll(PDO::FETCH_OBJ) ?? [];
 
-    if($messages) {
-        http_response_code(200);// OK
+    if ($messages) {
+        http_response_code(200); // OK
         $response = [
             'status' => 'Recieved messages',
-            'messages' => $messages          
+            'messages' => $messages
         ];
-    }
-    else {
-        http_response_code(200);// OK - No content
+    } else {
+        http_response_code(200); // OK - No content
         $response = [
             'status' => 'No new messages',
             'messages' => NULL
         ];
-        
     }
 
     echo json_encode($response);
@@ -48,8 +46,8 @@ if(isset($_GET['getNewMessages'], $_GET['heistID'], $_GET['lastRecievedMessage']
 $json = file_get_contents('php://input');
 $data = json_decode($json);
 
-if(isset($data->message, $data->heistID)) {
-    include_once '../../../db_cred/db_cred.php';
+if (isset($data->message, $data->heistID)) {
+    include_once '../../env.php';
     include_once '../../functions/functions.php';
 
     header('Content-type: application/json');
@@ -68,20 +66,18 @@ if(isset($data->message, $data->heistID)) {
 
     try {
         $stmt->execute([$_SESSION['ID'], $data->heistID, $data->message]);
-    }
-    catch(PDOException $e) {
-        http_response_code(400);// Bad request - Not created
+    } catch (PDOException $e) {
+        http_response_code(400); // Bad request - Not created
         die("Ugyldig heist ID, eller bruker ID.\nHeistet er antakelig avsluttet.");
     }
 
-    if($stmt) {
-        http_response_code(201);// OK - Created
+    if ($stmt) {
+        http_response_code(201); // OK - Created
         $response = ['status' => 'Message sent'];
         echo json_encode($response);
         die();
-    }
-    else {
-        http_response_code(400);// Bad request - Not created
+    } else {
+        http_response_code(400); // Bad request - Not created
         die("Kunne ikke sette sende inn chatmelding..");
     }
 }
@@ -92,19 +88,13 @@ if(isset($data->message, $data->heistID)) {
     <div id="message-container">
         <span class="loading">
             <noscript style="text-align: center;">
-            JavaScript må være påskrudd for å bruke denne chatten..
-        </noscript>
+                JavaScript må være påskrudd for å bruke denne chatten..
+            </noscript>
         </span>
     </div>
     <div id="postmessage-feedback"></div>
     <form id="post-chat-message" onsubmit="javascript:postMessage(this, event)" method="POST">
-        <input
-            type="text"
-            id="message"
-            placeholder="Skriv en melding til gruppa..."
-            autocomplete="off"
-            disabled
-            requred>
+        <input type="text" id="message" placeholder="Skriv en melding til gruppa..." autocomplete="off" disabled requred>
         <input type="hidden" name="heistID" id="heistID" value="<?php echo $heist_id ?>">
         <input type="submit" name="sendMessage" value="Send" disabled>
     </form>
@@ -118,7 +108,7 @@ if(isset($data->message, $data->heistID)) {
         $('.loading').text('Laster..');
 
         $('[name="sendMessage"],#message')
-            .prop('disabled', false);       // Enable inputs
+            .prop('disabled', false); // Enable inputs
 
         await getNewMessages(); // Check for all messages first
 
@@ -131,27 +121,26 @@ if(isset($data->message, $data->heistID)) {
      */
     const getNewMessages = async () => {
         fetch(`app/heist/heist_chat.php?getNewMessages&lastRecievedMessage=${recievedMessages[0]}&heistID=<?php echo $heist_id ?>`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(response => response.json())
-        .then(async data => {
-            if(data.messages){
-                if(recievedMessages !== [0]){
-                    // Only hide this the first time we recieve messages
-                    $('#message-container .loading').hide();
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
                 }
-                addChatMessages(data.messages);
-            }
-            else {
-                if(recievedMessages.length === 1){
-                    // Only show this message if it is the first time
-                    $('#message-container .loading').text("Ingen chatmeldinger funnet..");
+            })
+            .then(response => response.json())
+            .then(async data => {
+                if (data.messages) {
+                    if (recievedMessages !== [0]) {
+                        // Only hide this the first time we recieve messages
+                        $('#message-container .loading').hide();
+                    }
+                    addChatMessages(data.messages);
+                } else {
+                    if (recievedMessages.length === 1) {
+                        // Only show this message if it is the first time
+                        $('#message-container .loading').text("Ingen chatmeldinger funnet..");
+                    }
                 }
-            }
-        });
+            });
     };
 
     /**
@@ -162,7 +151,7 @@ if(isset($data->message, $data->heistID)) {
         const msg = $('#message').val();
         const heistID = $("#heistID").val();
 
-        if(!msg || msg === "") {
+        if (!msg || msg === "") {
             new Feedback('Chatmeldingen må inneholde en tekst!', '#postmessage-feedback', 'error', 3000);
             return;
         }
@@ -171,27 +160,32 @@ if(isset($data->message, $data->heistID)) {
         event.submitter.disabled = true;
 
         await fetch('app/heist/heist_chat.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({message: msg, heistID: heistID})
-        })
-        .then(response => {
-			if(response.ok) return response.json();
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message: msg,
+                    heistID: heistID
+                })
+            })
+            .then(response => {
+                if (response.ok) return response.json();
 
-			return response.text().then(text =>{ throw new Error(text) });
-        })
-        .then(async data => {
-            form.reset();                    // Reset form input
-            event.submitter.disabled = false;// Re-enable the submitter
-        })
-        .catch(err => {
-            console.error(err);
+                return response.text().then(text => {
+                    throw new Error(text)
+                });
+            })
+            .then(async data => {
+                form.reset(); // Reset form input
+                event.submitter.disabled = false; // Re-enable the submitter
+            })
+            .catch(err => {
+                console.error(err);
 
-            new Feedback(err || "Noe gikk galt ved innsendingen av meldingen", '#postmessage-feedback', 'error', 3000);
-            event.submitter.disabled = false; // Re-enable submitter
-        });
+                new Feedback(err || "Noe gikk galt ved innsendingen av meldingen", '#postmessage-feedback', 'error', 3000);
+                event.submitter.disabled = false; // Re-enable submitter
+            });
     };
 
     /**
@@ -227,7 +221,7 @@ if(isset($data->message, $data->heistID)) {
         height: 370px;
     }
 
-    .chat-container .loading{
+    .chat-container .loading {
         height: 100%;
         display: grid;
         place-items: center;
@@ -240,7 +234,7 @@ if(isset($data->message, $data->heistID)) {
     #post-chat-message #message {
         width: 100%;
     }
-    
+
     #message-container {
         background-color: rgb(0 0 0 / .3);
         display: flex;
@@ -253,12 +247,12 @@ if(isset($data->message, $data->heistID)) {
     #message-container::-webkit-scrollbar {
         width: 5px;
     }
-    
+
     #message-container::-webkit-scrollbar-track {
         background-color: rgb(0 0 0 / .3);
         border-radius: 100vw;
     }
-    
+
     #message-container::-webkit-scrollbar-thumb {
         background-color: var(--button-bg-color);
         border-radius: 100vw;
@@ -278,7 +272,7 @@ if(isset($data->message, $data->heistID)) {
 
         display: grid;
         grid-template-columns: minmax(30px, 1fr) 3fr 3fr;
-        grid-template-areas: 
+        grid-template-areas:
             "avatar sender time"
             "avatar msg msg";
         column-gap: 15px;
@@ -326,7 +320,7 @@ if(isset($data->message, $data->heistID)) {
         margin: 0 5px 5px 0;
         overflow-wrap: anywhere;
     }
-    
+
     #post-chat-message input:disabled {
         opacity: .5;
         cursor: not-allowed !important;

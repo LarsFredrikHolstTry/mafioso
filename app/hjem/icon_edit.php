@@ -1,7 +1,7 @@
 <?php
 
 ob_start();
-include '../../../db_cred/db_cred.php';
+include '../../env.php';
 include_once '../../auth.php';
 include_once '../../functions/functions.php';
 
@@ -22,5 +22,3 @@ if(isset($_POST['icon'])){
     $stmt->bindParam(":charm", $icon);
     $stmt->execute();
 }
-
-?>

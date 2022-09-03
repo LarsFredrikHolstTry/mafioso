@@ -1,7 +1,6 @@
 <?php
 
-$json = file_get_contents('app/poeng/key.json');
-$getKeys = json_decode($json);
+include 'env.php';
 
 $sthandler = $pdo->prepare("SELECT * FROM poeng_betingelse WHERE PBET_acc_id = :id");
 $sthandler->bindParam(':id', $_SESSION['ID']);
@@ -27,8 +26,8 @@ if ($sthandler->rowCount() > 0) {
 
     error_reporting(1);
 
-    $stripe_public_key = $getKeys->keys->public;
-    $stripe_private_key = $getKeys->keys->private;
+    $stripe_public_key = $stripe_public;
+    $stripe_private_key = $stripe_private;
 
     require __DIR__ . "/lib/init.php";
     \Stripe\Stripe::setApiKey($stripe_private_key);
@@ -86,7 +85,7 @@ if ($sthandler->rowCount() > 0) {
             <?php
 
             $i = 0;
-            $sql = "SELECT * FROM " . $getKeys->db->name;
+            $sql = "SELECT * FROM poeng_products_test";
 
             $result = $pdo->query($sql);
             if ($result) {
@@ -269,7 +268,9 @@ if ($sthandler->rowCount() > 0) {
                             } elseif ($_GET['bonus'] == 17) {
                                 $happyhour = 38;
                                 update_things($_SESSION['ID'], $happyhour, $pdo);
-                            }else{echo feedback('ugyldig ID', 'fail');}
+                            } else {
+                                echo feedback('ugyldig ID', 'fail');
+                            }
 
                             take_poeng($_SESSION['ID'], $boost_price[$_GET['bonus']], $pdo);
 
@@ -364,7 +365,7 @@ if ($sthandler->rowCount() > 0) {
 
 <script src="https://js.stripe.com/v3/"></script>
 <script type="text/javascript">
-    jQuery(document).ready(function($) {
+    $(document).ready(function() {
         $(".clickable-row").click(function() {
             window.location = $(this).data("href");
         });
@@ -379,7 +380,6 @@ if ($sthandler->rowCount() > 0) {
     // logged in user id or cart id = 123456
     function expressCheckout(PRICE_ID, PRO_NAME) {
         var stripe = Stripe('<?php echo $stripe_public_key; ?>');
-        // PRICE_ID = 'price_1H5bDsCbflBjJenZmlWcmg64';
         stripe.redirectToCheckout({
             lineItems: [
                 // Replace with the ID of your price

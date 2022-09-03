@@ -1,7 +1,7 @@
 <?php
 
 ob_start();
-include '../db_cred/db_cred.php';
+include 'env.php';
 include 'functions/feedbacks.php';
 include 'functions/functions.php';
 

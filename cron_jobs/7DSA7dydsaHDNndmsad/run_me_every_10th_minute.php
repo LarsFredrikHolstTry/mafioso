@@ -1,7 +1,7 @@
 <?php
 
 ob_start();
-include '../../../db_cred/db_cred.php';
+include '../../env.php';
 include_once '../../functions/functions.php';
 
 $minutes_pr_person = 10;

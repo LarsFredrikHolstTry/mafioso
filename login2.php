@@ -1,42 +1,37 @@
-
-
-
-
-
-
 <?php
 
-    ob_start();
-    include '../db_cred/db_cred.php';
-    include 'functions/feedbacks.php';
-    include 'functions/functions.php';
+ob_start();
+include 'env.php';
+include 'functions/feedbacks.php';
+include 'functions/functions.php';
 
 $cookie_name_remember = "remember_forever";
-if(!isset($_COOKIE[$cookie_name_remember])) {
+if (!isset($_COOKIE[$cookie_name_remember])) {
 
 ?>
-<style>
-    <?php include 'css/root_style_blue.css'; ?>
-</style>
-<html>
+    <style>
+        <?php include 'css/root_style_blue.css'; ?>
+    </style>
+    <html>
+
     <head>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
         <link rel="stylesheet" href="css/styling.css?<?php echo time(); ?>">
         <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
         <title>Mafioso - Logg inn</title>
-        <link rel="shortcut icon" type="image/jpg" href="img/favicon-32x32.png"/>
+        <link rel="shortcut icon" type="image/jpg" href="img/favicon-32x32.png" />
         <style>
-        
-        html, body {
-              background-image: url("img/login_bg.png");
-              background-position: center;
-              background-repeat: no-repeat;
-              background-size: cover;
-        }
-        
+            html,
+            body {
+                background-image: url("img/login_bg.png");
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;
+            }
         </style>
     </head>
+
     <body>
         <div class="main_container">
             <div class="container single" style="float: none; margin: 0 auto;">
@@ -45,75 +40,72 @@ if(!isset($_COOKIE[$cookie_name_remember])) {
                         <div class="content">
                             <?php
 
-if(isset($_GET['ver'])){
-    echo feedback("Brukeren er nå aktivert! Ha en hyggelig spill-opplevelse.", "success");
-}
-                                             
-if(isset($_GET['act'])){
-    if($_GET['act'] == "loggut"){
-        echo feedback("Du logget ut av Mafioso. Velkommen tilbake! 👋", "blue");
-    }
-}
-                            
-if(isset($_POST['login'])){
-    $username = strip_tags($_POST["username"]);
-    $password = strip_tags($_POST["password"]);
-    $username = strtolower($username);
-    
-    if((empty($password)) && (empty($username))){
-        echo feedback("Vennligst legg inn brukernavn og passord", "error");
-    } else if(empty($username)){
-        echo feedback("Vennligst legg inn brukernavn", "error");
-    } else if(empty($password)){
-        echo feedback("Vennligst legg inn passord", "error");
-    } else {
-        try {
-            $select_stmt = $pdo -> prepare("SELECT * FROM accounts WHERE LOWER(ACC_username) = LOWER(:uname)");
-            $select_stmt -> execute(array(':uname' => $username));
-            $row = $select_stmt -> fetch(PDO::FETCH_ASSOC);
-
-                if($select_stmt -> rowCount() > 0){
-                    if(password_verify($password, $row["ACC_password"])){
-                        if($row['ACC_type'] == 4 || $row['ACC_type'] == 5){
-                            if($row['ACC_type'] == 4){
-                                echo '<img class="action_image" src="img/action/actions/drept.png">';
-                                echo '<p class="description">Du har blitt drept av en annen mafioso. Dersom du ønsker kan du lage en ny bruker med samme e-amil som du brukte på din tidligere bruker.';
-                            } else {
-                                echo feedback("Du er blitt deaktivert. Begrunnelse: ".get_banned_reason($row['ACC_id'], $pdo), "error");
+                            if (isset($_GET['ver'])) {
+                                echo feedback("Brukeren er nå aktivert! Ha en hyggelig spill-opplevelse.", "success");
                             }
-                            
-                        } else {
 
-                        if(isset($_POST['radio']) && $_POST['radio'] == 'log_in_forever'){
-                            $random_string = generateRandomString(50);
+                            if (isset($_GET['act'])) {
+                                if ($_GET['act'] == "loggut") {
+                                    echo feedback("Du logget ut av Mafioso. Velkommen tilbake! 👋", "blue");
+                                }
+                            }
 
-                            $sql = "INSERT INTO keep_me_login (KMLI_hash, KMLI_acc_id) VALUES (?,?)";
-                            $pdo -> prepare($sql)->execute([$random_string, $row["ACC_id"]]);
+                            if (isset($_POST['login'])) {
+                                $username = strip_tags($_POST["username"]);
+                                $password = strip_tags($_POST["password"]);
+                                $username = strtolower($username);
 
-                            setcookie(
-                              "remember_forever",
-                              $random_string,
-                              time() + (10 * 365 * 24 * 60 * 60)
-                            );
-                        }
+                                if ((empty($password)) && (empty($username))) {
+                                    echo feedback("Vennligst legg inn brukernavn og passord", "error");
+                                } else if (empty($username)) {
+                                    echo feedback("Vennligst legg inn brukernavn", "error");
+                                } else if (empty($password)) {
+                                    echo feedback("Vennligst legg inn passord", "error");
+                                } else {
+                                    try {
+                                        $select_stmt = $pdo->prepare("SELECT * FROM accounts WHERE LOWER(ACC_username) = LOWER(:uname)");
+                                        $select_stmt->execute(array(':uname' => $username));
+                                        $row = $select_stmt->fetch(PDO::FETCH_ASSOC);
 
-                        $_SESSION["ID"] = $row["ACC_id"];
-                        header("Location: index.php");
-                        }
-                    } else {
-                        echo feedback("Feil passord", "error");
-                    }
-                } else {
-                    echo feedback("Brukernavnet eksisterer ikke", "error");
-                }
-            
-        }
-        catch(PDOException $e){
-            $e->getMessage();
-        }
-    }
-}
-                            
+                                        if ($select_stmt->rowCount() > 0) {
+                                            if (password_verify($password, $row["ACC_password"])) {
+                                                if ($row['ACC_type'] == 4 || $row['ACC_type'] == 5) {
+                                                    if ($row['ACC_type'] == 4) {
+                                                        echo '<img class="action_image" src="img/action/actions/drept.png">';
+                                                        echo '<p class="description">Du har blitt drept av en annen mafioso. Dersom du ønsker kan du lage en ny bruker med samme e-amil som du brukte på din tidligere bruker.';
+                                                    } else {
+                                                        echo feedback("Du er blitt deaktivert. Begrunnelse: " . get_banned_reason($row['ACC_id'], $pdo), "error");
+                                                    }
+                                                } else {
+
+                                                    if (isset($_POST['radio']) && $_POST['radio'] == 'log_in_forever') {
+                                                        $random_string = generateRandomString(50);
+
+                                                        $sql = "INSERT INTO keep_me_login (KMLI_hash, KMLI_acc_id) VALUES (?,?)";
+                                                        $pdo->prepare($sql)->execute([$random_string, $row["ACC_id"]]);
+
+                                                        setcookie(
+                                                            "remember_forever",
+                                                            $random_string,
+                                                            time() + (10 * 365 * 24 * 60 * 60)
+                                                        );
+                                                    }
+
+                                                    $_SESSION["ID"] = $row["ACC_id"];
+                                                    header("Location: index.php");
+                                                }
+                                            } else {
+                                                echo feedback("Feil passord", "error");
+                                            }
+                                        } else {
+                                            echo feedback("Brukernavnet eksisterer ikke", "error");
+                                        }
+                                    } catch (PDOException $e) {
+                                        $e->getMessage();
+                                    }
+                                }
+                            }
+
                             ?>
                             <form method="post">
                                 <h3>Logg inn</h3>
@@ -172,24 +164,24 @@ if(isset($_POST['login'])){
         </div>
         -->
     </body>
-</html>    
 
-<script>
+    </html>
 
-$(document).ready(function() {
-    $(document).find("input:checked[type='radio']").addClass('bounce');   
-    $("input[type='radio']").click(function() {
-        $(this).prop('checked', false);
-        $(this).toggleClass('bounce');
+    <script>
+        $(document).ready(function() {
+            $(document).find("input:checked[type='radio']").addClass('bounce');
+            $("input[type='radio']").click(function() {
+                $(this).prop('checked', false);
+                $(this).toggleClass('bounce');
 
-        if( $(this).hasClass('bounce') ) {
-            $(this).prop('checked', true);
-            $(document).find("input:not(:checked)[type='radio']").removeClass('bounce');
-        }
-    });
-});
-</script>
-<?php 
+                if ($(this).hasClass('bounce')) {
+                    $(this).prop('checked', true);
+                    $(document).find("input:not(:checked)[type='radio']").removeClass('bounce');
+                }
+            });
+        });
+    </script>
+<?php
 
 } else {
     $cookie_name_remember = "remember_forever";
@@ -198,20 +190,20 @@ $(document).ready(function() {
     $stmt->execute([$_COOKIE[$cookie_name_remember]]);
     $count = $stmt->fetchColumn();
 
-    if($count <= 0){
+    if ($count <= 0) {
         unset($_COOKIE[$cookie_name_remember]);
         setcookie($cookie_name_remember, '', time() - 3600);
 
         header("Location: login.php");
     } else {
-        $query = $pdo -> prepare("SELECT * FROM keep_me_login WHERE KMLI_hash=?");
-        $query -> execute(array($_COOKIE[$cookie_name_remember]));
-        $KMLI_row = $query -> fetch(PDO::FETCH_ASSOC);
+        $query = $pdo->prepare("SELECT * FROM keep_me_login WHERE KMLI_hash=?");
+        $query->execute(array($_COOKIE[$cookie_name_remember]));
+        $KMLI_row = $query->fetch(PDO::FETCH_ASSOC);
 
         $username = username_plain($KMLI_row['KMLI_acc_id'], $pdo);
         $user_exist = user_exist($username, $pdo);
-        
-        if($user_exist){
+
+        if ($user_exist) {
             $_SESSION['ID'] = $KMLI_row['KMLI_acc_id'];
             header("Location: index.php");
         } else {

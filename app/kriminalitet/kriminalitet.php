@@ -68,75 +68,75 @@ if ($city == 0) {
 
 function crime_exp($nr, $pdo)
 {
-    $crime_exp[0] = 1000000;
-    $crime_exp[1] = 1000000;
-    $crime_exp[2] = 1000000;
-    $crime_exp[3] = 1000000;
-    $crime_exp[4] = 1000000;
-    $crime_exp[5] = 1000000;
-    $crime_exp[6] = 1000000;
-    $crime_exp[7] = 1000000;
-    $crime_exp[8] = 1000000;
+    $crime_exp[0] = 1;
+    $crime_exp[1] = 2;
+    $crime_exp[2] = 3;
+    $crime_exp[3] = 4;
+    $crime_exp[4] = 5;
+    $crime_exp[5] = 6;
+    $crime_exp[6] = 7;
+    $crime_exp[7] = 1;
+    $crime_exp[8] = 1;
 
     return $crime_exp[$nr];
 }
 
 function crime_payout($nr)
 {
-    $crime_payout[0] = mt_rand(1000000000000, 500000000000000);
-    $crime_payout[1] = mt_rand(1000000000000, 500000000000000);
-    $crime_payout[2] = mt_rand(1000000000000, 500000000000000);
-    $crime_payout[3] = mt_rand(1000000000000, 500000000000000);
-    $crime_payout[4] = mt_rand(1000000000000, 500000000000000);
-    $crime_payout[5] = mt_rand(1000000000000, 500000000000000);
-    $crime_payout[6] = mt_rand(1000000000000, 500000000000000);
-    $crime_payout[7] = 1000000000000;
-    $crime_payout[8] = mt_rand(1000000000000, 500000000000000);
+    $crime_payout[0] = mt_rand(100, 500);
+    $crime_payout[1] = mt_rand(300, 1500);
+    $crime_payout[2] = mt_rand(500, 2500);
+    $crime_payout[3] = mt_rand(1000, 3500);
+    $crime_payout[4] = mt_rand(1500, 4500);
+    $crime_payout[5] = mt_rand(4500, 8500);
+    $crime_payout[6] = mt_rand(9500, 12500);
+    $crime_payout[7] = 1;
+    $crime_payout[8] = mt_rand(1000000, 2000000);
 
     return $crime_payout[$nr];
 }
 
 function crime_payout_from($nr)
 {
-    $crime_payout[0] = 1000000000000;
-    $crime_payout[1] = 1000000000000;
-    $crime_payout[2] = 1000000000000;
-    $crime_payout[3] = 1000000000000;
-    $crime_payout[4] = 1000000000000;
-    $crime_payout[5] = 1000000000000;
-    $crime_payout[6] = 1000000000000;
-    $crime_payout[7] = 1000000000000;
-    $crime_payout[8] = 1000000000000;
+    $crime_payout[0] = 100;
+    $crime_payout[1] = 300;
+    $crime_payout[2] = 500;
+    $crime_payout[3] = 1000;
+    $crime_payout[4] = 1500;
+    $crime_payout[5] = 4500;
+    $crime_payout[6] = 9500;
+    $crime_payout[7] = 1;
+    $crime_payout[8] = 100000;
 
     return $crime_payout[$nr];
 }
 
 function crime_payout_to($nr)
 {
-    $crime_payout[0] = 500000000000000;
-    $crime_payout[1] = 500000000000000;
-    $crime_payout[2] = 500000000000000;
-    $crime_payout[3] = 500000000000000;
-    $crime_payout[4] = 500000000000000;
-    $crime_payout[5] = 500000000000000;
-    $crime_payout[6] = 500000000000000;
-    $crime_payout[7] = 500000000000000;
-    $crime_payout[8] = 500000000000000;
+    $crime_payout[0] = 500;
+    $crime_payout[1] = 1500;
+    $crime_payout[2] = 2500;
+    $crime_payout[3] = 3500;
+    $crime_payout[4] = 4500;
+    $crime_payout[5] = 8500;
+    $crime_payout[6] = 12500;
+    $crime_payout[7] = 1;
+    $crime_payout[8] = 1500000;
 
     return $crime_payout[$nr];
 }
 
 function crime_cooldown($nr, $pdo)
 {
-    $crime_cd[0] = 15;
-    $crime_cd[1] = 15;
-    $crime_cd[2] = 15;
-    $crime_cd[3] = 15;
-    $crime_cd[4] = 15;
-    $crime_cd[5] = 15;
-    $crime_cd[6] = 15;
-    $crime_cd[7] = 15;
-    $crime_cd[8] = 15;
+    $crime_cd[0] = 25;
+    $crime_cd[1] = 40;
+    $crime_cd[2] = 70;
+    $crime_cd[3] = 95;
+    $crime_cd[4] = 125;
+    $crime_cd[5] = 150;
+    $crime_cd[6] = 185;
+    $crime_cd[7] = 100;
+    $crime_cd[8] = 150;
     return $crime_cd[$nr];
 }
 

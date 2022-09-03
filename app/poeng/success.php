@@ -1,4 +1,6 @@
-<?php 
+<?php
+
+include 'env.php';
 
 session_start();
 error_reporting(1);
@@ -9,15 +11,15 @@ $db_password = "82vH84K24g9m+8";
 $db_name = "mafiovrx_mafiosov2";
 
 try {
-    $pdo = new PDO("mysql:host={$db_host};dbname={$db_name}",$db_user,$db_password);
-    $pdo -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (\Exception $e){
-    echo "Connection failed: ".$e->getMessage();
+    $pdo = new PDO("mysql:host={$db_host};dbname={$db_name}", $db_user, $db_password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (\Exception $e) {
+    echo "Connection failed: " . $e->getMessage();
 }
 
-/* LIVE */ 
-$stripe_public_key = 'pk_live_VChI9RpbOJ8Rt9isT4KhrD0o00MiRBEcas';
-$stripe_private_key = 'sk_live_ONZXmtdzibY0ojs46m0X0jbU00XCLtYcaH';
+/* LIVE */
+$stripe_public_key = $stripe_public;
+$stripe_private_key = $stripe_private;
 /* LIVE */
 
 /* TEST */  /*
@@ -26,14 +28,14 @@ $stripe_private_key = 'sk_test_GHxvFFxnD2EtfTtQRqwyYkNy00Mi1oc331';
 /* TEST */
 
 require(__DIR__ . '/lib/init.php');
-    
+
 // Set your secret key. Remember to switch to your live secret key in production!
 // See your keys here: https://dashboard.stripe.com/account/apikeys
 
 /* LIVE */
-\Stripe\Stripe::setApiKey('sk_live_ONZXmtdzibY0ojs46m0X0jbU00XCLtYcaH');
+\Stripe\Stripe::setApiKey($stripe_private_key);
 /* LIVE */
-    
+
 /* TEST */  /*
 \Stripe\Stripe::setApiKey('sk_test_GHxvFFxnD2EtfTtQRqwyYkNy00Mi1oc331');
 /* TES */
@@ -76,15 +78,15 @@ if ($event->type == 'checkout.session.completed') {
     $values_ary = explode(':', $string);
     $PRO_name =     $values_ary[0];
     $session_id =   $values_ary[1];
-    
+
     $sql = "UPDATE accounts_stat SET AS_points = (AS_points + ?) WHERE AS_id = ?";
-    $stmt= $pdo->prepare($sql);
+    $stmt = $pdo->prepare($sql);
     $stmt->execute([$PRO_name, $session_id]);
 
     $id =   $event->id;                       //  Event ID
 
     $sql = "INSERT INTO poeng_payments (stripe_reference, buyer, amount, payment_info) VALUES (?,?,?,?)";
-    $stmt= $pdo -> prepare($sql);
+    $stmt = $pdo->prepare($sql);
     $stmt->execute([$id, $session_id, $PRO_name, time()]);
 }
 
@@ -92,4 +94,3 @@ if ($event->type == 'checkout.session.completed') {
 // If you have any error in code and below code don't run means response failed.
 // Stripe will send response again.
 http_response_code(200); // PHP 5.4 or greater
-?>

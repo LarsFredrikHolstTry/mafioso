@@ -8,7 +8,7 @@ $json = file_get_contents('lang/' . $language . '.json');
 
 $useLang = json_decode($json);
 
-include_once '../db_cred/db_cred.php';
+include_once 'env.php';
 include_once 'functions/feedbacks.php';
 include_once 'functions/oppdrag.php';
 include_once 'functions/functions.php';
