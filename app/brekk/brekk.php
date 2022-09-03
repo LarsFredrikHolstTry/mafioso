@@ -161,132 +161,123 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
             }
         }
 
-            if (isset($_GET['alt'])) {
-                user_log($_SESSION['ID'], $_GET['side'], 'alternativ: ' . $_GET['alt'] . '', $pdo);
-                $legal =   array(0, 1, 2);
-                $chance =  mt_rand(1, 100);
-                $alt = $_GET['alt'];
-                $cooldown = brekk_cooldown($alt) + time();
+        if (isset($_GET['alt'])) {
+            user_log($_SESSION['ID'], $_GET['side'], 'alternativ: ' . $_GET['alt'] . '', $pdo);
+            $legal =   array(0, 1, 2);
+            $chance =  mt_rand(1, 100);
+            $alt = $_GET['alt'];
+            $cooldown = brekk_cooldown($alt) + time();
 
-                $percentage = get_rob_chance($_SESSION['ID'], AS_session_row($_SESSION['ID'], 'AS_city', $pdo), $alt, $pdo);
+            $percentage = get_rob_chance($_SESSION['ID'], AS_session_row($_SESSION['ID'], 'AS_city', $pdo), $alt, $pdo);
 
-                if ($percentage - get_city_tax(AS_session_row($_SESSION['ID'], 'AS_city', $pdo), $pdo) < 0) {
-                    $percentage = 0;
+            if ($percentage - get_city_tax(AS_session_row($_SESSION['ID'], 'AS_city', $pdo), $pdo) < 0) {
+                $percentage = 0;
+            } else {
+                $percentage = $percentage - get_city_tax(AS_session_row($_SESSION['ID'], 'AS_city', $pdo), $pdo);
+            }
+
+            if ($full_storage) {
+                user_log($_SESSION['ID'], $_GET['side'], 'fullt lager', $pdo);
+                echo feedback("Du har kun plass til $max_storage ting i ditt lager. <a href='?side=poeng'>Du kan gjøre noe med det her</a>", "blue");
+            } elseif (!in_array($alt, $legal) || !is_numeric($alt)) {
+                user_log($_SESSION['ID'], $_GET['side'], 'ugyldig verdi', $pdo);
+                echo feedback("Ugyldig verdi.", "fail");
+            } elseif ($percentage > $chance) {
+                if ((brekk_ready($_SESSION['ID'], $pdo))) {
+                    user_log($_SESSION['ID'], $_GET['side'], 'ventetid', $pdo);
+                    echo feedback("Ventetid!", "error");
                 } else {
-                    $percentage = $percentage - get_city_tax(AS_session_row($_SESSION['ID'], 'AS_city', $pdo), $pdo);
-                }
+                    update_konk($_GET['side'], 1, $_SESSION['ID'], $pdo);
 
-                if ($full_storage) {
-                    user_log($_SESSION['ID'], $_GET['side'], 'fullt lager', $pdo);
-                    echo feedback("Du har kun plass til $max_storage ting i ditt lager. <a href='?side=poeng'>Du kan gjøre noe med det her</a>", "blue");
-                } elseif (!in_array($alt, $legal) || !is_numeric($alt)) {
-                    user_log($_SESSION['ID'], $_GET['side'], 'ugyldig verdi', $pdo);
-                    echo feedback("Ugyldig verdi.", "fail");
-                } elseif ($percentage > $chance) {
-                    if ((brekk_ready($_SESSION['ID'], $pdo))) {
-                        user_log($_SESSION['ID'], $_GET['side'], 'ventetid', $pdo);
-                        echo feedback("Ventetid!", "error");
-                    } else {
-                        update_konk($_GET['side'], 1, $_SESSION['ID'], $pdo);
+                    $brekk_id = brekk_payout($alt, $pdo);
 
-                        if (active_konk($pdo)) {
-                            if (mt_rand(0, 10) == 5) {
-                                $amount = mt_rand(1, 3);
-                                give_poeng($_SESSION['ID'], $amount, $pdo);
-                                $text = "Du fant " . number($amount) . " poeng da du utførte et brekk!";
-                                send_notification($_SESSION['ID'], $text, $pdo);
-                            }
-                        }
+                    update_dagens_utfordring($_SESSION['ID'], 2, $pdo);
 
-                        $brekk_id = brekk_payout($alt, $pdo);
+                    give_exp($_SESSION['ID'], brekk_exp($alt, $pdo), $pdo);
+                    brekk_give_cooldown($_SESSION['ID'], $cooldown, $pdo);
+                    update_things($_SESSION['ID'], $brekk_id, $pdo);
+                    give_rob_chance($_SESSION['ID'], AS_session_row($_SESSION['ID'], 'AS_city', $pdo), $alt, $pdo);
+                    check_rankup($_SESSION['ID'], AS_session_row($_SESSION['ID'], 'AS_rank', $pdo), AS_session_row($_SESSION['ID'], 'AS_exp', $pdo), $pdo);
+                    update_brekk($_SESSION['ID'], 1, $pdo);
 
-                        update_dagens_utfordring($_SESSION['ID'], 2, $pdo);
+                    give_territorium_money(AS_session_row($_SESSION['ID'], 'AS_city', $pdo), thing_price($brekk_id) * 0.1, $pdo);
 
-                        give_exp($_SESSION['ID'], brekk_exp($alt, $pdo), $pdo);
-                        brekk_give_cooldown($_SESSION['ID'], $cooldown, $pdo);
-                        update_things($_SESSION['ID'], $brekk_id, $pdo);
-                        give_rob_chance($_SESSION['ID'], AS_session_row($_SESSION['ID'], 'AS_city', $pdo), $alt, $pdo);
-                        check_rankup($_SESSION['ID'], AS_session_row($_SESSION['ID'], 'AS_rank', $pdo), AS_session_row($_SESSION['ID'], 'AS_exp', $pdo), $pdo);
-                        update_brekk($_SESSION['ID'], 1, $pdo);
+                    if (AS_session_row($_SESSION['ID'], 'AS_mission', $pdo) == 4) {
+                        mission_update(AS_session_row($_SESSION['ID'], 'AS_mission_count', $pdo) + 1, AS_session_row($_SESSION['ID'], 'AS_mission', $pdo), mission_criteria(AS_session_row($_SESSION['ID'], 'AS_mission', $pdo)), $_SESSION['ID'], $pdo);
+                    }
 
-                        give_territorium_money(AS_session_row($_SESSION['ID'], 'AS_city', $pdo), thing_price($brekk_id) * 0.1, $pdo);
+                    if (active_heist($_SESSION['ID'], $pdo)) {
+                        $heist_id = get_my_heistID($_SESSION['ID'], $pdo);
 
-                        if (AS_session_row($_SESSION['ID'], 'AS_mission', $pdo) == 4) {
-                            mission_update(AS_session_row($_SESSION['ID'], 'AS_mission_count', $pdo) + 1, AS_session_row($_SESSION['ID'], 'AS_mission', $pdo), mission_criteria(AS_session_row($_SESSION['ID'], 'AS_mission', $pdo)), $_SESSION['ID'], $pdo);
-                        }
+                        if (heist_row($heist_id, 'HEIST_type', $pdo) == 0 && heist_row($heist_id, 'HEIST_status', $pdo) == 1 && mt_rand(0, 1) == 1) {
+                            $number = mt_rand(0, 3);
+                            $code = heist_row($heist_id, 'HEIST_info', $pdo);
+                            $code = $code[$number];
 
-                        if (active_heist($_SESSION['ID'], $pdo)) {
-                            $heist_id = get_my_heistID($_SESSION['ID'], $pdo);
-
-                            if (heist_row($heist_id, 'HEIST_type', $pdo) == 0 && heist_row($heist_id, 'HEIST_status', $pdo) == 1 && mt_rand(0, 1) == 1) {
-                                $number = mt_rand(0, 3);
-                                $code = heist_row($heist_id, 'HEIST_info', $pdo);
-                                $code = $code[$number];
-
-                                user_log($_SESSION['ID'], $_GET['side'], 'ugyldig vellykket', $pdo);
-                                header("Location: ?side=brekk&vellykket=" . $brekk_id . "&codep=" . $number . "&code=" . $code);
-                            } else {
-                                user_log($_SESSION['ID'], $_GET['side'], 'ugyldig vellykket', $pdo);
-                                header("Location: ?side=brekk&vellykket=" . $brekk_id);
-                            }
+                            user_log($_SESSION['ID'], $_GET['side'], 'ugyldig vellykket', $pdo);
+                            header("Location: ?side=brekk&vellykket=" . $brekk_id . "&codep=" . $number . "&code=" . $code);
                         } else {
                             user_log($_SESSION['ID'], $_GET['side'], 'ugyldig vellykket', $pdo);
                             header("Location: ?side=brekk&vellykket=" . $brekk_id);
                         }
-                    }
-                } else {
-                    brekk_give_cooldown($_SESSION['ID'], $cooldown, $pdo);
-                    give_rob_chance($_SESSION['ID'], AS_session_row($_SESSION['ID'], 'AS_city', $pdo), $alt, $pdo);
-                    update_brekk($_SESSION['ID'], 0, $pdo);
-
-                    if (mt_rand(1, 4) > 2) {
-                        user_log($_SESSION['ID'], $_GET['side'], 'ugyldig mislykket', $pdo);
-                        header("Location: ?side=brekk&mislykket");
                     } else {
-                        user_log($_SESSION['ID'], $_GET['side'], 'ugyldig mislykket = fengsel', $pdo);
-                        header("Location: ?side=brekk&mislykket&jail=true");
-                        put_in_jail($_SESSION['ID'], $cooldown, 'Feilet brekk', $pdo);
+                        user_log($_SESSION['ID'], $_GET['side'], 'ugyldig vellykket', $pdo);
+                        header("Location: ?side=brekk&vellykket=" . $brekk_id);
                     }
                 }
-            }
+            } else {
+                brekk_give_cooldown($_SESSION['ID'], $cooldown, $pdo);
+                give_rob_chance($_SESSION['ID'], AS_session_row($_SESSION['ID'], 'AS_city', $pdo), $alt, $pdo);
+                update_brekk($_SESSION['ID'], 0, $pdo);
 
-            if (get_city_tax(AS_session_row($_SESSION['ID'], 'AS_city', $pdo), $pdo) > 50) {
-                echo feedback("Byskatten i denne byen er veldig høy! Det anbefales at du reiser til en by med mindre byskatt.", "fail");
+                if (mt_rand(1, 4) > 2) {
+                    user_log($_SESSION['ID'], $_GET['side'], 'ugyldig mislykket', $pdo);
+                    header("Location: ?side=brekk&mislykket");
+                } else {
+                    user_log($_SESSION['ID'], $_GET['side'], 'ugyldig mislykket = fengsel', $pdo);
+                    header("Location: ?side=brekk&mislykket&jail=true");
+                    put_in_jail($_SESSION['ID'], $cooldown, 'Feilet brekk', $pdo);
+                }
             }
+        }
 
-            // Fullt lager
-            if ($full_storage) {
-                echo feedback("Lageret ditt er full! Du kan enten kjøpe mer plass på <a href='?side=poeng'>poengsiden</a> eller selge ting på <a href='?side=lager'>lageret</a>", "fail");
-            }
+        if (get_city_tax(AS_session_row($_SESSION['ID'], 'AS_city', $pdo), $pdo) > 50) {
+            echo feedback("Byskatten i denne byen er veldig høy! Det anbefales at du reiser til en by med mindre byskatt.", "fail");
+        }
 
-        ?>
-            <div class="col-12 single">
-                <div class="col-8" style="padding-top: 0px;">
-                    <div class="content">
+        // Fullt lager
+        if ($full_storage) {
+            echo feedback("Lageret ditt er full! Du kan enten kjøpe mer plass på <a href='?side=poeng'>poengsiden</a> eller selge ting på <a href='?side=lager'>lageret</a>", "fail");
+        }
+
+?>
+        <div class="col-12 single">
+            <div class="col-8" style="padding-top: 0px;">
+                <div class="content">
                     <img class="action_image" src="img/action/actions/<?php echo $side; ?>.png">
-                        <?php
-                            if (brekk_ready($_SESSION['ID'], $pdo)) {
-                                $stmt = $pdo->prepare('SELECT * FROM cooldown WHERE CD_acc_id = :cd_id');
-                                $stmt->execute(array(
-                                    ':cd_id' => $_SESSION['ID']
-                                ));
-                                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                    <?php
+                    if (brekk_ready($_SESSION['ID'], $pdo)) {
+                        $stmt = $pdo->prepare('SELECT * FROM cooldown WHERE CD_acc_id = :cd_id');
+                        $stmt->execute(array(
+                            ':cd_id' => $_SESSION['ID']
+                        ));
+                        $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-                                $time_left = $row['CD_brekk'] - time();
+                        $time_left = $row['CD_brekk'] - time();
 
-                                $minutes = floor($time_left / 60);
-                                $seconds = $time_left - $minutes * 60;
+                        $minutes = floor($time_left / 60);
+                        $seconds = $time_left - $minutes * 60;
 
-                                echo feedback('Du har nylig utført et brekk. Du må vente <t id="countdowntimer">' . $minutes . ' minutter og ' . $seconds . ' sekunder</t> før du kan utføre et nytt brekk.', 'cooldown'); ?>
-                                <script>
-                                    timeleft(<?php echo $time_left; ?>, "countdowntimer");
-                                </script>
+                        echo feedback('Du har nylig utført et brekk. Du må vente <t id="countdowntimer">' . $minutes . ' minutter og ' . $seconds . ' sekunder</t> før du kan utføre et nytt brekk.', 'cooldown'); ?>
+                        <script>
+                            timeleft(<?php echo $time_left; ?>, "countdowntimer");
+                        </script>
 
-                            <?php
+                    <?php
 
-                            } else {
+                    } else {
 
-                        ?>
+                    ?>
                         <p style="text-align: center;" class="description">Byskatten i denne byen er <?php echo output_city_tax(get_city_tax(AS_session_row($_SESSION['ID'], 'AS_city', $pdo), $pdo)); ?></p>
                         <table>
                             <tr>
@@ -318,35 +309,35 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                                 </tr>
                             <?php } ?>
                         </table>
-                        <?php } ?>
-                    </div>
+                    <?php } ?>
                 </div>
-                <div class="col-4" style="padding-top: 0px;">
-                    <div class="content">
-                        <span class="small_header">Statistikk</span>
-                        <ul>
-                            <li>Vellykkede brekk utført i dag: <?php echo number(total_brekk_today_user($_SESSION['ID'], $pdo)); ?></li>
-                            <br>
-                            <li>Vellykkede brekk utført: <?php echo number(US_session_row($_SESSION['ID'], 'US_brekk_v', $pdo)); ?></li>
-                            <li>Mislykkede brekk utført: <?php echo number(US_session_row($_SESSION['ID'], 'US_brekk_m', $pdo)); ?></li>
-                            <br>
-                            <li>Totalt antall brekk utført i dag av alle: <?php echo number(total_brekk_today($pdo)); ?></li>
-                        </ul>
-                    </div>
-                    <div class="content">
+            </div>
+            <div class="col-4" style="padding-top: 0px;">
+                <div class="content">
+                    <span class="small_header">Statistikk</span>
+                    <ul>
+                        <li>Vellykkede brekk utført i dag: <?php echo number(total_brekk_today_user($_SESSION['ID'], $pdo)); ?></li>
+                        <br>
+                        <li>Vellykkede brekk utført: <?php echo number(US_session_row($_SESSION['ID'], 'US_brekk_v', $pdo)); ?></li>
+                        <li>Mislykkede brekk utført: <?php echo number(US_session_row($_SESSION['ID'], 'US_brekk_m', $pdo)); ?></li>
+                        <br>
+                        <li>Totalt antall brekk utført i dag av alle: <?php echo number(total_brekk_today($pdo)); ?></li>
+                    </ul>
+                </div>
+                <div class="content">
                     <span class="small_header">Topp 10 flest vellykkede brekk</span>
                     <table>
-                    <tr>
-                        <th style="width: 10px;">#</th>
-                        <th>Bruker</th>
-                        <th>Antall</th>
-                    </tr>
+                        <tr>
+                            <th style="width: 10px;">#</th>
+                            <th>Bruker</th>
+                            <th>Antall</th>
+                        </tr>
 
-                <?php 
+                        <?php
 
-                $i = 0;
-                
-                $query = $pdo->prepare('
+                        $i = 0;
+
+                        $query = $pdo->prepare('
                 SELECT 
                     user_statistics.US_acc_id, (user_statistics.US_brekk_v + 0) as US_brekk_v
                 FROM 
@@ -361,21 +352,21 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                 US_brekk_v DESC
                 LIMIT 10
                 ');
-                $query->execute();
-                foreach ($query as $row) {
-                    $i++;
+                        $query->execute();
+                        foreach ($query as $row) {
+                            $i++;
 
-                ?>
-                <tr>
-                    <td><?php echo $i; ?>.</td>
-                    <td><?php echo ACC_username($row['US_acc_id'], $pdo); ?></td>
-                    <td><?php echo number($row['US_brekk_v']); ?> stk</td>
-                </tr>
-                <?php } ?>
-                </table>
-                </div>
+                        ?>
+                            <tr>
+                                <td><?php echo $i; ?>.</td>
+                                <td><?php echo ACC_username($row['US_acc_id'], $pdo); ?></td>
+                                <td><?php echo number($row['US_brekk_v']); ?> stk</td>
+                            </tr>
+                        <?php } ?>
+                    </table>
                 </div>
             </div>
+        </div>
 
         <script type="text/javascript">
             jQuery(document).ready(function($) {

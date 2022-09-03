@@ -54,15 +54,6 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
 
                     update_konk($_GET['side'], 1, $_SESSION['ID'], $pdo);
 
-                    if (active_konk($pdo)) {
-                        if (mt_rand(0, 10) == 5) {
-                            $amount = mt_rand(1, 3);
-                            give_poeng($_SESSION['ID'], $amount, $pdo);
-                            $text = "Du fant " . number($amount) . " poeng da du brøt ut en spiller fra fengsel!";
-                            send_notification($_SESSION['ID'], $text, $pdo);
-                        }
-                    }
-
                     user_log($_SESSION['ID'], $_GET['side'], 'Bryter ut: ' . ACC_username($brytut_id, $pdo) . '', $pdo);
                     echo feedback("Du klarte å bryte ut " . ACC_username($brytut_id, $pdo) . " fra fengselet!", "success");
                 } else {

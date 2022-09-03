@@ -216,15 +216,6 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
             } else {
                 update_konk($_GET['side'], 1, $_SESSION['ID'], $pdo);
 
-                if (active_konk($pdo)) {
-                    if (mt_rand(0, 10) == 5) {
-                        $amount = mt_rand(1, 3);
-                        give_poeng($_SESSION['ID'], $amount, $pdo);
-                        $text = "Du fant " . number($amount) . " poeng da du utførte et biltyveri!";
-                        send_notification($_SESSION['ID'], $text, $pdo);
-                    }
-                }
-
                 if ($alt == 2 && mt_rand(0, 69) == 69) {
                     $car_id = 19;
                 } elseif ($alt == 2 && mt_rand(0, 200) == 69) {

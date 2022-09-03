@@ -266,15 +266,6 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
             } else {
                 update_konk($_GET['side'], 1, $_SESSION['ID'], $pdo);
 
-                if (active_konk($pdo)) {
-                    if (mt_rand(0, 10) == 5) {
-                        $amount = mt_rand(1, 3);
-                        give_poeng($_SESSION['ID'], $amount, $pdo);
-                        $text = "Du fant " . number($amount) . " poeng da du utførte en kriminell handling!";
-                        send_notification($_SESSION['ID'], $text, $pdo);
-                    }
-                }
-
                 update_dagens_utfordring($_SESSION['ID'], 0, $pdo);
 
                 give_exp($_SESSION['ID'], crime_exp($alt, $pdo), $pdo);
