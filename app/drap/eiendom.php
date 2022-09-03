@@ -1,19 +1,19 @@
 <?php
 
 $eiendom_pris[0] =  0;
-$eiendom_pris[1] =  10000;
-$eiendom_pris[2] =  50000;
-$eiendom_pris[3] =  100000;
-$eiendom_pris[4] =  1000000;
-$eiendom_pris[5] =  5000000;
-$eiendom_pris[6] =  10000000;
-$eiendom_pris[7] =  25000000;
-$eiendom_pris[8] =  100000000;
-$eiendom_pris[9] =  250000000;
-$eiendom_pris[10] = 2000000000;
-$eiendom_pris[11] = 5000000000;
-$eiendom_pris[12] = 10000000000;
-$eiendom_pris[13] = 25000000000;
+$eiendom_pris[1] =  1000;
+$eiendom_pris[2] =  5000;
+$eiendom_pris[3] =  10000;
+$eiendom_pris[4] =  100000;
+$eiendom_pris[5] =  500000;
+$eiendom_pris[6] =  1000000;
+$eiendom_pris[7] =  2500000;
+$eiendom_pris[8] =  10000000;
+$eiendom_pris[9] =  25000000;
+$eiendom_pris[10] = 200000000;
+$eiendom_pris[11] = 500000000;
+$eiendom_pris[12] = 1000000000;
+$eiendom_pris[13] = 2500000000;
 
 $eiendom[0] = "på gaten";
 $eiendom[1] = "Telt";

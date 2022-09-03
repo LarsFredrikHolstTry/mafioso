@@ -9,25 +9,25 @@ if (!isset($_GET['side'])) {
     function weapon_price($weapon_nr)
     {
         $weapon_price[0] = 25000;
-        $weapon_price[1] = $weapon_price[0] + 15000;
-        $weapon_price[2] = $weapon_price[1] + 15000;
-        $weapon_price[3] = $weapon_price[2] + 15000;
-        $weapon_price[4] = $weapon_price[3] + 15000;
-        $weapon_price[5] = $weapon_price[4] + 15000;
-        $weapon_price[6] = $weapon_price[5] + 15000;
-        $weapon_price[7] = $weapon_price[6] + 15000;
-        $weapon_price[8] = $weapon_price[7] + 15000;
-        $weapon_price[9] = $weapon_price[8] + 15000;
-        $weapon_price[10] = $weapon_price[9] + 15000;
-        $weapon_price[11] = $weapon_price[10] + 15000;
-        $weapon_price[12] = $weapon_price[11] + 15000;
-        $weapon_price[13] = $weapon_price[12] + 15000;
-        $weapon_price[14] = $weapon_price[13] + 15000;
-        $weapon_price[15] = $weapon_price[14] + 15000;
-        $weapon_price[16] = $weapon_price[15] + 15000;
-        $weapon_price[17] = $weapon_price[16] + 100000000;
-        $weapon_price[18] = $weapon_price[17] + 250000000;
-        $weapon_price[19] = $weapon_price[18] + 500000000;
+        $weapon_price[1] = $weapon_price[0] + 150;
+        $weapon_price[2] = $weapon_price[1] + 150;
+        $weapon_price[3] = $weapon_price[2] + 150;
+        $weapon_price[4] = $weapon_price[3] + 150;
+        $weapon_price[5] = $weapon_price[4] + 150;
+        $weapon_price[6] = $weapon_price[5] + 150;
+        $weapon_price[7] = $weapon_price[6] + 150;
+        $weapon_price[8] = $weapon_price[7] + 150;
+        $weapon_price[9] = $weapon_price[8] + 150;
+        $weapon_price[10] = $weapon_price[9] + 150;
+        $weapon_price[11] = $weapon_price[10] + 150;
+        $weapon_price[12] = $weapon_price[11] + 150;
+        $weapon_price[13] = $weapon_price[12] + 150;
+        $weapon_price[14] = $weapon_price[13] + 150;
+        $weapon_price[15] = $weapon_price[14] + 150;
+        $weapon_price[16] = $weapon_price[15] + 150;
+        $weapon_price[17] = $weapon_price[16] + 10000;
+        $weapon_price[18] = $weapon_price[17] + 25000;
+        $weapon_price[19] = $weapon_price[18] + 50000;
 
         return $weapon_price[$weapon_nr];
     }
@@ -46,7 +46,7 @@ if (!isset($_GET['side'])) {
         $training_percentage = 2;
     }
 
-    $cooldown = 900 + time();
+    $cooldown = 500 + time();
 
     if (isset($_POST['train'])) {
         if (!weapon_ready($_SESSION['ID'], $pdo)) {

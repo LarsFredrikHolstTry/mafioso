@@ -8,16 +8,16 @@ if (!isset($_GET['side'])) {
     */
     function bullet_pris($city, $pdo)
     {
-        $city_price[0] = 6750000;
-        $city_price[1] = 6750000;
-        $city_price[2] = 6750000;
-        $city_price[3] = 6750000;
-        $city_price[4] = 6750000;
+        $city_price[0] = 675000;
+        $city_price[1] = 675000;
+        $city_price[2] = 675000;
+        $city_price[3] = 675000;
+        $city_price[4] = 675000;
 
         return $city_price[$city];
     }
 
-    $kf_price = 50000000;
+    $kf_price = 500000;
     $price_pr_bullet = bullet_pris(AS_session_row($_SESSION['ID'], 'AS_city', $pdo), $pdo);
 
     if (isset($_GET['sold'])) {
@@ -144,7 +144,7 @@ if (!isset($_GET['side'])) {
 
     if (kf_owner_exist(AS_session_row($_SESSION['ID'], 'AS_city', $pdo), $pdo) && get_kf_owner(AS_session_row($_SESSION['ID'], 'AS_city', $pdo), $pdo) == $_SESSION['ID']) {
 
-        $amount_sell = 10000000;
+        $amount_sell = 100000;
 
         if (isset($_POST['sell_kf'])) {
             if (kf_owner_exist(AS_session_row($_SESSION['ID'], 'AS_city', $pdo), $pdo) && get_kf_owner(AS_session_row($_SESSION['ID'], 'AS_city', $pdo), $pdo) == $_SESSION['ID']) {

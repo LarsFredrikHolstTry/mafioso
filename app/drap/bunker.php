@@ -1,8 +1,8 @@
 <?php
 
-$staten_pris = 500000;
-$price_for_build = 100000000;
-$start_price = 10000;
+$staten_pris = 5000;
+$price_for_build = 1000000;
+$start_price = 1000;
 
 if (isset($_GET['bunker_status'])) {
     if ($_GET['bunker_status'] == 'in') {
@@ -159,121 +159,120 @@ if (isset($_POST['create_bunker'])) {
         <img class="action_image" src="img/action/actions/bygg_bunker.png">
         <?php
 
-            $query = $pdo->prepare("SELECT * FROM bunker_owner WHERE BUNOWN_city = ?");
-            $query->execute(array(AS_session_row($_SESSION['ID'], 'AS_city', $pdo)));
-            $row = $query->fetch(PDO::FETCH_ASSOC);
+        $query = $pdo->prepare("SELECT * FROM bunker_owner WHERE BUNOWN_city = ?");
+        $query->execute(array(AS_session_row($_SESSION['ID'], 'AS_city', $pdo)));
+        $row = $query->fetch(PDO::FETCH_ASSOC);
 
-            if (firma_on_marked(5, AS_session_row($_SESSION['ID'], 'AS_city', $pdo), $pdo)) {
-                echo feedback("Bunkeren er ute til salgs på marked", "blue");
-            } else if (!$row) { ?>
-                <form method="post">
-                    <p class="description">
-                        Det finnes ingen bunker i denne byen og
-                        det kan derfor opprettes en bunker for
-                        <?php echo number($price_for_build); ?> kr.
-                        Fordelen med å eie drive en bunker er at du selv
-                        velger prisen på bruk av bunkeren, men det kan ikke
-                        overstige 100 000 kr.
-                        Når noen bruker din bunker kan du se når de gikk inn i bunkeren.
-                    </p>
-                    <input type="submit" name="create_bunker" value="Bygg bunker for <?php echo number($price_for_build); ?> kr">
-                </form>
-            <?php } else if ($row['BUNOWN_acc_id'] == $_SESSION['ID']) { ?>
-                <?php
-
-                $max_price = 100000;
-                $min_price = 0;
-
-                if (isset($_GET['new_pris'])) {
-                    echo feedback("Prisen ble oppdatert", "success");
-                }
-
-                if (isset($_POST['update_price'])) {
-                    if (isset($_POST['price'])) {
-                        $price = remove_space($_POST['price']);
-                        if ($price <= $max_price && $price >= $min_price && is_numeric($price)) {
-                            $sql = "UPDATE bunker_owner SET BUNOWN_price = ? WHERE BUNOWN_city = ? ";
-                            $stmt = $pdo->prepare($sql);
-                            $stmt->execute([$price, AS_session_row($_SESSION['ID'], 'AS_city', $pdo)]);
-
-                            header("location: ?side=drap&p=bunker&new_pris");
-                        } else {
-                            echo feedback("Ugyldig pris. Prisen kan ikke være mindre enn " . $min_price . " eller mer enn " . $max_price . "", "error");
-                        }
-                    }
-                }
-
-                if (isset($_GET['money_out_val'])) {
-                    echo feedback("Du tok ut " . number($_GET['money_out_val']) . " kr fra bunker banken", "success");
-                }
-
-                if (isset($_POST['money_out_bunker'])) {
-                    if (isset($_POST['money_bunker'])) {
-                        $money = remove_space($_POST['money_bunker']);
-                        if ($money <= $row['BUNOWN_bank'] && is_numeric($money) && $money > 0) {
-                            give_money($_SESSION['ID'], $money, $pdo);
-
-                            $sql = "UPDATE bunker_owner SET BUNOWN_bank = BUNOWN_bank - ? WHERE BUNOWN_city = ? ";
-                            $stmt = $pdo->prepare($sql);
-                            $stmt->execute([$money, AS_session_row($_SESSION['ID'], 'AS_city', $pdo)]);
-
-                            header("location: ?side=drap&p=bunker&money_out_val=" . $money . "");
-                        } else {
-                            echo feedback("Ugyldig sum", "error");
-                        }
-                    }
-                }
-
-                if (isset($_POST['remove_bunker'])) {
-                    if(shut_down_bunker($_SESSION['ID'], $pdo) >= 1) { // En bunker ble lagt ned
-                        echo feedback("Du ga fra deg bunkeren", "success");
-                    }
-                    else { // Ingen bunker ble lagt ned
-                        echo feedback("Du eier ikke en bunker", "error");
-                    }
-                }
-
-                ?>
-                <h3>Bunker kontrollpanel</h3>
+        if (firma_on_marked(5, AS_session_row($_SESSION['ID'], 'AS_city', $pdo), $pdo)) {
+            echo feedback("Bunkeren er ute til salgs på marked", "blue");
+        } else if (!$row) { ?>
+            <form method="post">
                 <p class="description">
-                    Som eier av bunkeren i
-                    <?php city_name(AS_session_row($_SESSION['ID'], 'AS_city', $pdo)); ?>
-                    velger du prisen per bruk er. Du har også mulighet for å se
-                    hvem som bruker din bunker.
+                    Det finnes ingen bunker i denne byen og
+                    det kan derfor opprettes en bunker for
+                    <?php echo number($price_for_build); ?> kr.
+                    Fordelen med å eie drive en bunker er at du selv
+                    velger prisen på bruk av bunkeren, men det kan ikke
+                    overstige 100 000 kr.
+                    Når noen bruker din bunker kan du se når de gikk inn i bunkeren.
                 </p>
-                <div class="col-6">
-                    <form method="post">
-                        <p>Pris for bruk</p>
-                        <input type="text" id="number" style="max-width: 90px;" name="price" value="<?php echo number($row['BUNOWN_price']); ?>"> kr
-                        <input style="margin-left: 10px;" type="submit" name="update_price" value="Oppdater pris">
-                    </form>
-                </div>
-                <div class="col-6">
-                    <form method="post">
-                        <p>Bunker bank: <?php echo number($row['BUNOWN_bank']); ?>kr</p>
-                        <input type="text" id="number_bank" name="money_bunker" value="<?php echo number($row['BUNOWN_bank']); ?>"> kr
-                        <input style="margin-left: 10px;" type="submit" name="money_out_bunker" value="Ta ut penger">
-                    </form>
-                </div>
+                <input type="submit" name="create_bunker" value="Bygg bunker for <?php echo number($price_for_build); ?> kr">
+            </form>
+        <?php } else if ($row['BUNOWN_acc_id'] == $_SESSION['ID']) { ?>
+            <?php
+
+            $max_price = 10000;
+            $min_price = 0;
+
+            if (isset($_GET['new_pris'])) {
+                echo feedback("Prisen ble oppdatert", "success");
+            }
+
+            if (isset($_POST['update_price'])) {
+                if (isset($_POST['price'])) {
+                    $price = remove_space($_POST['price']);
+                    if ($price <= $max_price && $price >= $min_price && is_numeric($price)) {
+                        $sql = "UPDATE bunker_owner SET BUNOWN_price = ? WHERE BUNOWN_city = ? ";
+                        $stmt = $pdo->prepare($sql);
+                        $stmt->execute([$price, AS_session_row($_SESSION['ID'], 'AS_city', $pdo)]);
+
+                        header("location: ?side=drap&p=bunker&new_pris");
+                    } else {
+                        echo feedback("Ugyldig pris. Prisen kan ikke være mindre enn " . $min_price . " eller mer enn " . $max_price . "", "error");
+                    }
+                }
+            }
+
+            if (isset($_GET['money_out_val'])) {
+                echo feedback("Du tok ut " . number($_GET['money_out_val']) . " kr fra bunker banken", "success");
+            }
+
+            if (isset($_POST['money_out_bunker'])) {
+                if (isset($_POST['money_bunker'])) {
+                    $money = remove_space($_POST['money_bunker']);
+                    if ($money <= $row['BUNOWN_bank'] && is_numeric($money) && $money > 0) {
+                        give_money($_SESSION['ID'], $money, $pdo);
+
+                        $sql = "UPDATE bunker_owner SET BUNOWN_bank = BUNOWN_bank - ? WHERE BUNOWN_city = ? ";
+                        $stmt = $pdo->prepare($sql);
+                        $stmt->execute([$money, AS_session_row($_SESSION['ID'], 'AS_city', $pdo)]);
+
+                        header("location: ?side=drap&p=bunker&money_out_val=" . $money . "");
+                    } else {
+                        echo feedback("Ugyldig sum", "error");
+                    }
+                }
+            }
+
+            if (isset($_POST['remove_bunker'])) {
+                if (shut_down_bunker($_SESSION['ID'], $pdo) >= 1) { // En bunker ble lagt ned
+                    echo feedback("Du ga fra deg bunkeren", "success");
+                } else { // Ingen bunker ble lagt ned
+                    echo feedback("Du eier ikke en bunker", "error");
+                }
+            }
+
+            ?>
+            <h3>Bunker kontrollpanel</h3>
+            <p class="description">
+                Som eier av bunkeren i
+                <?php city_name(AS_session_row($_SESSION['ID'], 'AS_city', $pdo)); ?>
+                velger du prisen per bruk er. Du har også mulighet for å se
+                hvem som bruker din bunker.
+            </p>
+            <div class="col-6">
                 <form method="post">
-                    <p class="description">Dersom du ikke lengre ønsker å ha bunkeren kan du gi fra deg plassen til noen andre.
-                        <br>Det er også mulig å selge bunkeren på marked.
-                    </p>
-                    <input style="margin-left: 10px;" type="submit" onclick="return confirm('Er du sikker på at du ønsker å gi fra deg bunkeren?')" name="remove_bunker" value="Gi fra deg bunkeren">
+                    <p>Pris for bruk</p>
+                    <input type="text" id="number" style="max-width: 90px;" name="price" value="<?php echo number($row['BUNOWN_price']); ?>"> kr
+                    <input style="margin-left: 10px;" type="submit" name="update_price" value="Oppdater pris">
                 </form>
-                <div style="clear: both;"></div>
-            <?php } else { ?>
-                <span class="description">
-                    <?php echo ACC_username($row['BUNOWN_acc_id'], $pdo); ?>
-                    er eieren av bunkeren i
-                    <?php echo city_name(AS_session_row($_SESSION['ID'], 'AS_city', $pdo)) ?>
-                    og prisen er satt til
-                    <?php echo number($row['BUNOWN_price']); ?> kr per bruk.
-                    <br>
-                    Du kan velge selv om du vil bruke <?php echo ACC_username($row['BUNOWN_acc_id'], $pdo); ?>
-                    sin bunker eller staten sin bunker.
-                </span>
-            <?php } ?>
+            </div>
+            <div class="col-6">
+                <form method="post">
+                    <p>Bunker bank: <?php echo number($row['BUNOWN_bank']); ?>kr</p>
+                    <input type="text" id="number_bank" name="money_bunker" value="<?php echo number($row['BUNOWN_bank']); ?>"> kr
+                    <input style="margin-left: 10px;" type="submit" name="money_out_bunker" value="Ta ut penger">
+                </form>
+            </div>
+            <form method="post">
+                <p class="description">Dersom du ikke lengre ønsker å ha bunkeren kan du gi fra deg plassen til noen andre.
+                    <br>Det er også mulig å selge bunkeren på marked.
+                </p>
+                <input style="margin-left: 10px;" type="submit" onclick="return confirm('Er du sikker på at du ønsker å gi fra deg bunkeren?')" name="remove_bunker" value="Gi fra deg bunkeren">
+            </form>
+            <div style="clear: both;"></div>
+        <?php } else { ?>
+            <span class="description">
+                <?php echo ACC_username($row['BUNOWN_acc_id'], $pdo); ?>
+                er eieren av bunkeren i
+                <?php echo city_name(AS_session_row($_SESSION['ID'], 'AS_city', $pdo)) ?>
+                og prisen er satt til
+                <?php echo number($row['BUNOWN_price']); ?> kr per bruk.
+                <br>
+                Du kan velge selv om du vil bruke <?php echo ACC_username($row['BUNOWN_acc_id'], $pdo); ?>
+                sin bunker eller staten sin bunker.
+            </span>
+        <?php } ?>
     </div>
 </div>
 <script src="js/select_custom.js"></script>
