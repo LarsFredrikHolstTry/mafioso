@@ -10,40 +10,31 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
 
     $types[0] = "Defuse the bomb";
     $types[1] = "Bankheist";
-    /* $types[2] = "F*!KING CIRCUZ";
- */
+
     $countdown[0] = time() + 1200;
     $countdown[1] = time() + 2400;
-    /* $countdown[2] = time() + 3600;
- */
+
     $cooldown[0] = time() + 2400;
     $cooldown[1] = time() + 3600;
-    /* $cooldown[2] = time() + 4800;
- */
+
     $risk[0] = "Lav";
     $risk[1] = "Middels";
-    /* $risk[2] = "Høy";
- */
+
     $desc[0] = "Finn den riktige kombinasjonen ved å utføre kriminelle handlinger og avkoble bomben før den eksploderer";
     $desc[1] = "Stjel mest mulig penger fra banken i løpet av 40 minutter. Desto mer penger gruppen får tak i, jo mer penger vil alle tjene.";
-    /* $desc[2] = "Klar for en utfordring?";
- */
+
     $time_heist[0] = 20;
     $time_heist[1] = 40;
-    /* $time_heist[2] = 60;
- */
-    $payout[0] = mt_rand(15000000, 25000000);
-    $payout[1] = 35000000;
-    /* $payout[2] = 75000000;
- */
+
+    $payout[0] = mt_rand(150000, 250000);
+    $payout[1] = 350000;
+
     $notification[0] = "Dere klarte å avkoble bomben før tiden. Som belønning får du " . number($payout[0]) . " kr!";
     $notification[1] = "";
-    /* $notification[2] = "OPPDRAGSTEKST ".$payout[2]." kr!";
- */
+
     $feedback[0] = "Koden er riktig! Som belønning ønsker Cari Polti å gi hvert medlem av heistet " . number($_GET['payout'] ?? 0) . " kr!";
     $feedback[1] = "Dere kjørte fra politiet og som belønning kan dere dele alle pengene på medlemmene";
-    /* $feedback[2] = "";
- */
+
     if (isset($_GET['feedback'])) {
         if (is_numeric($_GET['feedback']) && $_GET['feedback'] == 0 || $_GET['feedback'] < 3) {
             echo feedback($feedback[$_GET['feedback']], "success");

@@ -83,58 +83,58 @@ function crime_exp($nr, $pdo)
 
 function crime_payout($nr)
 {
-    $crime_payout[0] = mt_rand(100, 500);
-    $crime_payout[1] = mt_rand(300, 1500);
-    $crime_payout[2] = mt_rand(500, 2500);
-    $crime_payout[3] = mt_rand(1000, 3500);
-    $crime_payout[4] = mt_rand(1500, 4500);
-    $crime_payout[5] = mt_rand(4500, 8500);
-    $crime_payout[6] = mt_rand(9500, 12500);
+    $crime_payout[0] = mt_rand(10, 50);
+    $crime_payout[1] = mt_rand(30, 150);
+    $crime_payout[2] = mt_rand(50, 250);
+    $crime_payout[3] = mt_rand(100, 350);
+    $crime_payout[4] = mt_rand(150, 450);
+    $crime_payout[5] = mt_rand(450, 850);
+    $crime_payout[6] = mt_rand(950, 1250);
     $crime_payout[7] = 1;
-    $crime_payout[8] = mt_rand(1000000, 2000000);
+    $crime_payout[8] = mt_rand(10000, 20000);
 
     return $crime_payout[$nr];
 }
 
 function crime_payout_from($nr)
 {
-    $crime_payout[0] = 100;
-    $crime_payout[1] = 300;
-    $crime_payout[2] = 500;
-    $crime_payout[3] = 1000;
-    $crime_payout[4] = 1500;
-    $crime_payout[5] = 4500;
-    $crime_payout[6] = 9500;
+    $crime_payout[0] = 10;
+    $crime_payout[1] = 30;
+    $crime_payout[2] = 50;
+    $crime_payout[3] = 100;
+    $crime_payout[4] = 150;
+    $crime_payout[5] = 450;
+    $crime_payout[6] = 950;
     $crime_payout[7] = 1;
-    $crime_payout[8] = 100000;
+    $crime_payout[8] = 10000;
 
     return $crime_payout[$nr];
 }
 
 function crime_payout_to($nr)
 {
-    $crime_payout[0] = 500;
-    $crime_payout[1] = 1500;
-    $crime_payout[2] = 2500;
-    $crime_payout[3] = 3500;
-    $crime_payout[4] = 4500;
-    $crime_payout[5] = 8500;
-    $crime_payout[6] = 12500;
+    $crime_payout[0] = 50;
+    $crime_payout[1] = 150;
+    $crime_payout[2] = 250;
+    $crime_payout[3] = 350;
+    $crime_payout[4] = 450;
+    $crime_payout[5] = 850;
+    $crime_payout[6] = 1250;
     $crime_payout[7] = 1;
-    $crime_payout[8] = 1500000;
+    $crime_payout[8] = 150000;
 
     return $crime_payout[$nr];
 }
 
 function crime_cooldown($nr, $pdo)
 {
-    $crime_cd[0] = 25;
-    $crime_cd[1] = 40;
-    $crime_cd[2] = 70;
-    $crime_cd[3] = 95;
-    $crime_cd[4] = 125;
-    $crime_cd[5] = 150;
-    $crime_cd[6] = 185;
+    $crime_cd[0] = 15;
+    $crime_cd[1] = 25;
+    $crime_cd[2] = 40;
+    $crime_cd[3] = 60;
+    $crime_cd[4] = 80;
+    $crime_cd[5] = 120;
+    $crime_cd[6] = 165;
     $crime_cd[7] = 100;
     $crime_cd[8] = 150;
     return $crime_cd[$nr];
