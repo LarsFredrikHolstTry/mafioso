@@ -60,7 +60,7 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
         } elseif ($alt == 1) {
             return mt_rand(6, 11);
         } elseif ($alt == 2) {
-            if (mt_rand(0, 100) >= 99) {
+            if (mt_rand(0, 300) == 69) {
                 return 18;
             } else {
                 return mt_rand(12, 17);
