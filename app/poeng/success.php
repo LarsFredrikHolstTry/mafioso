@@ -1,6 +1,6 @@
 <?php
 
-include '../env.php';
+include '../../env.php';
 
 session_start();
 error_reporting(1);
