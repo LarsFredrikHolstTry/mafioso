@@ -27,10 +27,7 @@ if (isset($_POST['register'])) {
 
     $desc = 'Konkurransen går ut på å få ' . $titles[$chosen] . '. <br>
     <br>
-    1 Krim = 1 poeng i konkurransen!
-    <br>
-    Det er også mulig å finne tilfeldige poeng når det er aktive konkurranser som kan brukes til forskjellige goder på <a 
-     href="?side=poeng">poeng-siden</a>!';
+    1 Krim = 1 poeng i konkurransen';
 
     $prize = array();
 
