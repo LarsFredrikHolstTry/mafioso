@@ -121,7 +121,7 @@ function crime_payout_to($nr)
     $crime_payout[5] = 850;
     $crime_payout[6] = 1250;
     $crime_payout[7] = 1;
-    $crime_payout[8] = 150000;
+    $crime_payout[8] = 20000;
 
     return $crime_payout[$nr];
 }
@@ -216,11 +216,11 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
         if (!is_numeric($_GET['p'])) {
             echo feedback($useLang->crime->feedbacks->error, "error");
         } elseif ($_GET['vellykket'] == 7) {
-            echo feedback(str_replace('{money}', number(number($_GET['p'])), $useLang->crime->feedbacks->successDrugs), 'success');
+            echo feedback(str_replace('{money}', number($_GET['p']), $useLang->crime->feedbacks->successDrugs), 'success');
         } elseif ($_GET['vellykket'] == 8) {
-            echo feedback(str_replace('{money}', number(number($_GET['p'])), $useLang->crime->feedbacks->successHeist), 'success');
+            echo feedback(str_replace('{money}', number($_GET['p']), $useLang->crime->feedbacks->successHeist), 'success');
         } else {
-            echo feedback(str_replace('{money}', number(number($_GET['p'])), $useLang->crime->feedbacks->success), 'success');
+            echo feedback(str_replace('{money}', number($_GET['p']), $useLang->crime->feedbacks->success), 'success');
         }
 
         if (isset($_GET['codep'])) {
