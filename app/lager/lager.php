@@ -591,7 +591,7 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                         <p style="float: right;" class="description">Total verdi:
                             <?php
 
-                            $value = value_all_things($_SESSION['ID'], $pdo) * 0.9;
+                            $value = value_all_things($_SESSION['ID'], $pdo);
 
                             if (active_superhelg($pdo)) {
                                 $value = $value * 2;

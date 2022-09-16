@@ -111,39 +111,39 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                 <form method="post" class="table_check">
                     <table id="datatable" data-order="[[3]]" data-paging="false">
                         <thead>
-                        <tr>
-                            <th style="width: 30%;">Bil</th>
-                            <th style="width: 10%;">Antall</th>
-                            <th style="width: 15%;">By</th>
-                            <th style="width: 15%;">Verdi</th>
-                            <th style="width: 5%;">Antall</th>
-                        </tr>
+                            <tr>
+                                <th style="width: 30%;">Bil</th>
+                                <th style="width: 10%;">Antall</th>
+                                <th style="width: 15%;">By</th>
+                                <th style="width: 15%;">Verdi</th>
+                                <th style="width: 5%;">Antall</th>
+                            </tr>
                         </thead>
                         <tbody>
-                        <?php
+                            <?php
 
-                        $i = 0;
+                            $i = 0;
 
-                        $sql = "SELECT DISTINCT GA_car_id, GA_car_city FROM garage WHERE GA_acc_id = " . $_SESSION['ID'] . " ORDER BY GA_car_id DESC";
-                        $stmt = $pdo->query($sql);
-                        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                            $amount_of_car = amount_of_car($_SESSION['ID'], $row['GA_car_city'], $row['GA_car_id'], $pdo);
-                        ?>
-                            <tr>
-                                <td><?php echo car($row['GA_car_id']); ?></td>
-                                <td data-order="<?php echo $amount_of_car ?>"><?php echo $amount_of_car ?> stk</td>
-                                <td><?php echo country_flags($row['GA_car_city']) . " ";
-                                    echo city_name($row['GA_car_city']); ?></td>
-                                <td data-order="<?php echo car_price($row['GA_car_id']) ?>"><?php echo number(car_price($row['GA_car_id'])); ?> kr</td>
-                                <td>
-                                    <input type="hidden" style="margin: 0; padding: 0;" name="values[<?php echo $i; ?>][car_id]" value="<?php echo $row['GA_car_id']; ?>">
-                                    <input type="hidden" style="margin: 0; padding: 0;" name="values[<?php echo $i; ?>][city_id]" value="<?php echo $row['GA_car_city']; ?>">
-                                    <input type="number" style="width: 50px; margin: 0;" name="values[<?php echo $i; ?>][amount]" placeholder="0" min="0">
-                                </td>
-                            </tr>
-                        <?php
-                            $i++;
-                        } ?>
+                            $sql = "SELECT DISTINCT GA_car_id, GA_car_city FROM garage WHERE GA_acc_id = " . $_SESSION['ID'] . " ORDER BY GA_car_id DESC";
+                            $stmt = $pdo->query($sql);
+                            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                $amount_of_car = amount_of_car($_SESSION['ID'], $row['GA_car_city'], $row['GA_car_id'], $pdo);
+                            ?>
+                                <tr>
+                                    <td><?php echo car($row['GA_car_id']); ?></td>
+                                    <td data-order="<?php echo $amount_of_car ?>"><?php echo $amount_of_car ?> stk</td>
+                                    <td><?php echo country_flags($row['GA_car_city']) . " ";
+                                        echo city_name($row['GA_car_city']); ?></td>
+                                    <td data-order="<?php echo car_price($row['GA_car_id']) ?>"><?php echo number(car_price($row['GA_car_id'])); ?> kr</td>
+                                    <td>
+                                        <input type="hidden" style="margin: 0; padding: 0;" name="values[<?php echo $i; ?>][car_id]" value="<?php echo $row['GA_car_id']; ?>">
+                                        <input type="hidden" style="margin: 0; padding: 0;" name="values[<?php echo $i; ?>][city_id]" value="<?php echo $row['GA_car_city']; ?>">
+                                        <input type="number" style="width: 50px; margin: 0;" name="values[<?php echo $i; ?>][amount]" placeholder="0" min="0">
+                                    </td>
+                                </tr>
+                            <?php
+                                $i++;
+                            } ?>
                         </tbody>
                     </table>
                     <div>
@@ -151,7 +151,7 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                         <p style="float: right;" class="description">Total verdi:
                             <?php
 
-                            $value = value_all_cars($_SESSION['ID'], $pdo) * 0.9;
+                            $value = value_all_cars($_SESSION['ID'], $pdo);
 
                             if (active_superhelg($pdo)) {
                                 $value = $value * 2;
@@ -368,10 +368,9 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                 $(".clickable-row").unbind("click"); //Fjern click-event-listener for alle .clickable-row's
                 window.location = $(this).data("href");
             });
-            
+
             $('#datatable').DataTable();
         });
-
     </script>
     <script type="text/javascript" src="includes/datatable/datatables.min.js"></script>
 <?php } ?>
