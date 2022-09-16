@@ -17,12 +17,14 @@ if ($sthandler->rowCount() > 0) {
     $points[2] = 120;
     $points[3] = 250;
     $points[4] = 500;
+    $points[5] = 1;
 
     $points_price[0] = 30;
     $points_price[1] = 50;
     $points_price[2] = 80;
     $points_price[3] = 150;
     $points_price[4] = 280;
+    $points_price[5] = 0;
 
     error_reporting(1);
 
