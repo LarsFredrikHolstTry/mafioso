@@ -1659,16 +1659,15 @@ table.dataTable td {
 .profile-info {
   --background: transparent;
   grid-area: profile-info;
-  max-width: 300px;
+  min-width: 300px;
   padding: 5px;
   border-radius: var(--border-radius);
   background: var(--background);
 }
 
 .profile-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  justify-items: space-around;
+  display: flex;
+  justify-content: space-between;
   margin-top: 6px;
 }
 
