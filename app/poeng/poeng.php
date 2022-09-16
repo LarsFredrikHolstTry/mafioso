@@ -67,11 +67,12 @@ if ($sthandler->rowCount() > 0) {
 
                 .points_box:hover {
                     cursor: pointer;
-                    background-color: var(--active-color);
+                    background-color: var(--ready-color);
+                    color: black;
                 }
 
-
                 .points_box {
+                    transition: .2s;
                     float: left;
                     width: 15%;
                     margin: 4;
@@ -82,27 +83,28 @@ if ($sthandler->rowCount() > 0) {
                 }
             </style>
 
-            <?php
+            <div style="display: flex; justify-content: space-between">
+                <?php
 
-            $i = 0;
-            $sql = "SELECT * FROM $stripe_db";
+                $i = 0;
+                $sql = "SELECT * FROM $stripe_db";
 
-            $result = $pdo->query($sql);
-            if ($result) {
-                foreach ($result as $row) {
-            ?>
+                $result = $pdo->query($sql);
+                if ($result) {
+                    foreach ($result as $row) {
+                ?>
 
-                    <div class="col-2 points_box" onclick="expressCheckout('<?php echo $row["PRO_stripe_id"]; ?>', '<?php $param = $row["PRO_name"] . ":" . $_SESSION['ID'];
-                                                                                                                    echo $param; ?>')">
-                        <img style="padding: 15px; width: 40px; height: auto;" src="<?php echo $point_icons[$i]; ?>">
-                        <p style="margin: 0px;"><?php echo number($row["PRO_name"]); ?> poeng</p>
-                        <p style="margin: 0px 0px 10px 0px;"><?php echo $row["PRO_price"]; ?> NOK</p>
-                    </div>
+                        <div class="col-2 points_box" onclick="expressCheckout('<?php echo $row["PRO_stripe_id"]; ?>', '<?php $param = $row["PRO_name"] . ":" . $_SESSION['ID'];
+                                                                                                                        echo $param; ?>')">
+                            <img style="padding: 15px; width: 40px; height: auto;" src="<?php echo $point_icons[$i]; ?>">
+                            <p style="margin: 0px;"><?php echo number($row["PRO_name"]); ?> poeng</p>
+                            <p style="margin: 0px 0px 10px 0px;"><?php echo $row["PRO_price"]; ?> NOK</p>
+                        </div>
 
-            <?php $i++;
-                }
-            } ?>
-            <div style="clear: both;"></div>
+                <?php $i++;
+                    }
+                } ?>
+            </div>
 
             <div class="col-12 single">
                 <?php
