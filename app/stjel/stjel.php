@@ -70,7 +70,7 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
 
                         steal_give_cooldown($_SESSION['ID'], $cooldown, $pdo);
                     } else {
-                        if($id_steal == 16){
+                        if ($id_steal == 16) {
                             $money_amount = mt_rand(10000, 20000);
                         } else {
                             $money_amount = mt_rand($min_steal, $steal_money);
@@ -116,8 +116,10 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                         $garage_id_steal = get_random_car_id($id_steal, $pdo);
 
                         update_garage($_SESSION['ID'], $garage_id_steal, AS_session_row($_SESSION['ID'], 'AS_city', $pdo), $pdo);
+                        $sql = "DELETE FROM garage WHERE GA_car_id = $garage_id_steal AND GA_acc_id = $id_steal LIMIT 1";
+                        $pdo->exec($sql);
 
-                        remove_car($garage_id_steal, $pdo);
+                        // remove_car($garage_id_steal, $pdo);
 
                         $msg = "Du har blitt frastjålet en " . car($garage_id_steal) . " fra " . username_plain($_SESSION['ID'], $pdo) . ". Kjøp beskyttelse til garasjen for å unngå å bli frastjålet biler.";
                         send_notification($id_steal, $msg, $pdo);
@@ -230,7 +232,7 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
 
                                 steal_give_cooldown($_SESSION['ID'], $cooldown, $pdo);
                             } else {
-                                if($id_steal == 16){
+                                if ($id_steal == 16) {
                                     $money_amount = mt_rand(10000, 20000);
                                 } else {
                                     $money_amount = mt_rand($min_steal, $steal_money);
@@ -275,7 +277,9 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                                 $garage_id_steal = get_random_car_id($id_steal, $pdo);
 
                                 update_garage($_SESSION['ID'], $garage_id_steal, AS_session_row($_SESSION['ID'], 'AS_city', $pdo), $pdo);
-                                remove_car($garage_id_steal, $pdo);
+                                $sql = "DELETE FROM garage WHERE GA_car_id = $garage_id_steal AND GA_acc_id = $id_steal LIMIT 1";
+                                $pdo->exec($sql);
+                                // remove_car($garage_id_steal, $pdo);
 
                                 $msg = "Du har blitt frastjålet en " . car($garage_id_steal) . " fra " . username_plain($_SESSION['ID'], $pdo) . ". Kjøp beskyttelse til garasjen for å unngå å bli frastjålet biler.";
                                 send_notification($id_steal, $msg, $pdo);
