@@ -70,7 +70,7 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
 
                         steal_give_cooldown($_SESSION['ID'], $cooldown, $pdo);
                     } else {
-                        if ($id_steal == 16) {
+                        if ($id_steal == 33) {
                             $money_amount = mt_rand(10000, 20000);
                         } else {
                             $money_amount = mt_rand($min_steal, $steal_money);
@@ -232,7 +232,7 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
 
                                 steal_give_cooldown($_SESSION['ID'], $cooldown, $pdo);
                             } else {
-                                if ($id_steal == 16) {
+                                if ($id_steal == 33) {
                                     $money_amount = mt_rand(10000, 20000);
                                 } else {
                                     $money_amount = mt_rand($min_steal, $steal_money);
