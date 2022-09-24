@@ -47,6 +47,16 @@
         <li class="df aic"><i title="Poeng" class="mgr-12 fi fi-rr-diamond"></i> <a href="?side=poeng">
                 <?php echo str_replace('{value}', number(AS_session_row($_SESSION['ID'], 'AS_points', $pdo)), $useLang->index->gems); ?>
             </a></li>
+
+
+        <?php if ($prodOrDev == 'dev') { ?>
+            <li class="df aic"><i class="mgr-12 fi fi-rr-database"></i>
+                <a target="_blank" href='http://localhost/phpmyadmin/index.php?route=/database/structure&server=1&db=<?php echo $db_name ?>'>
+                    DB: <?= $db_name ?>
+                </a>
+            </li>
+        <?php } ?>
+
     </ul>
 </div>
 
@@ -137,6 +147,13 @@
     </a>
 </ul>
 <ul class="left_ul">
+    <?=
+    $prodOrDev == 'dev' ? '
+        <a href="?side=experimental">
+        <li>Experimental</li>
+    </a>
+    ' : ''
+    ?>
     <a href="?side=garasje">
         <li <?php if ($side == 'garasje') {
                 echo 'class="active"';

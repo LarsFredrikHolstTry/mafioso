@@ -13,6 +13,7 @@ $db_name = "mafiosov2";
 $stripe_public = "pk_test_sGWuWqO4QUnwMHbgO9ERhc2i00Nnmj07eB";
 $stripe_private = "sk_test_GHxvFFxnD2EtfTtQRqwyYkNy00Mi1oc331";
 $stripe_db = "poeng_products_test";
+$prodOrDev = "dev";
 
 try {
     global $pdo;
