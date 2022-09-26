@@ -60,30 +60,8 @@ if ($sthandler->rowCount() > 0) {
             <h3>Poeng</h3>
             <h4 style="text-align: center;"><br>Du har: <?php echo number(AS_session_row($_SESSION['ID'], 'AS_points', $pdo)); ?> poeng</h4>
             <br>
-            <style>
-                .pad_10 h3 {
-                    text-align: center;
-                }
 
-                .points_box:hover {
-                    cursor: pointer;
-                    background-color: var(--ready-color);
-                    color: black;
-                }
-
-                .points_box {
-                    transition: .2s;
-                    float: left;
-                    width: 15%;
-                    margin: 4;
-                    padding: 2 5;
-                    border-radius: 5px;
-                    background-color: var(--main-bg-color);
-                    text-align: center;
-                }
-            </style>
-
-            <div style="display: flex; justify-content: space-between">
+            <div class="points_container">
                 <?php
 
                 $i = 0;
@@ -94,8 +72,8 @@ if ($sthandler->rowCount() > 0) {
                     foreach ($result as $row) {
                 ?>
 
-                        <div class="col-2 points_box" onclick="expressCheckout('<?php echo $row["PRO_stripe_id"]; ?>', '<?php $param = $row["PRO_name"] . ":" . $_SESSION['ID'];
-                                                                                                                        echo $param; ?>')">
+                        <div class="points_box" onclick="expressCheckout('<?php echo $row["PRO_stripe_id"]; ?>', '<?php $param = $row["PRO_name"] . ":" . $_SESSION['ID'];
+                                                                                                                    echo $param; ?>')">
                             <img style="padding: 15px; width: 40px; height: auto;" src="<?php echo $point_icons[$i]; ?>">
                             <p style="margin: 0px;"><?php echo number($row["PRO_name"]); ?> poeng</p>
                             <p style="margin: 0px 0px 10px 0px;"><?php echo $row["PRO_price"]; ?> NOK</p>
@@ -167,6 +145,24 @@ if ($sthandler->rowCount() > 0) {
                 $boost_info[16] = "Kjøp 12 time happy hour";
                 $boost_info[17] = "Kjøp 24 time happy hour";
 
+                $point_icons[0] = "img/poeng/type_0.png";
+                $point_icons[1] = "img/poeng/type_1.png";
+                $point_icons[2] = "img/poeng/type_2.png";
+                $point_icons[3] = "img/poeng/type_3.png";
+                $point_icons[4] = "img/poeng/type_4.png";
+                $point_icons[5] = "img/poeng/type_5.png";
+                $point_icons[6] = "img/poeng/type_6.png";
+                $point_icons[7] = "img/poeng/type_7.png";
+                $point_icons[8] = "img/poeng/type_8.png";
+                $point_icons[9] = "img/poeng/type_9.png";
+                $point_icons[10] = "img/poeng/type_10.png";
+                $point_icons[11] = "img/poeng/type_11.png";
+                $point_icons[12] = "img/poeng/type_12.png";
+                $point_icons[13] = "img/poeng/type_13.png";
+                $point_icons[14] = "img/poeng/type_14.png";
+                $point_icons[15] = "img/poeng/type_15.png";
+                $point_icons[16] = "img/poeng/type_16.png";
+                $point_icons[17] = "img/poeng/type_17.png";
 
                 if (isset($_GET['bonus'])) {
                     $legal = array(0, 1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17);
@@ -405,5 +401,44 @@ if ($sthandler->rowCount() > 0) {
 <style>
     .hover_click:hover {
         cursor: pointer;
+    }
+
+    .pad_10 h3 {
+        text-align: center;
+    }
+
+    .points_box:hover {
+        cursor: pointer;
+        background-color: var(--ready-color);
+        color: black;
+    }
+
+    .points_container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        gap: 1rem;
+    }
+
+    .points_box {
+        color: white;
+        padding: 1rem;
+        margin: 4;
+        padding: 2 5;
+        border-radius: 5px;
+        background-color: var(--main-bg-color);
+        text-align: center;
+    }
+
+    @media (min-width: 600px) {
+        .points_container {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    @media (min-width: 900px) {
+        .points_container {
+            grid-template-columns: repeat(6, 1fr);
+        }
     }
 </style>

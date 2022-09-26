@@ -126,217 +126,187 @@ function seconds2human($seconds)
             </div>
         </div>
 
-        <?php if (AS_session_row($_SESSION['ID'], 'AS_city', $pdo) == 5) { ?>
-            <div style="<?php
-                        if ($time_left_event_ <= 0) {
-                            echo 'background-color: var(--ready-color);';
-                        } else {
-                            echo 'background-color: var(--not-ready-color);';
-                        }
-                        ?>" id="event_timer" class="action_container">
-                <a href="?side=gruve"></a>
-                <div class="action_icon">
-                    <img src="img/topHeaderIcons/cave.svg">
-                </div>
-                <div class="action_text">
-                    <span>Diamantgruve</span><br>
-                    <?php
-
-                    if ($time_left_event_ <= 0) {
-                        echo '<span class="ready">' . $useLang->misc->ready . '</span>';
-                    } else {
-                        echo '<span class="cooldown_top_bar" id="countdowntimer_event">' . $time_left_event_ . 's</span>';
-                    ?> <script>
-                            timer(<?php echo $time_left_event_; ?>, "countdowntimer_event");
-                        </script>
-                    <?php
-                    }
-                    ?>
-                </div>
-            </div>
-        <?php } else { ?>
-            <div style="<?php
-                        if ($time_left_rc_ <= 0 || $time_left_race_ <= 0) {
-                            echo 'background-color: var(--ready-color);';
-                        } else {
-                            echo 'background-color: var(--not-ready-color);';
-                        }
-                        ?>" id="rc_timer" class="action_container">
-                <a href="?side=rc"></a>
-                <div class="action_icon">
-                    <img src="img/topHeaderIcons/streetrace.svg">
-                </div>
-                <div class="action_text">
-                    <span>Streetrace</span><br>
-                    <?php
-
+        <div style="<?php
                     if ($time_left_rc_ <= 0 || $time_left_race_ <= 0) {
-                        echo '<span class="ready">' . $useLang->misc->ready . '</span>';
+                        echo 'background-color: var(--ready-color);';
                     } else {
-                        if ($time_left_rc_ < $time_left_race_) {
-                            echo '<span class="cooldown_top_bar" id="countdowntimer_rc">';
-                            echo $time_left_rc_;
-                            echo 's</span>';
-                    ?> <script>
-                                timer(<?php echo $time_left_rc_; ?>, "countdowntimer_rc");
-                            </script> <?php
-                                    } else {
-                                        echo '<span class="cooldown_top_bar" id="countdowntimer_race">';
-                                        echo $time_left_race_;
-                                        echo 's</span>';
-                                        ?> <script>
-                                timer(<?php echo $time_left_race_; ?>, "countdowntimer_race");
-                            </script>
-                    <?php
-                                    }
+                        echo 'background-color: var(--not-ready-color);';
+                    }
+                    ?>" id="rc_timer" class="action_container">
+            <a href="?side=rc"></a>
+            <div class="action_icon">
+                <img src="img/topHeaderIcons/streetrace.svg">
+            </div>
+            <div class="action_text">
+                <span>Streetrace</span><br>
+                <?php
+
+                if ($time_left_rc_ <= 0 || $time_left_race_ <= 0) {
+                    echo '<span class="ready">' . $useLang->misc->ready . '</span>';
+                } else {
+                    if ($time_left_rc_ < $time_left_race_) {
+                        echo '<span class="cooldown_top_bar" id="countdowntimer_rc">';
+                        echo $time_left_rc_;
+                        echo 's</span>';
+                ?> <script>
+                            timer(<?php echo $time_left_rc_; ?>, "countdowntimer_rc");
+                        </script> <?php
+                                } else {
+                                    echo '<span class="cooldown_top_bar" id="countdowntimer_race">';
+                                    echo $time_left_race_;
+                                    echo 's</span>';
+                                    ?> <script>
+                            timer(<?php echo $time_left_race_; ?>, "countdowntimer_race");
+                        </script>
+                <?php
                                 }
-                    ?>
-                </div>
+                            }
+                ?>
             </div>
+        </div>
 
-            <div style="<?php
-                        if ($time_left_krim_ <= 0) {
-                            echo 'background-color: var(--ready-color);';
-                        } else {
-                            echo 'background-color: var(--not-ready-color);';
-                        }
-                        ?>" id="krim_timer" class="action_container">
-                <a href="?side=kriminalitet"></a>
-                <div class="action_icon">
-                    <img src="img/topHeaderIcons/kriminalitet.svg">
-                </div>
-                <div class="action_text">
-                    <span>Kriminalitet</span><br>
-                    <?php
-
+        <div style="<?php
                     if ($time_left_krim_ <= 0) {
-                        echo '<span class="ready">' . $useLang->misc->ready . '</span>';
+                        echo 'background-color: var(--ready-color);';
                     } else {
-                        echo '<span class="cooldown_top_bar" id="countdowntimer_krim">' . $time_left_krim_ . 's</span>';
-                    ?> <script>
-                            timer(<?php echo $time_left_krim_; ?>, "countdowntimer_krim");
-                        </script>
-                    <?php
+                        echo 'background-color: var(--not-ready-color);';
                     }
-                    ?>
-                </div>
+                    ?>" id="krim_timer" class="action_container">
+            <a href="?side=kriminalitet"></a>
+            <div class="action_icon">
+                <img src="img/topHeaderIcons/kriminalitet.svg">
             </div>
-            <div style="<?php
-                        if ($time_left_gta_ <= 0) {
-                            echo 'background-color: var(--ready-color);';
-                        } else {
-                            echo 'background-color: var(--not-ready-color);';
-                        }
-                        ?>" id="gta_timer" class="action_container">
-                <a href="?side=biltyveri"></a>
-                <div class="action_icon">
-                    <img src="img/topHeaderIcons/biltyveri.svg">
-                </div>
-                <div class="action_text">
-                    <span>Biltyveri</span><br>
-                    <?php
+            <div class="action_text">
+                <span>Kriminalitet</span><br>
+                <?php
 
+                if ($time_left_krim_ <= 0) {
+                    echo '<span class="ready">' . $useLang->misc->ready . '</span>';
+                } else {
+                    echo '<span class="cooldown_top_bar" id="countdowntimer_krim">' . $time_left_krim_ . 's</span>';
+                ?> <script>
+                        timer(<?php echo $time_left_krim_; ?>, "countdowntimer_krim");
+                    </script>
+                <?php
+                }
+                ?>
+            </div>
+        </div>
+        <div style="<?php
                     if ($time_left_gta_ <= 0) {
-                        echo '<span class="ready">' . $useLang->misc->ready . '</span>';
+                        echo 'background-color: var(--ready-color);';
                     } else {
-
-                        echo '<span class="cooldown_top_bar" id="countdowntimer_gta">';
-                        echo $time_left_gta_;
-                        echo 's</span>';
-                    ?> <script>
-                            timer(<?php echo $time_left_gta_; ?>, "countdowntimer_gta");
-                        </script>
-                    <?php
+                        echo 'background-color: var(--not-ready-color);';
                     }
-                    ?>
-                </div>
+                    ?>" id="gta_timer" class="action_container">
+            <a href="?side=biltyveri"></a>
+            <div class="action_icon">
+                <img src="img/topHeaderIcons/biltyveri.svg">
             </div>
+            <div class="action_text">
+                <span>Biltyveri</span><br>
+                <?php
 
-            <div style="<?php
-                        if ($time_left_brekk_ <= 0) {
-                            echo 'background-color: var(--ready-color);';
-                        } else {
-                            echo 'background-color: var(--not-ready-color);';
-                        }
-                        ?>" id="brekk_timer" class="action_container">
-                <a href="?side=brekk"></a>
-                <div class="action_icon">
-                    <img src="img/topHeaderIcons/brekk.svg">
-                </div>
-                <div class="action_text">
-                    <span>Brekk</span><br>
-                    <?php
+                if ($time_left_gta_ <= 0) {
+                    echo '<span class="ready">' . $useLang->misc->ready . '</span>';
+                } else {
 
+                    echo '<span class="cooldown_top_bar" id="countdowntimer_gta">';
+                    echo $time_left_gta_;
+                    echo 's</span>';
+                ?> <script>
+                        timer(<?php echo $time_left_gta_; ?>, "countdowntimer_gta");
+                    </script>
+                <?php
+                }
+                ?>
+            </div>
+        </div>
+
+        <div style="<?php
                     if ($time_left_brekk_ <= 0) {
-                        echo '<span class="ready">' . $useLang->misc->ready . '</span>';
+                        echo 'background-color: var(--ready-color);';
                     } else {
-
-                        echo '<span class="cooldown_top_bar" id="countdowntimer_brekk">';
-                        echo $time_left_brekk_;
-                        echo 's</span>';
-                    ?> <script>
-                            timer(<?php echo $time_left_brekk_; ?>, "countdowntimer_brekk");
-                        </script>
-                    <?php
+                        echo 'background-color: var(--not-ready-color);';
                     }
-                    ?>
-                </div>
+                    ?>" id="brekk_timer" class="action_container">
+            <a href="?side=brekk"></a>
+            <div class="action_icon">
+                <img src="img/topHeaderIcons/brekk.svg">
             </div>
-            <div style="<?php
-                        if ($time_left_stjel_ <= 0) {
-                            echo 'background-color: var(--ready-color);';
-                        } else {
-                            echo 'background-color: var(--not-ready-color);';
-                        }
-                        ?>" id="stjel_timer" class="action_container">
-                <a href="?side=stjel"></a>
-                <div class="action_icon">
-                    <img src="img/topHeaderIcons/stjel.svg">
-                </div>
-                <div class="action_text">
-                    <span>Stjel</span><br>
-                    <?php
+            <div class="action_text">
+                <span>Brekk</span><br>
+                <?php
 
+                if ($time_left_brekk_ <= 0) {
+                    echo '<span class="ready">' . $useLang->misc->ready . '</span>';
+                } else {
+
+                    echo '<span class="cooldown_top_bar" id="countdowntimer_brekk">';
+                    echo $time_left_brekk_;
+                    echo 's</span>';
+                ?> <script>
+                        timer(<?php echo $time_left_brekk_; ?>, "countdowntimer_brekk");
+                    </script>
+                <?php
+                }
+                ?>
+            </div>
+        </div>
+        <div style="<?php
                     if ($time_left_stjel_ <= 0) {
-                        echo '<span class="ready">' . $useLang->misc->ready . '</span>';
+                        echo 'background-color: var(--ready-color);';
                     } else {
-
-                        echo '<span class="cooldown_top_bar" id="countdowntimer_stjel">';
-                        echo $time_left_stjel_;
-                        echo 's</span>';
-                    ?> <script>
-                            timer(<?php echo $time_left_stjel_; ?>, "countdowntimer_stjel");
-                        </script>
-                    <?php
+                        echo 'background-color: var(--not-ready-color);';
                     }
-                    ?>
-                </div>
+                    ?>" id="stjel_timer" class="action_container">
+            <a href="?side=stjel"></a>
+            <div class="action_icon">
+                <img src="img/topHeaderIcons/stjel.svg">
             </div>
-            <div <?php if ($side == "fengsel") {
-                        echo 'style="background-color: rgba(255,255,255,.1);"';
-                    } ?> class="action_container">
-                <a href="?side=fengsel"></a>
-                <div class="action_icon">
-                    <img src="img/topHeaderIcons/fengsel.svg">
-                </div>
-                <div class="action_text">
-                    <span style="color: white;">Fengsel</span><br>
-                    <span class="timeleft"><span id="people_amount_in_jail">
-                            <?php
-                            if (people_in_jail($pdo) > 0) {
-                                echo people_in_jail($pdo);
-                            } else {
-                                echo "0";
-                            } ?>
-                        </span>
-                        <?php if (people_in_jail($pdo) == 1) {
-                            echo " spiller";
-                        } elseif (people_in_jail($pdo) > 1 || people_in_jail($pdo) == 0) {
-                            echo " spillere";
-                        } ?></span>
-                </div>
+            <div class="action_text">
+                <span>Stjel</span><br>
+                <?php
+
+                if ($time_left_stjel_ <= 0) {
+                    echo '<span class="ready">' . $useLang->misc->ready . '</span>';
+                } else {
+
+                    echo '<span class="cooldown_top_bar" id="countdowntimer_stjel">';
+                    echo $time_left_stjel_;
+                    echo 's</span>';
+                ?> <script>
+                        timer(<?php echo $time_left_stjel_; ?>, "countdowntimer_stjel");
+                    </script>
+                <?php
+                }
+                ?>
             </div>
-        <?php } ?>
+        </div>
+        <div <?php if ($side == "fengsel") {
+                    echo 'style="background-color: rgba(255,255,255,.1);"';
+                } ?> class="action_container">
+            <a href="?side=fengsel"></a>
+            <div class="action_icon">
+                <img src="img/topHeaderIcons/fengsel.svg">
+            </div>
+            <div class="action_text">
+                <span style="color: white;">Fengsel</span><br>
+                <span class="timeleft"><span id="people_amount_in_jail">
+                        <?php
+                        if (people_in_jail($pdo) > 0) {
+                            echo people_in_jail($pdo);
+                        } else {
+                            echo "0";
+                        } ?>
+                    </span>
+                    <?php if (people_in_jail($pdo) == 1) {
+                        echo " spiller";
+                    } elseif (people_in_jail($pdo) > 1 || people_in_jail($pdo) == 0) {
+                        echo " spillere";
+                    } ?></span>
+            </div>
+        </div>
         <div style="clear: both;"></div>
     </div>
 </div>

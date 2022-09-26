@@ -1,3 +1,16 @@
+<?php
+
+$query = $pdo->prepare("SELECT CTAX_tax, CTAX_city FROM city_tax ORDER BY CTAX_tax ASC LIMIT 1");
+$query->execute();
+$row = $query->fetch(PDO::FETCH_ASSOC);
+
+$lowest_tax = $row['CTAX_tax'];
+$lowest_tax_city = $row['CTAX_city'];
+
+$notInLowestCity = $lowest_tax_city != AS_session_row($_SESSION['ID'], 'AS_city', $pdo) && get_city_tax(AS_session_row($_SESSION['ID'], 'AS_city', $pdo), $pdo) > $lowest_tax;
+
+?>
+
 <div class="user_container">
     <a href="?side=profil&id=<?php echo $_SESSION['ID']; ?>"><img id="left_avatar" src="<?php echo AS_session_row($_SESSION['ID'], 'AS_avatar', $pdo); ?>">
     </a>
@@ -5,7 +18,10 @@
         <li class="df aic"><i title="Brukernavn" class="mgr-12 fi fi-rr-user"></i> <a href="?side=profil&id=<?php echo $_SESSION['ID']; ?>"><?php echo username_plain($_SESSION['ID'], $pdo); ?></a></li>
         <li class="df aic"><i title="Rank" class="mgr-12 fi fi-rr-trophy"></i> <a href="#"><?php echo rank_list(AS_session_row($_SESSION['ID'], 'AS_rank', $pdo)); ?></a></li>
         <li class="df aic"><i title="Penger" class="mgr-12 fi fi-rr-dollar"></i> <a id="saldo_left" href="?side=banken"><?php echo str_replace('{value}', number(AS_session_row($_SESSION['ID'], 'AS_money', $pdo)), $useLang->index->money); ?></a></li>
-        <li class="df aic"><i title="By" class="mgr-12 fi fi-rr-building"></i> <a href="?side=flyplass"><?php echo city_name(AS_session_row($_SESSION['ID'], 'AS_city', $pdo)); ?></a></li>
+        <li class="df aic"><i title="By" class="mgr-12 fi fi-rr-building"></i> <a href="?side=flyplass">
+                <?php echo city_name(AS_session_row($_SESSION['ID'], 'AS_city', $pdo)); ?>
+                (<?php echo output_city_tax(get_city_tax(AS_session_row($_SESSION['ID'], 'AS_city', $pdo), $pdo)); ?>)
+            </a></li>
 
         <li class="df aic"><i title="Forsvar" class="mgr-12 fi fi-rr-shield"></i> <a href="?side=drap&p=fp">
                 <?php
@@ -173,7 +189,12 @@
     <a href="?side=flyplass">
         <li <?php if ($side == 'flyplass') {
                 echo 'class="active"';
-            } ?>><?php echo $useLang->action->airport; ?></li>
+            } ?>>
+            <?php echo $useLang->action->airport; ?>
+            <?php if ($notInLowestCity) { ?>
+                <a href="?side=flyplass&reise=<?= $lowest_tax_city ?>" class="chip blue chip_button">Reis til <?= city_name($lowest_tax_city) ?> (<?= $lowest_tax ?>% skatt)</a>
+            <?php } ?>
+        </li>
     </a>
     <a href="?side=smugling">
         <li <?php if ($side == 'smugling') {

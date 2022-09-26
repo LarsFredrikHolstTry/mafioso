@@ -707,6 +707,10 @@ h3 .v2 {
   background: #2d303e;
 }
 
+.chip_button:hover {
+  color: white;
+}
+
 button {
   border: none;
   padding: 0;
