@@ -22,8 +22,6 @@ if (!isset($_GET['side'])) {
     $weapon_add[15] = 36;
     $weapon_add[16] = 37;
     $weapon_add[17] = 50;
-    $weapon_add[18] = 75;
-    $weapon_add[19] = 100;
 
     if (isset($_POST['submit'])) {
 

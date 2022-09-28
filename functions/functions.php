@@ -3338,8 +3338,6 @@ function weapons($weapon_nr)
     $weapon[15] = "SSG 08";
     $weapon[16] = "AWP";
     $weapon[17] = "Javelin";
-    $weapon[18] = "Tanks";
-    $weapon[19] = "Ubåt";
 
     return $weapon[$weapon_nr];
 }

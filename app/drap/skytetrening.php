@@ -26,8 +26,6 @@ if (!isset($_GET['side'])) {
         $weapon_price[15] = $weapon_price[14] + 150;
         $weapon_price[16] = $weapon_price[15] + 150;
         $weapon_price[17] = $weapon_price[16] + 10000;
-        $weapon_price[18] = $weapon_price[17] + 25000;
-        $weapon_price[19] = $weapon_price[18] + 50000;
 
         return $weapon_price[$weapon_nr];
     }
