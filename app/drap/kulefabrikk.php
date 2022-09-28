@@ -8,11 +8,11 @@ if (!isset($_GET['side'])) {
     */
     function bullet_pris($city, $pdo)
     {
-        $city_price[0] = 675000;
-        $city_price[1] = 675000;
-        $city_price[2] = 675000;
-        $city_price[3] = 675000;
-        $city_price[4] = 675000;
+        $city_price[0] = 6750000;
+        $city_price[1] = 6750000;
+        $city_price[2] = 6750000;
+        $city_price[3] = 6750000;
+        $city_price[4] = 6750000;
 
         return $city_price[$city];
     }
