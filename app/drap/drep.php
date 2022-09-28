@@ -76,7 +76,7 @@ if (isset($_POST['kill'])) {
                         if (user_exist($username, $pdo)) {
                             $acc_id = get_acc_id($username, $pdo);
 
-                            if ($acc_id == 29) {
+                            if ($acc_id == 33) {
                                 echo feedback("Utpressings-botter kan ikke drepes", "error");
                             } else {
                                 $query = $pdo->prepare("SELECT * FROM accounts WHERE ACC_id = ?");
