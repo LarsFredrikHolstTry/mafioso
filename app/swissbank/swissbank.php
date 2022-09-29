@@ -90,7 +90,7 @@ if (isset($_POST['money_in'])) {
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
 
-        take_money($_SESSION['ID'], $amount, $pdo);
+        take_money($_SESSION['ID'], $account_money, $pdo);
 
         echo feedback(number($amount) . " kr ble satt inn på konto " . $account_name, "success");
     }
