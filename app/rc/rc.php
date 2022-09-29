@@ -6,7 +6,7 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
     header("Location: ?side=fengsel");
 } else {
 
-    $private_track = 100;
+    $private_track = 10000;
     $waittime = 30 + time();
     $waittime_race = 45 + time();
 
@@ -115,7 +115,7 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
         echo feedback("Du tapte over " . ACC_username($_GET['loose'], $pdo) . " i race!", 'fail');
     }
 
-    $price_private = 100000;
+    $price_private = 50000000;
 
     if (isset($_POST['build'])) {
         if (max_eiendeler($_SESSION['ID'], $pdo)) {
