@@ -88,7 +88,7 @@ if (!isset($_GET['side'])) {
             <img class="action_image" src="img/action/actions/skytetrening.png">
             <p class="description">På skytetrening så spesialiserer du deg i våpen, du må ta skytetrening for å få bedre våpen. Du kan trene hvert 15 minutt.</p>
             <h4 style="text-align: center; margin-bottom: 10px;">Du har: <?php echo weapons(AS_session_row($_SESSION['ID'], 'AS_weapon', $pdo)); ?></h4>
-            <?php if (AS_session_row($_SESSION['ID'], 'AS_weapon', $pdo) >= 19) {
+            <?php if (AS_session_row($_SESSION['ID'], 'AS_weapon', $pdo) >= 17) {
                 echo feedback("Du har det beste våpenet", "blue");
             } else { ?>
 
