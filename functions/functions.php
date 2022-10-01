@@ -3412,15 +3412,6 @@ function get_random_thing_id($id, $pdo)
     return $things['TH_id'] ?? NULL;
 }
 
-function get_random_car_id($id, $pdo)
-{
-    $stmt = $pdo->prepare("SELECT GA_car_id FROM garage WHERE GA_acc_id = :id ORDER BY RAND() LIMIT 1");
-    $stmt->execute(['id' => $id]);
-    $things = $stmt->fetch();
-
-    return $things['GA_car_id'] ?? NULL;
-}
-
 function get_random_garage_id($id, $pdo)
 {
     $stmt = $pdo->prepare("SELECT GA_acc_id FROM garage WHERE NOT GA_acc_id = :id ORDER BY RAND() LIMIT 1");
