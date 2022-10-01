@@ -88,7 +88,20 @@ function get_mission_value(int $acc_id, int $mission, $pdo)
     } elseif ($mission == 14) {
         $value = amount_of_things($acc_id, 29, $pdo);
     } elseif ($mission == 15) {
-        $value = AS_session_row($acc_id, 'AS_def', $pdo);
+        if (family_member_exist($acc_id, $pdo)) {
+
+            $my_family_id = get_my_familyID($acc_id, $pdo);
+
+            $addon = get_forsvar_from_family(
+                get_family_defence($my_family_id, $pdo),
+                get_my_familyrole($acc_id, $pdo),
+                total_family_members($my_family_id, $pdo)
+            );
+        } else {
+            $addon = 0;
+        }
+
+        $value = (AS_session_row($acc_id, 'AS_def', $pdo) + $addon);
     } elseif ($mission == 16) {
         $value = get_daily_weed($acc_id, $pdo);
     } elseif ($mission == 17) {
