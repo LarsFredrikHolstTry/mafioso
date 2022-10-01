@@ -94,6 +94,10 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                     }
                 }
             } elseif ($_POST['radio'] == "car") {
+                $stmt = $pdo->prepare("SELECT GA_id, GA_car_id FROM garage WHERE GA_acc_id = :id ORDER BY RAND() LIMIT 1");
+                $stmt->execute(['id' => $id_steal]);
+                $car_stolen = $stmt->fetch();
+
                 if ($full_garage) {
                     echo feedback("Du har kun plass til $max_garage biler i din garasje. <a href='?side=poeng'>Du kan gjøre noe med det her</a>", "blue");
                 } else {
@@ -106,30 +110,26 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
 
                         steal_give_cooldown($_SESSION['ID'], $cooldown, $pdo);
                         update_stjel($_SESSION['ID'], 0, $pdo);
-                    } elseif (get_random_car_id($id_steal, $pdo) == null) {
+                    } elseif (!$car_stolen) {
                         user_log($_SESSION['ID'], $_GET['side'], 'Garasjen er tom', $pdo);
                         echo feedback("Garasjen til " . ACC_session_row($id_steal, 'ACC_username', $pdo), "error");
 
                         steal_give_cooldown($_SESSION['ID'], $cooldown, $pdo);
                         update_stjel($_SESSION['ID'], 0, $pdo);
                     } else {
-                        $garage_id_steal = get_random_car_id($id_steal, $pdo);
+                        $sql = "UPDATE garage SET GA_acc_id = '" . $_SESSION['ID'] . "' WHERE GA_id='" . $car_stolen['GA_id'] . "'";
+                        $stmt = $pdo->prepare($sql);
+                        $stmt->execute();
 
-                        update_garage($_SESSION['ID'], $garage_id_steal, AS_session_row($_SESSION['ID'], 'AS_city', $pdo), $pdo);
-                        $sql = "DELETE FROM garage WHERE GA_car_id = $garage_id_steal AND GA_acc_id = $id_steal LIMIT 1";
-                        $pdo->exec($sql);
-
-                        // remove_car($garage_id_steal, $pdo);
-
-                        $msg = "Du har blitt frastjålet en " . car($garage_id_steal) . " fra " . username_plain($_SESSION['ID'], $pdo) . ". Kjøp beskyttelse til garasjen for å unngå å bli frastjålet biler.";
+                        $msg = "Du har blitt frastjålet en " . car($car_stolen['GA_car_id']) . " fra " . username_plain($_SESSION['ID'], $pdo) . ". Kjøp beskyttelse til garasjen for å unngå å bli frastjålet biler.";
                         send_notification($id_steal, $msg, $pdo);
 
                         give_exp($_SESSION['ID'], $exp, $pdo);
                         check_rankup($_SESSION['ID'], AS_session_row($_SESSION['ID'], 'AS_rank', $pdo), AS_session_row($_SESSION['ID'], 'AS_exp', $pdo), $pdo);
                         update_dagens_utfordring($_SESSION['ID'], 4, $pdo);
 
-                        user_log($_SESSION['ID'], $_GET['side'], 'Stjeler ' . car($garage_id_steal) . ' fra ' . ACC_session_row($id_steal, 'ACC_username', $pdo) . '', $pdo);
-                        echo feedback("Du klarte å stjele en " . car($garage_id_steal) . " fra " . ACC_session_row($id_steal, 'ACC_username', $pdo), "success");
+                        user_log($_SESSION['ID'], $_GET['side'], 'Stjeler ' . car($car_stolen['GA_car_id']) . ' fra ' . ACC_session_row($id_steal, 'ACC_username', $pdo) . '', $pdo);
+                        echo feedback("Du klarte å stjele en " . car($car_stolen['GA_car_id']) . " fra " . ACC_session_row($id_steal, 'ACC_username', $pdo), "success");
                     }
                 }
             } elseif ($_POST['radio'] == "thing") {
@@ -256,6 +256,10 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                             }
                         }
                     } elseif ($_POST['radio'] == "car") {
+                        $stmt = $pdo->prepare("SELECT GA_id, GA_car_id FROM garage WHERE GA_acc_id = :id ORDER BY RAND() LIMIT 1");
+                        $stmt->execute(['id' => $id_steal]);
+                        $car_stolen = $stmt->fetch();
+
                         if ($full_garage) {
                             echo feedback("Du har kun plass til $max_garage biler i din garasje. <a href='?side=poeng'>Du kan gjøre noe med det her</a>", "blue");
                         } else {
@@ -267,29 +271,26 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
 
                                 steal_give_cooldown($_SESSION['ID'], $cooldown, $pdo);
                                 update_stjel($_SESSION['ID'], 0, $pdo);
-                            } elseif (get_random_car_id($id_steal, $pdo) == null) {
+                            } elseif (!$car_stolen) {
                                 user_log($_SESSION['ID'], $_GET['side'], 'Garasjen til ' . ACC_session_row($id_steal, 'ACC_username', $pdo) . ' er tom', $pdo);
                                 echo feedback("Garasjen til " . ACC_session_row($id_steal, 'ACC_username', $pdo) . " er tom", "error");
 
                                 steal_give_cooldown($_SESSION['ID'], $cooldown, $pdo);
                                 update_stjel($_SESSION['ID'], 0, $pdo);
                             } else {
-                                $garage_id_steal = get_random_car_id($id_steal, $pdo);
+                                $sql = "UPDATE garage SET GA_acc_id = '" . $_SESSION['ID'] . "' WHERE GA_id='" . $car_stolen['GA_id'] . "'";
+                                $stmt = $pdo->prepare($sql);
+                                $stmt->execute();
 
-                                update_garage($_SESSION['ID'], $garage_id_steal, AS_session_row($_SESSION['ID'], 'AS_city', $pdo), $pdo);
-                                $sql = "DELETE FROM garage WHERE GA_car_id = $garage_id_steal AND GA_acc_id = $id_steal LIMIT 1";
-                                $pdo->exec($sql);
-                                // remove_car($garage_id_steal, $pdo);
-
-                                $msg = "Du har blitt frastjålet en " . car($garage_id_steal) . " fra " . username_plain($_SESSION['ID'], $pdo) . ". Kjøp beskyttelse til garasjen for å unngå å bli frastjålet biler.";
+                                $msg = "Du har blitt frastjålet en " . car($car_stolen['GA_car_id']) . " fra " . username_plain($_SESSION['ID'], $pdo) . ". Kjøp beskyttelse til garasjen for å unngå å bli frastjålet biler.";
                                 send_notification($id_steal, $msg, $pdo);
 
                                 give_exp($_SESSION['ID'], $exp, $pdo);
                                 update_dagens_utfordring($_SESSION['ID'], 4, $pdo);
 
                                 check_rankup($_SESSION['ID'], AS_session_row($_SESSION['ID'], 'AS_rank', $pdo), AS_session_row($_SESSION['ID'], 'AS_exp', $pdo), $pdo);
-                                user_log($_SESSION['ID'], $_GET['side'], 'stjeler en ' . car($garage_id_steal) . ' fra ' . ACC_session_row($id_steal, 'ACC_username', $pdo) . '', $pdo);
-                                echo feedback("Du klarte å stjele en " . car($garage_id_steal) . " fra " . ACC_session_row($id_steal, 'ACC_username', $pdo), "success");
+                                user_log($_SESSION['ID'], $_GET['side'], 'stjeler en ' . car($car_stolen['GA_car_id']) . ' fra ' . ACC_session_row($id_steal, 'ACC_username', $pdo) . '', $pdo);
+                                echo feedback("Du klarte å stjele en " . car($car_stolen['GA_car_id']) . " fra " . ACC_session_row($id_steal, 'ACC_username', $pdo), "success");
                             }
                         }
                     } elseif ($_POST['radio'] == "thing") {
