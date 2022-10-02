@@ -386,6 +386,10 @@ function give_exp($id, $amount, $pdo)
 {
     $amount = floor($amount);
 
+    if ($amount > 250) {
+        return;
+    }
+
     if (active_energy_drink($id, $pdo)) {
         $amount = $amount * 2;
     }
