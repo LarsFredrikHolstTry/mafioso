@@ -642,6 +642,11 @@ h3 .v2 {
   margin-right: 20px;
 }
 
+.bb_code_img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
 .feedback {
   display: flex;
   gap: 2ch;
