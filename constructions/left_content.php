@@ -129,17 +129,6 @@ $notInLowestCity = $lowest_tax_city != AS_session_row($_SESSION['ID'], 'AS_city'
             </span>
         </li>
     </a>
-    <a href="?side=krypto">
-        <li <?php if ($side == 'krypto') {
-                echo 'class="active"';
-            } ?>><?php echo $useLang->action->crypto; ?>
-            <span id="saldo_top" class="chip chip_blue">
-                <?php
-                echo str_replace('{value}', big_number_format(total_krypto($_SESSION['ID'], $pdo), 3), $useLang->index->money);
-                ?>
-            </span>
-        </li>
-    </a>
 
     <a href="?side=marked">
         <li <?php if ($side == 'marked') {
@@ -200,15 +189,6 @@ $notInLowestCity = $lowest_tax_city != AS_session_row($_SESSION['ID'], 'AS_city'
         <li <?php if ($side == 'smugling') {
                 echo 'class="active"';
             } ?>><?php echo $useLang->action->drugSmuggling; ?></li>
-    </a>
-    <a href="?side=heist">
-        <li <?php if ($side == 'heist') {
-                echo 'class="active"';
-            } ?>><?php echo $useLang->action->heist; ?>
-            <?php if (total_open_heist($pdo) > 0) {
-                echo pill(total_open_heist($pdo) . " aktiv heist", 'blue');
-            } ?>
-        </li>
     </a>
     <a href="?side=oppdrag">
         <li <?php if ($side == 'oppdrag') {
