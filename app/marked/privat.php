@@ -75,6 +75,7 @@
                     </td>
                     <td><?php echo number($row['MARKED_price']); ?> kr
                     </td>
+                    <td><?= date_to_text($row['MARKED_date']) ?></td>
                     <td>
                         <?php
 
@@ -102,6 +103,7 @@
                         <br>
                         <p class="description" style="margin: 0;">Pris pr poeng: <?php echo number(($row['MARKED_price'] / $row['MARKED_info'])); ?> kr</p>
                     </td>
+                    <td><?= date_to_text($row['MARKED_date']) ?></td>
                     <td>
                         <?php
 
@@ -129,6 +131,7 @@
                         <br>
                         <p class="description" style="margin: 0;">Pris pr kule: <?php echo number(($row['MARKED_price'] / $row['MARKED_info'])); ?> kr</p>
                     </td>
+                    <td><?= date_to_text($row['MARKED_date']) ?></td>
                     <td>
                         <?php
 
@@ -154,6 +157,7 @@
                     </td>
                     <td><?php echo number($row['MARKED_price']); ?> kr
                     </td>
+                    <td><?= date_to_text($row['MARKED_date']) ?></td>
                     <td>
                         <?php
 
@@ -189,6 +193,7 @@
                     </td>
                     <td><?php echo number($row['MARKED_price']); ?> kr
                     </td>
+                    <td><?= date_to_text($row['MARKED_date']) ?></td>
                     <td>
                         <?php
 
@@ -214,6 +219,7 @@
                     </td>
                     <td><?php echo number($row['MARKED_price']); ?> kr
                     </td>
+                    <td><?= date_to_text($row['MARKED_date']) ?></td>
                     <td>
                         <?php
 
