@@ -48,10 +48,8 @@ if (ACC_session_row($_SESSION['ID'], 'ACC_type', $pdo) >= 1) {
     $pages[15] = "forum_steng";
     $pages[16] = "send_varsel_alle";
     $pages[17] = "forum_rediger";
-    $pages[18] = "new_crypto";
-    $pages[19] = "crypto_oversikt";
-    $pages[20] = "oppdrag_oversikt";
-    $pages[21] = "drapsfri";
+    $pages[18] = "oppdrag_oversikt";
+    $pages[19] = "drapsfri";
 
     $admin = array(1, 11);
     $forummod = array(1, 2, 3, 5, 11);
