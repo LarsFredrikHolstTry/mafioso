@@ -11,6 +11,15 @@ if (!isset($_GET['side'])) {
     $desc[5] = "På hjelp kan du spør om hjelp som er spill-relatert.";
     $desc[6] = "Forslags-posten brukes for å legge ut forslag til å forbedre spillet.";
 
+    $forum_cat_desc[0] = $useLang->forum->generalDesc;
+    $forum_cat_desc[1] = $useLang->forum->sellDesc;
+    $forum_cat_desc[2] = $useLang->forum->offTopicDesc;
+    $forum_cat_desc[3] = $useLang->forum->familyDesc;
+
+    $forum_cat_desc[4] = $useLang->forum->picmakingDesc;
+    $forum_cat_desc[5] = $useLang->forum->helpDesc;
+    $forum_cat_desc[6] = $useLang->forum->suggestionsDesc;
+
 ?>
 
     <div class="col-10 single">
@@ -68,7 +77,7 @@ if (!isset($_GET['side'])) {
                         <h4 style="margin-bottom: 10px;"><?php echo forum_cat($i, $useLang); ?></h4>
                     </a>
                     <a class="description" href="?side=forum&cat=<?php echo $i ?>">
-                        <?php echo forum_cat_desc($i, $useLang); ?>
+                        <?= $forum_cat_desc[$i]; ?>
                     </a>
                 </div>
             </div>

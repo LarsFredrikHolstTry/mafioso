@@ -116,16 +116,44 @@ function seconds2human($seconds)
     ?>
 
     <div class="lower">
-        <div style="padding: 6px 0px" class="action_container">
-            <a href="index.php"></a>
+        <div style="<?php
+                    if ($time_left_rc_ <= 0 || $time_left_event_ <= 0) {
+                        echo 'background-color: var(--ready-color);';
+                    } else {
+                        echo 'background-color: var(--not-ready-color);';
+                    }
+                    ?>" id="rc_timer" class="action_container">
+            <a href="?side=pengeinnkreving"></a>
             <div class="action_icon">
-                <img src="img/topHeaderIcons/hovedkvarter.svg">
+                <img src="img/topHeaderIcons/pengeinnkreving.svg">
             </div>
-            <div class="action_text" style="color: white;">
-                <p style="margin: 10px 0px;">Hjem</p>
+            <div class="action_text">
+                <span>Pengeinnkreving</span><br>
+                <?php
+
+                if ($time_left_rc_ <= 0 || $time_left_event_ <= 0) {
+                    echo '<span class="ready">' . $useLang->misc->ready . '</span>';
+                } else {
+                    if ($time_left_rc_ < $time_left_event_) {
+                        echo '<span class="cooldown_top_bar" id="countdowntimer_rc">';
+                        echo $time_left_rc_;
+                        echo 's</span>';
+                ?> <script>
+                            timer(<?php echo $time_left_rc_; ?>, "countdowntimer_rc");
+                        </script> <?php
+                                } else {
+                                    echo '<span class="cooldown_top_bar" id="countdowntimer_event">';
+                                    echo $time_left_event_;
+                                    echo 's</span>';
+                                    ?> <script>
+                            timer(<?php echo $time_left_event_; ?>, "countdowntimer_event");
+                        </script>
+                <?php
+                                }
+                            }
+                ?>
             </div>
         </div>
-
         <div style="<?php
                     if ($time_left_rc_ <= 0 || $time_left_race_ <= 0) {
                         echo 'background-color: var(--ready-color);';
