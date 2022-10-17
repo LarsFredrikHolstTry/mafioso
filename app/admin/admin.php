@@ -23,7 +23,7 @@ if (isset($_POST['refund'])) {
 
         $total_money = $gpu + $motherboard + $fan + $psu;
 
-        give_money($row['CRR_acc_id'], $total_money, $pdo);
+        give_bank_money($row['CRR_acc_id'], $total_money, $pdo);
         send_notification($row['CRR_acc_id'], "Du hadde kryptorigg og får derfor " . number($total_money) . " tilbake siden funksjonen fjernes.", $pdo);
     }
 }
