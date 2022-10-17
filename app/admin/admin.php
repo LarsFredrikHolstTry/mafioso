@@ -11,8 +11,10 @@ if (isset($_POST['refund'])) {
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $money_in_crypto = total_krypto($row['AS_id'], $pdo);
 
-        give_bank_money($row['AS_id'], $money_in_crypto, $pdo);
-        send_notification($row['AS_id'], "Du hadde penger i krypto og får derfor " . number($money_in_crypto) . " kr tilbake siden funksjonen fjernes.", $pdo);
+        if ($money_in_crypto > 0) {
+            give_bank_money($row['AS_id'], $money_in_crypto, $pdo);
+            send_notification($row['AS_id'], "Du hadde penger i krypto og får derfor " . number($money_in_crypto) . " kr tilbake siden funksjonen fjernes.", $pdo);
+        }
     }
 }
 
