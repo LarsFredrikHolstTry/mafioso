@@ -4,20 +4,6 @@ if (!isset($_GET['side'])) {
     die();
 }
 
-if (isset($_POST['refund'])) {
-
-    $sql = "SELECT * FROM accounts_stat";
-    $stmt = $pdo->query($sql);
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        $money_in_crypto = total_krypto($row['AS_id'], $pdo);
-
-        if ($money_in_crypto > 0) {
-            give_bank_money($row['AS_id'], $money_in_crypto, $pdo);
-            send_notification($row['AS_id'], "Du hadde penger i krypto og får derfor " . number($money_in_crypto) . " kr tilbake siden funksjonen fjernes.", $pdo);
-        }
-    }
-}
-
 if (ACC_session_row($_SESSION['ID'], 'ACC_type', $pdo) >= 1) {
 
     $pages[0] = "nyhet";
@@ -89,10 +75,6 @@ if (ACC_session_row($_SESSION['ID'], 'ACC_type', $pdo) >= 1) {
                         <li>Penger totalt: <?php echo number(admin_total_money_bank($pdo) + admin_total_money_out($pdo)); ?> kr</li>
                         <li>Poeng totalt: <?php echo number(poeng_total($pdo)); ?></li>
                     </ul>
-
-                    <form method="post">
-                        <input type="submit" name="refund" />
-                    </form>
                 </div>
             </div>
         <?php } ?>
