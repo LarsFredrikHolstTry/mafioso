@@ -100,7 +100,7 @@ if (ACC_session_row($_SESSION['ID'], 'ACC_type', $pdo) >= 1) {
                         <li>Poeng totalt: <?php echo number(poeng_total($pdo)); ?></li>
 
                     </ul>
-                    <?php if ($_SESSION['ID'] === 1) { ?>
+                    <?php if ($_SESSION['ID'] == 1) { ?>
                         <form method="post">
                             <input type="submit" name="refund" value="Refund crypto">
                         </form>
