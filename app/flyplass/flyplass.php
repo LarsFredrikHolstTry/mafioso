@@ -59,61 +59,37 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
         }
 
         if (isset($_GET['reise'])) {
-            if ($_GET['reise'] == 5 && $activeDiamondEvent) {
-
-                if (DE_session_row($_SESSION['ID'], 'DE_ban', $pdo) > time()) {
-                    echo feedback('Du er banlyst fra Abu Dhabi til ' . time_to_text(DE_session_row($_SESSION['ID'], 'DE_ban', $pdo)), 'error');
-                } elseif (AS_session_row($_SESSION['ID'], 'AS_money', $pdo) >= 50000000) {
-
-                    if (AS_session_row($_SESSION['ID'], 'AS_city', $pdo) == 5) {
-                        echo feedback('Du er allerede i Abu Dhabi', 'error');
-                    } else {
-                        if (!DE_session_row($_SESSION['ID'], 'DE_acc_id', $pdo)) {
-                            $sql = "INSERT INTO diamond_event (DE_acc_id) VALUES (?)";
-                            $pdo->prepare($sql)->execute([$_SESSION['ID']]);
-                        }
-
-                        airport_give_cooldown($_SESSION['ID'], $waittime, $pdo);
-                        take_money($_SESSION['ID'], 50000000, $pdo);
-                        change_city($_SESSION['ID'], 5, $pdo);
-                        header("Location: ?side=flyplass&velkommen_by=" . $_GET['reise'] . "");
-                    }
-                } else {
-                    echo feedback('Du har ikke nok penger for å reise til Abu Dhabi!', 'error');
-                }
+            user_log($_SESSION['ID'], $side, "Reiser", $pdo);
+            $legal = array(0, 1, 2, 3, 4);
+            if (!in_array($_GET['reise'], $legal) || !is_numeric($_GET['reise'])) {
+                user_log($_SESSION['ID'], $side, "Ugyldig verdi: " . $legal, $pdo);
+                echo feedback("Ugyldig verdi.", "fail");
+            } elseif (AS_session_row($_SESSION['ID'], 'AS_money', $pdo) < city_price($_GET['reise'], $pdo)) {
+                user_log($_SESSION['ID'], $side, "Ikke nok penger", $pdo);
+                echo feedback("Du har ikke råd til å reise til " . city_name($_GET['reise']), "error");
+            } elseif ($_GET['reise'] == AS_session_row($_SESSION['ID'], 'AS_city', $pdo)) {
+                user_log($_SESSION['ID'], $side, "Allerede i samme by", $pdo);
+                echo feedback("Du er allerede i " . city_name($_GET['reise']), "error");
+            } elseif (airport_ready($_SESSION['ID'], $pdo)) {
+                user_log($_SESSION['ID'], $side, "Ventetid", $pdo);
+                echo feedback("Du må vente.", "error");
             } else {
-                user_log($_SESSION['ID'], $side, "Reiser", $pdo);
-                $legal = array(0, 1, 2, 3, 4);
-                if (!in_array($_GET['reise'], $legal) || !is_numeric($_GET['reise'])) {
-                    user_log($_SESSION['ID'], $side, "Ugyldig verdi: " . $legal, $pdo);
-                    echo feedback("Ugyldig verdi.", "fail");
-                } elseif (AS_session_row($_SESSION['ID'], 'AS_money', $pdo) < city_price($_GET['reise'], $pdo)) {
-                    user_log($_SESSION['ID'], $side, "Ikke nok penger", $pdo);
-                    echo feedback("Du har ikke råd til å reise til " . city_name($_GET['reise']), "error");
-                } elseif ($_GET['reise'] == AS_session_row($_SESSION['ID'], 'AS_city', $pdo)) {
-                    user_log($_SESSION['ID'], $side, "Allerede i samme by", $pdo);
-                    echo feedback("Du er allerede i " . city_name($_GET['reise']), "error");
-                } elseif (airport_ready($_SESSION['ID'], $pdo)) {
-                    user_log($_SESSION['ID'], $side, "Ventetid", $pdo);
-                    echo feedback("Du må vente.", "error");
-                } else {
-                    airport_give_cooldown($_SESSION['ID'], $waittime, $pdo);
-                    take_money($_SESSION['ID'], city_price($_GET['reise'], $pdo), $pdo);
-                    change_city($_SESSION['ID'], $_GET['reise'], $pdo);
+                airport_give_cooldown($_SESSION['ID'], $waittime, $pdo);
+                take_money($_SESSION['ID'], city_price($_GET['reise'], $pdo), $pdo);
+                change_city($_SESSION['ID'], $_GET['reise'], $pdo);
 
-                    if (AS_session_row($_SESSION['ID'], 'AS_mission', $pdo) == 44) {
-                        mission_update(AS_session_row($_SESSION['ID'], 'AS_mission_count', $pdo) + 1, AS_session_row($_SESSION['ID'], 'AS_mission', $pdo), mission_criteria(AS_session_row($_SESSION['ID'], 'AS_mission', $pdo)), $_SESSION['ID'], $pdo);
-                    }
-
-                    if (airport_existence($_GET['reise'], $pdo)) {
-                        $owner_id = airport_owner($_GET['reise'], $pdo);
-                        give_airport_money($owner_id, city_price($_GET['reise'], $pdo), $pdo);
-                        update_bedrift_inntekt($_SESSION['ID'], 0, $_GET['reise'], city_price($_GET['reise'], $pdo), $pdo);
-                    }
-
-                    user_log($_SESSION['ID'], $side, "Reiser til " . city_name($_GET['reise']), $pdo);
-                    header("Location: ?side=flyplass&velkommen_by=" . $_GET['reise'] . "");
+                if (AS_session_row($_SESSION['ID'], 'AS_mission', $pdo) == 44) {
+                    mission_update(AS_session_row($_SESSION['ID'], 'AS_mission_count', $pdo) + 1, AS_session_row($_SESSION['ID'], 'AS_mission', $pdo), mission_criteria(AS_session_row($_SESSION['ID'], 'AS_mission', $pdo)), $_SESSION['ID'], $pdo);
                 }
+
+                if (airport_existence($_GET['reise'], $pdo)) {
+                    $owner_id = airport_owner($_GET['reise'], $pdo);
+                    give_airport_money($owner_id, city_price($_GET['reise'], $pdo), $pdo);
+                    update_bedrift_inntekt($_SESSION['ID'], 0, $_GET['reise'], city_price($_GET['reise'], $pdo), $pdo);
+                }
+
+                user_log($_SESSION['ID'], $side, "Reiser til " . city_name($_GET['reise']), $pdo);
+                header("Location: ?side=flyplass&velkommen_by=" . $_GET['reise'] . "");
             }
         }
 
@@ -186,28 +162,6 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                         </div>
                     </div>
                 <?php } ?>
-                <?php if ($activeDiamondEvent) { ?>
-                    <?php if (DE_session_row($_SESSION['ID'], 'DE_ban', $pdo) <= time()) { ?>
-                        <div class="col-4">
-                            <div class="content">
-                                <img class="action_image" src="img/city/5.png">
-                                <ul>
-                                    <li>Finn diamanter i gruvene i Abu Dhabi</li>
-                                    <li>Eier av flyplass: Sjeiken
-                                    </li>
-                                    <li>Territorium: Sjeiken
-                                    </li>
-                                </ul>
-                                <h4>Pris: 50 000 000 kr</h4>
-                                <br>
-                                <a href="?side=flyplass&reise=5" class="a_as_button_secondary">Fly til Abu Dhabi</a>
-                                <br><br>
-                            </div>
-                        </div>
-                <?php } else {
-                        echo feedback('Du er bannlyst fra Abu Dhabi til ' . date_to_text(DE_session_row($_SESSION['ID'], 'DE_ban', $pdo)), 'error');
-                    }
-                } ?>
                 <div class="col-4">
                     <div class="content">
                         <?php

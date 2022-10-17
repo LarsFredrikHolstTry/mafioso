@@ -407,23 +407,6 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
             } else {
                 echo feedback('Du har ikke valgt ting', 'fail');
             }
-        } elseif (isset($_POST[12])) {
-            $id = 39;
-            $total_diamonds = amount_of_things($_SESSION['ID'], $id, $pdo);
-            if ($total_diamonds > 0) {
-                $sql = "UPDATE diamond_event SET DE_diamonds = DE_diamonds + ? WHERE DE_acc_id = ? ";
-                $stmt = $pdo->prepare($sql);
-                $stmt->execute([$total_diamonds, $_SESSION['ID']]);
-
-                $sql = "DELETE FROM things WHERE TH_type = $id AND TH_acc_id = " . $_SESSION['ID'];
-                $pdo->exec($sql);
-
-                give_money($_SESSION['ID'], ($total_diamonds * 100000), $pdo);
-
-                echo feedback('Du har solgt ' . number($total_diamonds) . ' diamanter til sjeiken for ' . number($total_diamonds * 100000) . ' kr', 'success');
-            } else {
-                echo feedback('Du har ikke valgt ting', 'fail');
-            }
         }
 
         $bonus_type[0] = "Bruk energidrikk";
@@ -445,7 +428,7 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
         $bonus_name[5] = "Familie energidrikk vil aktivere energidrikk hos alle dine familiemedlemmer. Dersom en i familien allerede har en energidrikk vil den bli erstattet med din.";
 
         $bonus_type[6] = "Gresskar";
-        $bonus_name[6] = "Åpne gresskar for å se hva påskeharen har gjemt unna til deg!";
+        $bonus_name[6] = "Åpne gresskar for å se hva Skitzo har gjemt unna til deg!";
 
         $bonus_type[7] = "Happy hour 1 time";
         $bonus_name[7] = "Aktiver for å starte 1 time med happy hour for hele spillet!";
@@ -461,10 +444,6 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
 
         $bonus_type[11] = "Happy hour 24 timer";
         $bonus_name[11] = "Aktiver for å starte 24 timer med happy hour for hele spillet!";
-
-        $bonus_type[12] = "Gi diamanter til sjeiken";
-        $bonus_name[12] = "Gi alle dine diamanter til sjeiken for 100 000kr per diamant";
-
 
         if (in_array($_GET['bonus'], $legal_bonus)) {
 ?>

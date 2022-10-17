@@ -191,15 +191,6 @@ function AS_session_row($id, $what, $pdo)
     return $row['AS_row'] ?? NULL;
 }
 
-function DE_session_row($id, $what, $pdo)
-{
-    $query = $pdo->prepare("SELECT $what as DE_row FROM diamond_event WHERE DE_acc_id=?");
-    $query->execute(array($id));
-    $row = $query->fetch(PDO::FETCH_ASSOC);
-
-    return $row['DE_row'] ?? NULL;
-}
-
 function ACC_session_row($id, $what, $pdo)
 {
     $query = $pdo->prepare("SELECT $what as ACC_row FROM accounts WHERE ACC_id=?");
