@@ -247,7 +247,11 @@ function check_mission_done($mission_count, $mission_nr, $mission_objective, $id
         $stmt->execute([$next_mission, $zero, $id]);
 
         give_money($_SESSION['ID'], mission_money($mission_nr), $pdo);
-        give_exp($_SESSION['ID'], mission_exp($mission_nr), $pdo);
+
+        $sql = "UPDATE accounts_stat SET AS_exp = AS_exp + ?, AS_daily_exp = AS_daily_exp + ? WHERE AS_id = ? ";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([mission_exp($mission_nr), mission_exp($mission_nr), $id]);
+
         check_rankup($_SESSION['ID'], AS_session_row($_SESSION['ID'], 'AS_rank', $pdo), AS_session_row($_SESSION['ID'], 'AS_exp', $pdo), $pdo);
 
         if ($mission_nr == 8) {

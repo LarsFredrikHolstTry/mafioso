@@ -235,35 +235,15 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
 
                 if ($chance < 40) {
                     // tomt
-                    echo feedback("Påskeegget var tomt", "error");
-                } elseif ($chance >= 40 && $chance < 45) {
-                    // 10 - 100 bitcoin
-                    $min = 10;
-                    $max = 100;
-                    $btc = 3;
-                    $amount = mt_rand($min, $max);
-
-                    $query = $pdo->prepare("SELECT CRU_crypto FROM crypto_user WHERE CRU_acc_id=? AND CRU_crypto=?");
-                    $query->execute(array($_SESSION['ID'], $btc));
-                    $row = $query->fetch(PDO::FETCH_ASSOC);
-
-                    if ($row) {
-                        $sql = "UPDATE crypto_user SET CRU_amount = CRU_amount + ? WHERE CRU_crypto = ? AND CRU_acc_id = ? ";
-                        $stmt = $pdo->prepare($sql);
-                        $stmt->execute([$amount, $btc, $_SESSION['ID']]);
-                    } else {
-                        $sql = "INSERT INTO crypto_user (CRU_amount, CRU_crypto, CRU_acc_id) VALUES (?,?,?)";
-                        $pdo->prepare($sql)->execute([$amount, $btc, $_SESSION['ID']]);
-                    }
-
-                    echo feedback('Du fant en ledger med ' . number($amount) . ' BTC!', 'success');
-                } elseif ($chance >= 45 && $chance < 50) {
+                    echo feedback("Gresskaret var tomt", "error");
+                }
+                if ($chance >= 40 && $chance < 50) {
                     // Hemmelig kiste
                     $thing_id = 30;
                     update_things($_SESSION['ID'], $thing_id, $pdo);
 
                     echo feedback('Du fant en hemmelig kiste!', 'success');
-                } elseif ($chance >= 50 && $chance < 55) {
+                } elseif ($chance >= 50 && $chance < 58) {
                     // 10-100 exp
                     $min = 10;
                     $max = 100;
@@ -273,16 +253,7 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                     check_rankup($_SESSION['ID'], AS_session_row($_SESSION['ID'], 'AS_rank', $pdo), AS_session_row($_SESSION['ID'], 'AS_exp', $pdo), $pdo);
 
                     echo feedback('Du fikk ' . number($amount) . ' EXP!', 'success');
-                } elseif ($chance >= 55 && $chance < 60) {
-                    // 5 - 50 poeng
-                    $min = 5;
-                    $max = 50;
-                    $amount = mt_rand($min, $max);
-
-                    give_poeng($_SESSION['ID'], $amount, $pdo);
-
-                    echo feedback('Du fant ' . number($amount) . ' poeng!', 'success');
-                } elseif ($chance >= 60 && $chance < 70) {
+                } elseif ($chance >= 58 && $chance < 70) {
                     // Random bil
                     $min = 0;
                     $max = 19;
@@ -329,7 +300,7 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                 $sql = "DELETE FROM things WHERE TH_type = $id AND TH_acc_id = " . $_SESSION['ID'] . " LIMIT 1";
                 $pdo->exec($sql);
             } else {
-                echo feedback("Du har ingen påskeegg", "fail");
+                echo feedback("Du har ingen gresskar", "fail");
             }
         } elseif (isset($_POST[7])) {
             $id = 34;
@@ -473,8 +444,8 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
         $bonus_type[5] = "Familie energidrikk";
         $bonus_name[5] = "Familie energidrikk vil aktivere energidrikk hos alle dine familiemedlemmer. Dersom en i familien allerede har en energidrikk vil den bli erstattet med din.";
 
-        $bonus_type[6] = "Påskeegg";
-        $bonus_name[6] = "Åpne påskeegg for å se hva påskeharen har gjemt unna til deg!";
+        $bonus_type[6] = "Gresskar";
+        $bonus_name[6] = "Åpne gresskar for å se hva påskeharen har gjemt unna til deg!";
 
         $bonus_type[7] = "Happy hour 1 time";
         $bonus_name[7] = "Aktiver for å starte 1 time med happy hour for hele spillet!";
@@ -556,7 +527,7 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                                             echo '<span style="display:none">$pecial item</span><a style="color: var(--button-bg-color);" href="?side=lager&bonus=4">' . $thing . '</a>';
                                         } elseif ($row['TH_type'] == 32) /* Familie energidrikk */ {
                                             echo '<span style="display:none">$pecial item</span><a style="color: var(--button-bg-color);" href="?side=lager&bonus=5">' . $thing . '</a>';
-                                        } elseif ($row['TH_type'] == 31) /* Påskeegg */ {
+                                        } elseif ($row['TH_type'] == 31) /* Gresskar */ {
                                             echo '<span style="display:none">$pecial item</span><a style="color: var(--button-bg-color);" href="?side=lager&bonus=6">' . $thing . '</a>';
                                         } elseif ($row['TH_type'] == 34) /* HH 1t */ {
                                             echo '<span style="display:none">$pecial item</span><a style="color: var(--button-bg-color);" href="?side=lager&bonus=7">' . $thing . '</a>';

@@ -126,7 +126,7 @@ if ($sthandler->rowCount() > 0) {
                 $boost_price[16] = 400;
                 $boost_price[17] = 700;
 
-                $boost_info[0] = "Unngår at spillere raner biler, ting eller penger fra deg. Går ut ved midnatt.";
+                $boost_info[0] = "Unngå at spillere penger fra deg. Går ut ved midnatt.";
                 $boost_info[1] = "Utvider plasse i garasjen med 10 plasser";
                 $boost_info[2] = "Utvider plasse i ditt lager med 10 plasser";
                 $boost_info[3] = "Finner tilfeldig ransoffer til deg som har penger på hånden og ikke ransbeskyttelse.";

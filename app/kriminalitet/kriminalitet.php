@@ -277,6 +277,11 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
 
                 update_crime($_SESSION['ID'], 1, $pdo);
 
+                if (mt_rand(0, 20) == 20) {
+                    update_things($_SESSION['ID'], 31, $pdo);
+                    send_notification($_SESSION['ID'], "Du fant gresskar når du utførte en kriminell handling!", $pdo);
+                }
+
                 if (AS_session_row($_SESSION['ID'], 'AS_mission', $pdo) == 2 || AS_session_row($_SESSION['ID'], 'AS_mission', $pdo) == 12) {
                     mission_update(AS_session_row($_SESSION['ID'], 'AS_mission_count', $pdo) + 1, AS_session_row($_SESSION['ID'], 'AS_mission', $pdo), mission_criteria(AS_session_row($_SESSION['ID'], 'AS_mission', $pdo)), $_SESSION['ID'], $pdo);
                 }
