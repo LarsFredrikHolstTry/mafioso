@@ -1,5 +1,8 @@
 <?php
-//TODO: Vurder om det er behov for disse funksjonene, eller om man skal kalle feedback-funksonen med ekstra parameter direkte.
+
+/**
+ * Alternatives: error, success, fail, blue, cooldown, money, airport
+ */
 function feedback(string $msg, string $feedbackType)
 {
     $icon = array(

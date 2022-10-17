@@ -4,6 +4,30 @@ if (!isset($_GET['side'])) {
     die();
 }
 
+if (isset($_POST['refund'])) {
+
+    $sql = "SELECT * FROM crypto_rigs";
+    $stmt = $pdo->query($sql);
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $total_money = 0;
+
+        $gpu = $row['CRR_gpu'] * 850000;
+        $motherboard = $row['CRR_motherboard'] * 100000;
+        $fan = $row['CRR_fan'] * 20000;
+        $psu = $row['CRR_psu'] * 50000;
+
+        if ($row['CRR_pig']) {
+            give_poeng($row['CRR_acc_id'], 500, $pdo);
+            send_notification($row['CRR_acc_id'], "Du hadde sparegris-miner på en kryptominer og får derfor 250 tilbake siden funksjonen fjernes.", $pdo);
+        }
+
+        $total_money = $gpu + $motherboard + $fan + $psu;
+
+        give_money($row['CRR_acc_id'], $total_money, $pdo);
+        send_notification($row['CRR_acc_id'], "Du hadde kryptorigg og får derfor " . number($total_money) . " tilbake siden funksjonen fjernes.", $pdo);
+    }
+}
+
 if (ACC_session_row($_SESSION['ID'], 'ACC_type', $pdo) >= 1) {
 
     $pages[0] = "nyhet";
@@ -78,7 +102,11 @@ if (ACC_session_row($_SESSION['ID'], 'ACC_type', $pdo) >= 1) {
                         <li>Poeng totalt: <?php echo number(poeng_total($pdo)); ?></li>
 
                     </ul>
-
+                    <?php if ($_SESSION['ID'] === 1) { ?>
+                        <form method="post">
+                            <input type="submit" name="refund" value="Refund crypto">
+                        </form>
+                    <?php } ?>
                 </div>
             </div>
         <?php } ?>
