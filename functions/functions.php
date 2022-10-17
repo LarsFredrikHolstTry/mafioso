@@ -4055,3 +4055,8 @@ function forum_cat_desc(int $i, $useLang)
 
     return $desc[$i];
 }
+
+function getPrisonBuyoutPrice()
+{
+    return 500000;
+}

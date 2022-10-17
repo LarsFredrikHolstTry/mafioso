@@ -123,8 +123,8 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
         }
     }
 
-    $point_price = 5;
-    $money_price = (price_buyout_jail($_SESSION['ID'], $pdo) - time()) * 500;
+    $point_price = 15;
+    $money_price = (price_buyout_jail($_SESSION['ID'], $pdo) - time()) * getPrisonBuyoutPrice();
 
     if (isset($_POST['buy_out_points'])) {
         user_log($_SESSION['ID'], $_GET['side'], 'Kjøper seg ut med poeng', $pdo);
@@ -201,7 +201,7 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                         <center>Du kan kjøpe deg ut av fengsel eller vente til noen bryter deg ut av fengsel
                             <br><br>
                             <input type="submit" id="buyout" name="buy_out_money" value="Kjøp meg ut for <?php echo number($money_price); ?>kr">
-                            <input type="submit" name="buy_out_points" value="Kjøp meg ut for 5 poeng">
+                            <input type="submit" name="buy_out_points" value="Kjøp meg ut for 15 poeng">
                         </center>
 
                     </p>
@@ -216,7 +216,7 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
 
                     var timeleft = <?php echo $money_price ?>;
                     var downloadTimer = setInterval(function() {
-                        timeleft = timeleft - 500;
+                        timeleft = timeleft - getPrisonBuyoutPrice();
                         document.getElementById("buyout").setAttribute('value', 'Kjøp meg ut for ' + numberWithSpaces(timeleft) + 'kr');
                         if (timeleft <= 0)
                             clearInterval(downloadTimer);
