@@ -3994,46 +3994,6 @@ function user_log($acc_id, $page, $handling, $pdo)
     $pdo->prepare($sql)->execute([$acc_id, $money, $bank_money, $exp, $city, $page, $handling, time()]);
 }
 
-function total_krypto($acc_id, $pdo)
-{
-    $total_in_crypto = 0;
-
-    $query = $pdo->prepare('SELECT * FROM crypto_user WHERE CRU_acc_id = :id');
-    $query->execute(array(':id' => $acc_id));
-    foreach ($query as $row) {
-        $stmt = $pdo->prepare("SELECT SUC_price FROM supported_crypto WHERE SUC_id = :suc_id");
-        $stmt->execute(['suc_id' => $row['CRU_crypto']]);
-        $row_crypto = $stmt->fetch();
-
-        $total_in_crypto = $total_in_crypto + ($row['CRU_amount'] * $row_crypto['SUC_price']);
-    }
-
-    return $total_in_crypto;
-}
-
-function total_in_btc($acc_id, $pdo)
-{
-    $total_in_crypto = 0;
-    $total_in_btc = 0;
-
-    $query = $pdo->prepare('SELECT * FROM crypto_user WHERE CRU_acc_id = :id');
-    $query->execute(array(':id' => $acc_id));
-    foreach ($query as $row) {
-        $stmt = $pdo->prepare("SELECT SUC_price FROM supported_crypto WHERE SUC_id = :suc_id");
-        $stmt->execute(['suc_id' => $row['CRU_crypto']]);
-        $row_crypto = $stmt->fetch();
-
-        $stmt = $pdo->prepare("SELECT SUC_price FROM supported_crypto WHERE SUC_ticker = :suc_ticker");
-        $stmt->execute(['suc_ticker' => 'BTC']);
-        $BTC_price = $stmt->fetch();
-
-        $total_in_crypto = $row && $row_crypto && $total_in_crypto + ($row['CRU_amount'] * $row_crypto['SUC_price']);
-        $total_in_btc = $total_in_crypto / $BTC_price['SUC_price'];
-    }
-
-    return $total_in_btc;
-}
-
 function in_shout_queue($pdo)
 {
     $stmt = $pdo->prepare("SELECT count(*) FROM shout_queue");

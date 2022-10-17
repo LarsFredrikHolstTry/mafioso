@@ -2,8 +2,8 @@
 
 include 'functions/blackjack.php';
 
-if(isset($_GET['my_top_10'])){
-    
+if (isset($_GET['my_top_10'])) {
+
     $i = 1;
 
     $sql = 'SELECT 
@@ -18,20 +18,20 @@ if(isset($_GET['my_top_10'])){
     ';
     $stmt = $pdo->query($sql);
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-    
-        if($row['AS_id'] == $_SESSION['ID']){
-            echo feedback("Du er på ". $i . ". plass med mest penger", "blue");
+
+        if ($row['AS_id'] == $_SESSION['ID']) {
+            echo feedback("Du er på " . $i . ". plass med mest penger", "blue");
         }
 
         $i++;
-     } 
-    } 
+    }
+}
 
-    if(isset($_GET['my_top_10_rank'])){
-    
-        $i = 1;
-    
-        $sql = 'SELECT
+if (isset($_GET['my_top_10_rank'])) {
+
+    $i = 1;
+
+    $sql = 'SELECT
         accounts_stat.AS_id, (accounts_stat.AS_exp + 0) as total_exp
         FROM 
         accounts_stat, accounts
@@ -41,16 +41,16 @@ if(isset($_GET['my_top_10'])){
         accounts.ACC_type = 0
         ORDER BY total_exp DESC
         ';
-        $stmt = $pdo->query($sql);
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        
-            if($row['AS_id'] == $_SESSION['ID']){
-                echo feedback("Du er på ". $i . ". plass med mest høyest rank", "blue");
-            }
-    
-            $i++;
-         } 
-        } 
+    $stmt = $pdo->query($sql);
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+
+        if ($row['AS_id'] == $_SESSION['ID']) {
+            echo feedback("Du er på " . $i . ". plass med mest høyest rank", "blue");
+        }
+
+        $i++;
+    }
+}
 
 ?>
 
@@ -74,22 +74,21 @@ if(isset($_GET['my_top_10'])){
                 </tr>
                 <tr>
                     <td><?php echo $useLang->statistics->totalMoney ?></td>
-                    <td><?php 
-                    $total = admin_total_money_out($pdo) 
-                    + admin_total_money_bank($pdo) 
-                    + family_money($pdo) 
-                    + kf_money($pdo)
-                    + fengsel_money($pdo)
-                    + rc_money($pdo)
-                    + flyplass_money($pdo)
-                    + swiss_money($pdo)
-                    + bunker_money($pdo)
-                    + bj_money($pdo)
-                    + crypto_money($pdo);
+                    <td><?php
+                        $total = admin_total_money_out($pdo)
+                            + admin_total_money_bank($pdo)
+                            + family_money($pdo)
+                            + kf_money($pdo)
+                            + fengsel_money($pdo)
+                            + rc_money($pdo)
+                            + flyplass_money($pdo)
+                            + swiss_money($pdo)
+                            + bunker_money($pdo)
+                            + bj_money($pdo);
 
-                    echo str_replace('{value}', number($total), $useLang->index->money);
+                        echo str_replace('{value}', number($total), $useLang->index->money);
 
-                    ?></td>
+                        ?></td>
                 </tr>
             </table>
             <br>
@@ -235,9 +234,9 @@ if(isset($_GET['my_top_10'])){
 
             <div class="col-6">
                 <div style="display: flex; justify-content: space-between">
-                <h4 style="padding-bottom: 10px;">Topp 10 rikest</h4>
-                <a href="?side=statistikk&my_top_10" class="small_header">Sjekk min posisjon</a>
-            </div>
+                    <h4 style="padding-bottom: 10px;">Topp 10 rikest</h4>
+                    <a href="?side=statistikk&my_top_10" class="small_header">Sjekk min posisjon</a>
+                </div>
                 <table>
                     <tr>
                         <th style="width: 5%;">#</th>
@@ -273,10 +272,10 @@ if(isset($_GET['my_top_10'])){
                 </table>
             </div>
             <div class="col-6">
-            <div style="display: flex; justify-content: space-between">
-                <h4 style="padding-bottom: 10px;">Topp 10 rank</h4>
-                <a href="?side=statistikk&my_top_10_rank" class="small_header">Sjekk min posisjon</a>
-            </div>
+                <div style="display: flex; justify-content: space-between">
+                    <h4 style="padding-bottom: 10px;">Topp 10 rank</h4>
+                    <a href="?side=statistikk&my_top_10_rank" class="small_header">Sjekk min posisjon</a>
+                </div>
                 <table>
                     <tr>
                         <th style="width: 5%">#</th>
@@ -498,8 +497,16 @@ LIMIT 10';
                             <td><a href="?side=familieprofil&id=<?php echo $row_fam['FAM_id']; ?>"><?php echo $row_fam['FAM_name']; ?></a></td>
                             <td><a href="?side=familie_medlemmer&id=<?php echo $row_fam['FAM_id'] ?>"><?php echo total_family_members($row_fam['FAM_id'], $pdo); ?> / <?php echo $max_members; ?></a></td>
                             <td><?php echo ACC_username($ACC_leader['FAMMEM_acc_id'], $pdo); ?></td>
-                            <td><?php if($ACC_direktor && $ACC_direktor['FAMMEM_acc_id']){ echo ACC_username($ACC_direktor['FAMMEM_acc_id'], $pdo); } else { echo '<span style="color: rgb(170, 180, 190);">Ingen</span>'; } ?></td>
-                            <td><?php if($ACC_radgiver && $ACC_radgiver['FAMMEM_acc_id']){ echo ACC_username($ACC_radgiver['FAMMEM_acc_id'], $pdo); } else { echo '<span style="color: rgb(170, 180, 190);">Ingen</span>'; } ?></td>
+                            <td><?php if ($ACC_direktor && $ACC_direktor['FAMMEM_acc_id']) {
+                                    echo ACC_username($ACC_direktor['FAMMEM_acc_id'], $pdo);
+                                } else {
+                                    echo '<span style="color: rgb(170, 180, 190);">Ingen</span>';
+                                } ?></td>
+                            <td><?php if ($ACC_radgiver && $ACC_radgiver['FAMMEM_acc_id']) {
+                                    echo ACC_username($ACC_radgiver['FAMMEM_acc_id'], $pdo);
+                                } else {
+                                    echo '<span style="color: rgb(170, 180, 190);">Ingen</span>';
+                                } ?></td>
                         </tr>
                     <?php $i++;
                     } ?>
