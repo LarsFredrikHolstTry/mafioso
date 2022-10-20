@@ -232,8 +232,6 @@ if (isset($_GET['remove'])) {
 
         if ($marked_seller != $_SESSION['ID']) {
             echo feedback("Du kan ikke fjerne andres salg", "error");
-        } elseif ($marked_date < time()) {
-            echo feedback("Tiden er utgått", "error");
         } else {
             if ($marked_cat == 0) {
                 $jsonobj = $marked_info;
