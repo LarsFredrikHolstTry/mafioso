@@ -3780,7 +3780,7 @@ function mission_criteria($mission_nr)
     $mission_criteria[28] = 30;
     $mission_criteria[29] = 2500000000;
     $mission_criteria[30] = 500000000;
-    $mission_criteria[31] = 1000000000;
+    $mission_criteria[31] = 50000000;
     $mission_criteria[32] = 20;
     $mission_criteria[33] = 5;
     $mission_criteria[34] = 13;

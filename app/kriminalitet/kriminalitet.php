@@ -264,6 +264,8 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                 user_log($_SESSION['ID'], $_GET['side'], 'ventetid', $pdo);
                 echo feedback("Ventetid!", "error");
             } else {
+                $payout = crime_payout($alt);
+
                 update_konk($_GET['side'], 1, $_SESSION['ID'], $pdo);
 
                 update_dagens_utfordring($_SESSION['ID'], 0, $pdo);
@@ -286,8 +288,12 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                     mission_update(AS_session_row($_SESSION['ID'], 'AS_mission_count', $pdo) + 1, AS_session_row($_SESSION['ID'], 'AS_mission', $pdo), mission_criteria(AS_session_row($_SESSION['ID'], 'AS_mission', $pdo)), $_SESSION['ID'], $pdo);
                 }
 
+
+                if (AS_session_row($_SESSION['ID'], 'AS_mission', $pdo) == 31 && $alt == 5 && AS_session_row($_SESSION['ID'], 'AS_city', $pdo) == 1) {
+                    mission_update(AS_session_row($_SESSION['ID'], 'AS_mission_count', $pdo) + $payout, AS_session_row($_SESSION['ID'], 'AS_mission', $pdo), mission_criteria(AS_session_row($_SESSION['ID'], 'AS_mission', $pdo)), $_SESSION['ID'], $pdo);
+                }
+
                 if ($alt == 7) {
-                    $payout = crime_payout($alt);
                     give_weed($_SESSION['ID'], crime_payout($alt), $pdo);
 
                     if (active_heist($_SESSION['ID'], $pdo)) {
@@ -308,7 +314,6 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                     }
                 } elseif ($alt == 8) {
                     if (active_heist($_SESSION['ID'], $pdo) && heist_row($heist_id, 'HEIST_type', $pdo) == 1) {
-                        $payout = crime_payout($alt);
 
                         $sql = "UPDATE heist SET HEIST_info = HEIST_info + ? WHERE HEIST_id = ? ";
                         $stmt = $pdo->prepare($sql);
@@ -320,7 +325,6 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                         echo feedback("Du er ikke i et aktivt heist", "error");
                     }
                 } else {
-                    $payout = crime_payout($alt);
                     give_money($_SESSION['ID'], $payout, $pdo);
 
                     give_territorium_money(AS_session_row($_SESSION['ID'], 'AS_city', $pdo), $payout * 0.1, $pdo);

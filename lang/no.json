@@ -112,11 +112,11 @@
         "london": {
           "alt0": "Ran Burlington Arcade",
           "alt1": "Ran Westfield Mall",
-          "alt2": "Ran Gold & Silver Pawn Shop",
-          "alt3": "Ran Le Boulevard Mall",
-          "alt4": "Ran Bellagio Casino",
-          "alt5": "Ran Golden Nugget Casino",
-          "alt6": "Ran Mandalay Bay Casino"
+          "alt2": "Ran en minibank",
+          "alt3": "Ran en gullforhandler på Buckingham Palace",
+          "alt4": "Bankhack en Café i London",
+          "alt5": "Ran Bank Of London",
+          "alt6": "Ran Nottingham Palace"
         },
         "berlin": {
           "alt0": "Ran Wilmersdorfer Arcaden",
