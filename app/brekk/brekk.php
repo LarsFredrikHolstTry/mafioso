@@ -305,12 +305,14 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                                         $percentage = get_rob_chance($_SESSION['ID'], AS_session_row($_SESSION['ID'], 'AS_city', $pdo), $i, $pdo);
 
                                         if ($percentage - get_city_tax(AS_session_row($_SESSION['ID'], 'AS_city', $pdo), $pdo) < 0) {
-                                            echo $percentage = 0;
+                                            $percentage = 0;
                                         } else {
-                                            echo $percentage = $percentage - get_city_tax(AS_session_row($_SESSION['ID'], 'AS_city', $pdo), $pdo);
+                                            $percentage = $percentage - get_city_tax(AS_session_row($_SESSION['ID'], 'AS_city', $pdo), $pdo);
                                         }
 
-                                        ?>%</td>
+                                        echo colorize_chances($percentage);
+
+                                        ?></td>
                                 </tr>
                             <?php } ?>
                         </table>

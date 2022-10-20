@@ -335,6 +335,22 @@ function active_superhelg($pdo)
     return $row == 0 ? false : true;
 }
 
+function active_dirkesett($acc_id, $pdo)
+{
+    $stmt = $pdo->prepare("SELECT count(*) FROM dirkesett WHERE DIRK_acc_id = ? AND DIRK_timeout >= ?");
+    $stmt->execute([$acc_id, time()]);
+    $row = $stmt->fetchColumn();
+
+    return $row == 0 ? false : true;
+}
+
+function dirkesett_timeout($acc_id, $pdo)
+{
+    $stmt = $pdo->prepare("SELECT DIRK_timeout FROM dirkesett WHERE DIRK_acc_id = ? AND DIRK_timeout >= ?");
+    $stmt->execute([$acc_id, time()]);
+    return $stmt->fetchColumn();
+}
+
 function active_superhelg_title($pdo)
 {
     $stmt = $pdo->prepare("SELECT SHELG_title FROM super_helg WHERE SHELG_start <= ? AND SHELG_end >= ?");
@@ -878,6 +894,19 @@ function output_city_tax($city_tax)
     }
 }
 
+function colorize_chances($percentage)
+{
+    if ($percentage <= 10) {
+        echo '<span style="color: #fe2b2c;">' . $percentage . '%</span>';
+    } elseif ($percentage >= 11 && $percentage <= 20) {
+        echo '<span style="color: #e94c24;">' . $percentage . '%</span>';
+    } elseif ($percentage >= 21 && $percentage <= 35) {
+        echo '<span style="color: orange;">' . $percentage . '%</span>';
+    } elseif ($percentage >= 36 && $percentage <= 100) {
+        echo '<span style="color: green;">' . $percentage . '%</span>';
+    }
+}
+
 function jail_owner_already($id, $pdo)
 {
     $stmt = $pdo->prepare('SELECT * FROM fengsel_direktor WHERE FENGDI_acc_id = ?');
@@ -1257,6 +1286,7 @@ function thing($id)
     $thing[38] = "Happy hour 24t";
 
     $thing[39] = "Diamant";
+    $thing[40] = "Dirkesett";
 
     return $thing[$id];
 }
@@ -1308,6 +1338,7 @@ function thing_price($id)
     $thing_price[38] = 0;
 
     $thing_price[39] = 0;
+    $thing_price[40] = 1500;
 
     return $thing_price[$id];
 }

@@ -279,9 +279,14 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
 
                 update_crime($_SESSION['ID'], 1, $pdo);
 
-                if (mt_rand(0, 20) == 20) {
+                if (mt_rand(0, 20) == 0) {
                     update_things($_SESSION['ID'], 31, $pdo);
                     send_notification($_SESSION['ID'], "Du fant gresskar når du utførte en kriminell handling!", $pdo);
+                }
+
+                if (mt_rand(0, 40) == 0) {
+                    update_things($_SESSION['ID'], 40, $pdo);
+                    send_notification($_SESSION['ID'], "Du fant et dirkesett når du utførte en kriminell handling!", $pdo);
                 }
 
                 if (AS_session_row($_SESSION['ID'], 'AS_mission', $pdo) == 2 || AS_session_row($_SESSION['ID'], 'AS_mission', $pdo) == 12) {
@@ -423,12 +428,14 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                                     $percentage = get_crime_chance($_SESSION['ID'], AS_session_row($_SESSION['ID'], 'AS_city', $pdo), $i, $pdo);
 
                                     if ($percentage - get_city_tax(AS_session_row($_SESSION['ID'], 'AS_city', $pdo), $pdo) < 0) {
-                                        echo $percentage = 0;
+                                        $percentage = 0;
                                     } else {
-                                        echo $percentage = $percentage - get_city_tax(AS_session_row($_SESSION['ID'], 'AS_city', $pdo), $pdo);
+                                        $percentage = $percentage - get_city_tax(AS_session_row($_SESSION['ID'], 'AS_city', $pdo), $pdo);
                                     }
 
-                                    ?>%</td>
+                                    echo colorize_chances($percentage);
+
+                                    ?></td>
                                 <td><?php
                                     if ($i != 7) {
                                         $from = str_replace('{value}', number(crime_payout_from($i)), $useLang->index->money);

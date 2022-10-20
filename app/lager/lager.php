@@ -31,7 +31,7 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
 
             give_money($_SESSION['ID'], $money_amount_give, $pdo);
 
-            $sql = "DELETE FROM things WHERE TH_acc_id = " . $_SESSION['ID'] . " AND TH_type NOT IN (3, 18, 19, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39)";
+            $sql = "DELETE FROM things WHERE TH_acc_id = " . $_SESSION['ID'] . " AND TH_type NOT IN (3, 18, 19, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40)";
             $pdo->exec($sql);
 
             user_log($_SESSION['ID'], $_GET['side'], "Selger alle ting for: " . number($money_amount_give) . " kr", $pdo);
@@ -407,6 +407,21 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
             } else {
                 echo feedback('Du har ikke valgt ting', 'fail');
             }
+        } elseif (isset($_POST[12])) {
+            $id = 40;
+            if (active_dirkesett($_SESSION['ID'], $pdo)) {
+                echo feedback('Du har allerede et aktivt dirkesett', 'fail');
+            } elseif (amount_of_things($_SESSION['ID'], $id, $pdo) > 0) {
+                $sql = "INSERT INTO dirkesett (DIRK_acc_id, DIRK_timeout) VALUES (?,?)";
+                $pdo->prepare($sql)->execute([$_SESSION['ID'], time() + 3600]);
+
+                $sql = "DELETE FROM things WHERE TH_type = $id AND TH_acc_id = " . $_SESSION['ID'] . " LIMIT 1";
+                $pdo->exec($sql);
+
+                echo feedback('Du har aktivert dirkesett i 1 time', 'success');
+            } else {
+                echo feedback('Du har ikke valgt ting', 'fail');
+            }
         }
 
         $bonus_type[0] = "Bruk energidrikk";
@@ -427,23 +442,26 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
         $bonus_type[5] = "Familie energidrikk";
         $bonus_name[5] = "Familie energidrikk vil aktivere energidrikk hos alle dine familiemedlemmer. Dersom en i familien allerede har en energidrikk vil den bli erstattet med din.";
 
-        $bonus_type[6] = "Gresskar";
+        $bonus_type[6] = "Åpne gresskaret";
         $bonus_name[6] = "Åpne gresskar for å se hva Skitzo har gjemt unna til deg!";
 
-        $bonus_type[7] = "Happy hour 1 time";
+        $bonus_type[7] = "Aktiver happy hour 1 time";
         $bonus_name[7] = "Aktiver for å starte 1 time med happy hour for hele spillet!";
 
-        $bonus_type[8] = "Happy hour 3 timer";
+        $bonus_type[8] = "Aktiver happy hour 3 timer";
         $bonus_name[8] = "Aktiver for å starte 3 timer med happy hour for hele spillet!";
 
-        $bonus_type[9] = "Happy hour 6 timer";
+        $bonus_type[9] = "Aktiver happy hour 6 timer";
         $bonus_name[9] = "Aktiver for å starte 6 timer med happy hour for hele spillet!";
 
-        $bonus_type[10] = "Happy hour 12 timer";
+        $bonus_type[10] = "Aktiver happy hour 12 timer";
         $bonus_name[10] = "Aktiver for å starte 12 timer med happy hour for hele spillet!";
 
-        $bonus_type[11] = "Happy hour 24 timer";
+        $bonus_type[11] = "Aktiver happy hour 24 timer";
         $bonus_name[11] = "Aktiver for å starte 24 timer med happy hour for hele spillet!";
+
+        $bonus_type[12] = "Bruk dirkesettet";
+        $bonus_name[12] = "Med dirkesettet får du 50% større sjanse for Bugatti, Rolls Royce og Mercedes 300SL Gullwing";
 
         if (in_array($_GET['bonus'], $legal_bonus)) {
 ?>
@@ -518,7 +536,7 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                                             echo '<span style="display:none">$pecial item</span><a style="color: var(--button-bg-color);" href="?side=lager&bonus=10">' . $thing . '</a>';
                                         } elseif ($row['TH_type'] == 38) /* HH 24t */ {
                                             echo '<span style="display:none">$pecial item</span><a style="color: var(--button-bg-color);" href="?side=lager&bonus=11">' . $thing . '</a>';
-                                        } elseif ($row['TH_type'] == 39) /* Diamant */ {
+                                        } elseif ($row['TH_type'] == 40) /* Dirkesett */ {
                                             echo '<span style="display:none">$pecial item</span><a style="color: var(--button-bg-color);" href="?side=lager&bonus=12">' . $thing . '</a>';
                                         } else {
                                             echo $thing;

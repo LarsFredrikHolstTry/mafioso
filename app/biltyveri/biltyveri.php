@@ -53,14 +53,14 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
     $gta_exp[1] = 3;
     $gta_exp[2] = 5;
 
-    function gta_payout($alt)
+    function gta_payout($alt, $hasDirkeSett)
     {
         if ($alt == 0) {
             return mt_rand(0, 5);
         } elseif ($alt == 1) {
             return mt_rand(6, 11);
         } elseif ($alt == 2) {
-            if (mt_rand(0, 300) == 69) {
+            if (mt_rand(0, !$hasDirkeSett ? 300 : 150) == 69) {
                 return 18;
             } else {
                 return mt_rand(12, 17);
@@ -187,6 +187,22 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
         }
     }
 
+    if (isset($_POST['use_dirkesett'])) {
+        $id = 40;
+        if (active_dirkesett($_SESSION['ID'], $pdo)) {
+            echo feedback('Du har allerede et aktivt dirkesett', 'fail');
+        } elseif (amount_of_things($_SESSION['ID'], $id, $pdo) > 0) {
+            $sql = "INSERT INTO dirkesett (DIRK_acc_id, DIRK_timeout) VALUES (?,?)";
+            $pdo->prepare($sql)->execute([$_SESSION['ID'], time() + 3600]);
+
+            $sql = "DELETE FROM things WHERE TH_type = $id AND TH_acc_id = " . $_SESSION['ID'] . " LIMIT 1";
+            $pdo->exec($sql);
+
+            echo feedback('Du har aktivert dirkesett i 1 time', 'success');
+        } else {
+            echo feedback('Du har ikke valgt ting', 'fail');
+        }
+    }
 
     if (isset($_GET['alt'])) {
         user_log($_SESSION['ID'], $_GET['side'], 'alternativ: ' . $_GET['alt'] . '', $pdo);
@@ -216,14 +232,16 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
             } else {
                 update_konk($_GET['side'], 1, $_SESSION['ID'], $pdo);
 
-                if ($alt == 2 && mt_rand(0, 69) == 69) {
+                $hasDirkeSett = false;
+
+                if ($alt == 2 && mt_rand(0, !$hasDirkeSett ? 69 : 35) == 0) {
                     $car_id = 19;
-                } elseif ($alt == 2 && mt_rand(0, 200) == 69) {
+                } elseif ($alt == 2 && mt_rand(0, !$hasDirkeSett ? 200 : 100) == 0) {
                     $car_id = 20;
-                } elseif ($alt == 2 && mt_rand(0, 350) == 69) {
+                } elseif ($alt == 2 && mt_rand(0, !$hasDirkeSett ? 350 : 175) == 0) {
                     $car_id = 21;
                 } else {
-                    $car_id = gta_payout($alt);
+                    $car_id = gta_payout($alt, $hasDirkeSett);
                 }
 
                 give_exp($_SESSION['ID'], $gta_exp[$alt], $pdo);
@@ -342,12 +360,14 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                                     $percentage = get_gta_chance($_SESSION['ID'], AS_session_row($_SESSION['ID'], 'AS_city', $pdo), $i, $pdo);
 
                                     if ($percentage - get_city_tax(AS_session_row($_SESSION['ID'], 'AS_city', $pdo), $pdo) < 0) {
-                                        echo $percentage = 0;
+                                        $percentage = 0;
                                     } else {
-                                        echo $percentage = $percentage - get_city_tax(AS_session_row($_SESSION['ID'], 'AS_city', $pdo), $pdo);
+                                        $percentage = $percentage - get_city_tax(AS_session_row($_SESSION['ID'], 'AS_city', $pdo), $pdo);
                                     }
 
-                                    ?>%</td>
+                                    echo colorize_chances($percentage);
+
+                                    ?></td>
                             </tr>
                         <?php } ?>
 
@@ -361,6 +381,27 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                         <?php } ?>
                     </table>
                 <?php } ?>
+            </div>
+            <div class="content" style="margin-top:20px;">
+                <h4>Benytt dirkesett</h4>
+                <div style="margin: 10px; display: flex; align-items: center;">
+                    <img style="margin-right: 20px;" src="img/action/actions/dirkesett.png" />
+                    <p>Et dirkesett kan benyttes for å få 50% mer sjanse for å stjele bilene Rolls Royce Wraith,
+                        1955 Mercedes 300SL Gullwing, Bugatti La Voiture Noire eller Rolls-Royce
+                        Boat Tail. Et dirkesett kan du få ved å utføre kriminelle handlinger.
+                        <br>
+                        <br>
+                        Et dirkesett varer i 1 time
+                    </p>
+                </div>
+                <?php if (!active_dirkesett($_SESSION['ID'], $pdo)) { ?>
+                    <form method="post">
+                        <p>Du har 5 dirkesett</p>
+                        <input type="submit" name="use_dirkesett" value="Bruk dirkesett" />
+                    </form>
+                <?php } else {
+                    echo feedback('Du har et aktivt dirkesett til ' . date_to_text(dirkesett_timeout($_SESSION['ID'], $pdo)) . '', 'success');
+                } ?>
             </div>
         </div>
         <div class="col-4" style="padding-top: 0px;">
