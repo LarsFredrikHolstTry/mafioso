@@ -319,6 +319,10 @@ function seconds2human($seconds)
         $rank_progress = 100;
     }
 
+    if ($rank_progress > 100) {
+        $rank_progress = 100;
+    }
+
     ?>#progress:after {
         width: <?php echo $rank_progress . '%'; ?>;
     }
