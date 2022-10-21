@@ -200,7 +200,7 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
 
             echo feedback('Du har aktivert dirkesett i 1 time', 'success');
         } else {
-            echo feedback('Du har ikke valgt ting', 'fail');
+            echo feedback('Du har ikke dirkesett', 'fail');
         }
     }
 
