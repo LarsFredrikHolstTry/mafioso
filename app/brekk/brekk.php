@@ -202,7 +202,7 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
 
                     give_territorium_money(AS_session_row($_SESSION['ID'], 'AS_city', $pdo), thing_price($brekk_id) * 0.1, $pdo);
 
-                    if (mt_rand(0, 20) == 20) {
+                    if (mt_rand(0, !active_superhelg($pdo) ? 20 : 10) == 0) {
                         update_things($_SESSION['ID'], 31, $pdo);
                         send_notification($_SESSION['ID'], "Du fant gresskar når du utførte en kriminell handling!", $pdo);
                     }
