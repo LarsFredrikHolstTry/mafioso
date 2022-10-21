@@ -31,7 +31,7 @@ $mission_text[27] = "Det ser ut som narkotikaen kom seg greit over til Europa, m
 $mission_text[28] = "Det skal feires at du ordnet all narkotikaen! For å feire trengs det 30 stereoanlegg, jeg har troa på deg!";
 $mission_text[29] = "Det ble gjort store skader under festen vi hadde og hotell eieren krever penger for alle skadene. Neste gang burde du huske dampsperre om du skal kjøre skumparty.";
 $mission_text[30] = "Det er viktig å bevise for familien din at du kan gi for å få.";
-$mission_text[31] = "Jeg har et casino i Las Vegas jeg ønsker å smerte, ran Nugget Casino for 50 000 000 så venter en saftig belønning!";
+$mission_text[31] = "Jeg har et casino i Las Vegas jeg ønsker å smerte, ran Nugget Casino for 1 000 000 så venter en saftig belønning!";
 $mission_text[32] = "Guttungen skal ha LAN-party med noen fra klassen til helgen og trenger dermed noe energidrikk for at de skal holde ut.";
 $mission_text[33] = "LAN-partyet gikk ikke som planlagt.. Jeg ble med og fruen er ikke fornøyd. Jeg trenger at du skaffer meg fem diamant ringer som unnskyldning til fruen. En saftig belønning venter!";
 $mission_text[34] = "Vi har kjøpt oss feriehus i Marbella og trenger en del innredninger, ran kun fra villaer da vi har en viss klasse.";
@@ -210,7 +210,7 @@ function mission($mission_nr)
     $mission[28] = "Skaff 30 stereoanlegg";
     $mission[29] = "Skaff 2 500 000 000 kr";
     $mission[30] = "Doner 500 000 000 kr til en familie";
-    $mission[31] = "Stjel 50 000 000 kr fra Nugget Casino";
+    $mission[31] = "Stjel 1 000 000 kr fra Nugget Casino";
     $mission[32] = "Skaff 20 energidrikker";
     $mission[33] = "Skaff 5 diamant ringer";
     $mission[34] = "Skaff 13 lysestaker";
