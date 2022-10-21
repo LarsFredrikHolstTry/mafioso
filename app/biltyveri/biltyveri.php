@@ -396,7 +396,6 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                 </div>
                 <?php if (!active_dirkesett($_SESSION['ID'], $pdo)) { ?>
                     <form method="post">
-                        <p>Du har 5 dirkesett</p>
                         <input type="submit" name="use_dirkesett" value="Bruk dirkesett" />
                     </form>
                 <?php } else {
