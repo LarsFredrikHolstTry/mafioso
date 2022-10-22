@@ -1689,6 +1689,7 @@ table.dataTable td {
 }
 
 .profile-bio {
+  width: 100%;
   grid-area: profile-bio;
   margin-top: 2em;
 }

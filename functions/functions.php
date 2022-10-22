@@ -1231,6 +1231,8 @@ function showBBcodes($text)
         '~\[tr\](.*?)\[/tr\]~s',
         '~\[spotify\](.*?)\[/spotify\]~s',
         '~\[spotify compact\](.*?)\[/spotify\]~s',
+        '~\[left\](.*?)\[/left\]~s',
+        '~\[right\](.*?)\[/right\]~s',
     );
     // HTML tags to replace BBcode
     $replace = array(
@@ -1248,6 +1250,8 @@ function showBBcodes($text)
         '<span id="transparent">$1</span>',
         '<iframe src="https://open.spotify.com/embed/$1" width="100%" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>',
         '<iframe src="https://open.spotify.com/embed/$1" width="100%" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>',
+        '<div style="text-align: left">$1</div>',
+        '<div style="text-align: right">$1</div>',
     );
     // Replacing the BBcodes with corresponding HTML tags
     return preg_replace($find, $replace, $text);
