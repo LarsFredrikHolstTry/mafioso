@@ -35,7 +35,9 @@ if (!isset($_GET['side'])) {
 
                         $text = "Din søknad om å bli med i " . get_familyname($FAM_applicant['FAMAP_fam_id'], $pdo) . " ble avslått";
 
-                        send_notification($FAM_applicant['FAMAP_acc_id'], $text, $pdo);
+                        if (notificationSettings('notJoinFamily', $_SESSION['ID'], $pdo)) {
+                            send_notification($FAM_applicant['FAMAP_acc_id'], $text, $pdo);
+                        }
 
                         header("Location: ?side=familie&p=soknader&avslatt");
                     }
@@ -53,7 +55,9 @@ if (!isset($_GET['side'])) {
 
                             $text = "Din søknad om å bli med i " . get_familyname($FAM_applicant['FAMAP_fam_id'], $pdo) . " ble godtatt";
 
-                            send_notification($FAM_applicant['FAMAP_acc_id'], $text, $pdo);
+                            if (notificationSettings('joinsFamily', $_SESSION['ID'], $pdo)) {
+                                send_notification($FAM_applicant['FAMAP_acc_id'], $text, $pdo);
+                            }
 
                             header("Location: ?side=familie&p=soknader&godtatt");
                         }

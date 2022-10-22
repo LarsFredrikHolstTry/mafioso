@@ -40,7 +40,9 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
 
                     $to = $brytut_id;
                     $text = username_plain($_SESSION['ID'], $pdo) . " hjalp deg med å bryte ut av fengsel og du er nå fri";
-                    send_notification($to, $text, $pdo);
+                    if (notificationSettings('outOfJail', $_SESSION['ID'], $pdo)) {
+                        send_notification($to, $text, $pdo);
+                    }
 
                     give_exp($_SESSION['ID'], $exp, $pdo);
 

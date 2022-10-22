@@ -98,7 +98,9 @@ if (isset($_GET['buy'])) {
                     update_garage($_SESSION['ID'], $car_id, $city, $pdo);
                 }
 
-                send_notification($marked_seller, "Du solgte en bil på marked og fikk " . number($marked_price) . " kr", $pdo);
+                if (notificationSettings('soldMarket', $_SESSION['ID'], $pdo)) {
+                    send_notification($marked_seller, "Du solgte en bil på marked og fikk " . number($marked_price) . " kr", $pdo);
+                }
             } elseif ($marked_cat == 1) {
                 $jsonobj = $marked_info;
 
@@ -113,28 +115,32 @@ if (isset($_GET['buy'])) {
                 for ($i = 0; $i < $amount; $i++) {
                     update_things($_SESSION['ID'], $thing_type, $pdo);
                 }
-
-                send_notification($marked_seller, "Du solgte ting på marked og fikk " . number($marked_price) . " kr", $pdo);
+                if (notificationSettings('soldMarket', $_SESSION['ID'], $pdo)) {
+                    send_notification($marked_seller, "Du solgte ting på marked og fikk " . number($marked_price) . " kr", $pdo);
+                }
             } elseif ($marked_cat == 2) {
                 $sql = "DELETE FROM marked WHERE MARKED_id = " . $_GET['buy'] . "";
                 $pdo->exec($sql);
                 give_poeng($_SESSION['ID'], $marked_info, $pdo);
-
-                send_notification($marked_seller, "Du solgte poeng på marked og fikk " . number($marked_price) . " kr", $pdo);
+                if (notificationSettings('soldMarket', $_SESSION['ID'], $pdo)) {
+                    send_notification($marked_seller, "Du solgte poeng på marked og fikk " . number($marked_price) . " kr", $pdo);
+                }
             } elseif ($marked_cat == 3) {
                 $sql = "DELETE FROM marked WHERE MARKED_id = " . $_GET['buy'] . "";
                 $pdo->exec($sql);
                 give_bullets($_SESSION['ID'], $marked_info, $pdo);
-
-                send_notification($marked_seller, "Du solgte kuler på marked og fikk " . number($marked_price) . " kr", $pdo);
+                if (notificationSettings('soldMarket', $_SESSION['ID'], $pdo)) {
+                    send_notification($marked_seller, "Du solgte kuler på marked og fikk " . number($marked_price) . " kr", $pdo);
+                }
             } elseif ($marked_cat == 4) {
                 $sql = "DELETE FROM marked WHERE MARKED_id = " . $_GET['buy'] . "";
                 $pdo->exec($sql);
 
                 $sql = "INSERT INTO charm (CH_acc_id, CH_charm) VALUES (?,?)";
                 $pdo->prepare($sql)->execute([$_SESSION['ID'], $marked_info]);
-
-                send_notification($marked_seller, "Du solgte et profil-ikon på marked og fikk " . number($marked_price) . " kr", $pdo);
+                if (notificationSettings('soldMarket', $_SESSION['ID'], $pdo)) {
+                    send_notification($marked_seller, "Du solgte et profil-ikon på marked og fikk " . number($marked_price) . " kr", $pdo);
+                }
             } elseif ($marked_cat == 5) {
                 if (
                     !max_eiendeler($_SESSION['ID'], $pdo)
@@ -183,9 +189,9 @@ if (isset($_GET['buy'])) {
                         $sql = "INSERT INTO bunker_owner (BUNOWN_city, BUNOWN_acc_id) VALUES (?,?)";
                         $pdo->prepare($sql)->execute([$city, $_SESSION['ID']]);
                     }
-
-                    send_notification($marked_seller, "Du solgte et firma på marked og fikk " . number($marked_price) . " kr", $pdo);
-
+                    if (notificationSettings('soldMarket', $_SESSION['ID'], $pdo)) {
+                        send_notification($marked_seller, "Du solgte et firma på marked og fikk " . number($marked_price) . " kr", $pdo);
+                    }
                     $sql = "DELETE FROM marked WHERE MARKED_id = " . $_GET['buy'] . "";
                     $pdo->exec($sql);
                 } else {
@@ -195,8 +201,9 @@ if (isset($_GET['buy'])) {
                 $sql = "DELETE FROM marked WHERE MARKED_id = " . $_GET['buy'] . "";
                 $pdo->exec($sql);
                 give_weed($_SESSION['ID'], $marked_info, $pdo);
-
-                send_notification($marked_seller, "Du solgte cannabis på marked og fikk " . number($marked_price) . " kr", $pdo);
+                if (notificationSettings('soldMarket', $_SESSION['ID'], $pdo)) {
+                    send_notification($marked_seller, "Du solgte cannabis på marked og fikk " . number($marked_price) . " kr", $pdo);
+                }
             }
 
             if (AS_session_row($marked_seller, 'AS_mission', $pdo) == 24) {

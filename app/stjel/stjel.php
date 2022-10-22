@@ -84,8 +84,9 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                         }
 
                         $msg = "Du har blitt frastjålet " . number($money_amount) . " kr av " . username_plain($_SESSION['ID'], $pdo) . ". Kjøp ransbeskyttelse for å unngå å bli frastjålet penger.";
-                        send_notification($id_steal, $msg, $pdo);
-
+                        if (notificationSettings('stolenFrom', $id_steal, $pdo)) {
+                            send_notification($id_steal, $msg, $pdo);
+                        }
                         give_exp($_SESSION['ID'], $exp, $pdo);
                         check_rankup($_SESSION['ID'], AS_session_row($_SESSION['ID'], 'AS_rank', $pdo), AS_session_row($_SESSION['ID'], 'AS_exp', $pdo), $pdo);
 
@@ -122,7 +123,9 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                         $stmt->execute();
 
                         $msg = "Du har blitt frastjålet en " . car($car_stolen['GA_car_id']) . " fra " . username_plain($_SESSION['ID'], $pdo) . ". Kjøp beskyttelse til garasjen for å unngå å bli frastjålet biler.";
-                        send_notification($id_steal, $msg, $pdo);
+                        if (notificationSettings('stolenFrom', $id_steal, $pdo)) {
+                            send_notification($id_steal, $msg, $pdo);
+                        }
 
                         give_exp($_SESSION['ID'], $exp, $pdo);
                         check_rankup($_SESSION['ID'], AS_session_row($_SESSION['ID'], 'AS_rank', $pdo), AS_session_row($_SESSION['ID'], 'AS_exp', $pdo), $pdo);
@@ -164,8 +167,9 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                         update_stjel($_SESSION['ID'], 1, $pdo);
 
                         $msg = "Du har blitt frastjålet en " . thing($thing_id_steal) . " fra " . username_plain($_SESSION['ID'], $pdo) . ". Kjøp beskyttelse til lageret for å unngå å bli frastjålet ting.";
-                        send_notification($id_steal, $msg, $pdo);
-
+                        if (notificationSettings('stolenFrom', $id_steal, $pdo)) {
+                            send_notification($id_steal, $msg, $pdo);
+                        }
                         give_exp($_SESSION['ID'], $exp, $pdo);
 
                         check_rankup($_SESSION['ID'], AS_session_row($_SESSION['ID'], 'AS_rank', $pdo), AS_session_row($_SESSION['ID'], 'AS_exp', $pdo), $pdo);
@@ -246,8 +250,9 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                                 }
 
                                 $msg = "Du har blitt frastjålet " . number($money_amount) . " kr av " . username_plain($_SESSION['ID'], $pdo) . ". Kjøp ransbeskyttelse for å unngå å bli frastjålet penger.";
-                                send_notification($id_steal, $msg, $pdo);
-
+                                if (notificationSettings('stolenFrom', $id_steal, $pdo)) {
+                                    send_notification($id_steal, $msg, $pdo);
+                                }
                                 give_exp($_SESSION['ID'], $exp, $pdo);
                                 check_rankup($_SESSION['ID'], AS_session_row($_SESSION['ID'], 'AS_rank', $pdo), AS_session_row($_SESSION['ID'], 'AS_exp', $pdo), $pdo);
 
@@ -283,8 +288,9 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                                 $stmt->execute();
 
                                 $msg = "Du har blitt frastjålet en " . car($car_stolen['GA_car_id']) . " fra " . username_plain($_SESSION['ID'], $pdo) . ". Kjøp beskyttelse til garasjen for å unngå å bli frastjålet biler.";
-                                send_notification($id_steal, $msg, $pdo);
-
+                                if (notificationSettings('stolenFrom', $id_steal, $pdo)) {
+                                    send_notification($id_steal, $msg, $pdo);
+                                }
                                 give_exp($_SESSION['ID'], $exp, $pdo);
                                 update_dagens_utfordring($_SESSION['ID'], 4, $pdo);
 
@@ -322,8 +328,9 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                                 update_stjel($_SESSION['ID'], 1, $pdo);
 
                                 $msg = "Du har blitt frastjålet en " . thing($thing_id_steal) . " fra " . username_plain($_SESSION['ID'], $pdo) . ". Kjøp beskyttelse til lageret for å unngå å bli frastjålet ting.";
-                                send_notification($id_steal, $msg, $pdo);
-
+                                if (notificationSettings('stolenFrom', $id_steal, $pdo)) {
+                                    send_notification($id_steal, $msg, $pdo);
+                                }
                                 give_exp($_SESSION['ID'], $exp, $pdo);
 
                                 check_rankup($_SESSION['ID'], AS_session_row($_SESSION['ID'], 'AS_rank', $pdo), AS_session_row($_SESSION['ID'], 'AS_exp', $pdo), $pdo);

@@ -223,7 +223,7 @@ if (!isset($_GET['id'])) {
                 <?php
 
                 $acc_type[0] = "0 = Vanlig bruker";
-                $acc_type[1] = "1 = Forum moderator";
+                $acc_type[1] = "1 = Support";
                 $acc_type[2] = "2 = Moderator";
                 $acc_type[3] = "3 = Administrator";
                 $acc_type[4] = "4 = Drept";

@@ -93,7 +93,9 @@ if (!isset($_GET['side'])) {
 
                         $acc_id = get_family_leader($owner_of_city, $pdo);
                         $text = "Territoriumet i " . city_name($city) . " ble forsøkt angrepet.";
-                        send_notification($acc_id, $text, $pdo);
+                        if (notificationSettings('territoriumAttack', $acc_id, $pdo)) {
+                            send_notification($acc_id, $text, $pdo);
+                        }
 
                         header("location: ?side=familie&p=territorium&f=2&city_name=" . $city . "&owner=" . $owner_of_city . "");
                     } else {
@@ -119,7 +121,9 @@ if (!isset($_GET['side'])) {
 
                         $acc_id = get_family_leader($owner_of_city, $pdo);
                         $text = "Territoriumet i " . city_name($city) . " ble tatt fra din familie. Din familie mistet forsvar i angrepet.";
-                        send_notification($acc_id, $text, $pdo);
+                        if (notificationSettings('territoriumAttack', $acc_id, $pdo)) {
+                            send_notification($acc_id, $text, $pdo);
+                        }
 
                         header("location: ?side=familie&p=territorium&f=3&city_name=" . $city . "&owner=" . $owner_of_city . "&bullets=" . $bullets_needed . "");
                     }

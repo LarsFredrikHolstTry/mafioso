@@ -215,7 +215,9 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                 while ($row_memb = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
                     $text = username_plain($_SESSION['ID'], $pdo) . " har aktivert en energidrikk for familien din!";
-                    send_notification($row_memb['FAMMEM_acc_id'], $text, $pdo);
+                    if (notificationSettings('activateFamilyDrink', $row_memb['FAMMEM_acc_id'], $pdo)) {
+                        send_notification($row_memb['FAMMEM_acc_id'], $text, $pdo);
+                    }
 
                     $sql = "DELETE FROM double_xp WHERE DX_acc_id = " . $row_memb['FAMMEM_acc_id'] . "";
                     $pdo->exec($sql);

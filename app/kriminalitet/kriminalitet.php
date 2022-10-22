@@ -281,12 +281,16 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
 
                 if (mt_rand(0, !active_superhelg($pdo) ? 20 : 10) == 0) {
                     update_things($_SESSION['ID'], 31, $pdo);
-                    send_notification($_SESSION['ID'], "Du fant gresskar når du utførte en kriminell handling!", $pdo);
+                    if (notificationSettings('pumpkin', $_SESSION['ID'], $pdo)) {
+                        send_notification($_SESSION['ID'], "Du fant gresskar når du utførte en kriminell handling!", $pdo);
+                    }
                 }
 
                 if (mt_rand(0, 100) == 0) {
                     update_things($_SESSION['ID'], 40, $pdo);
-                    send_notification($_SESSION['ID'], "Du fant et dirkesett når du utførte en kriminell handling!", $pdo);
+                    if (notificationSettings('dirkesett', $_SESSION['ID'], $pdo)) {
+                        send_notification($_SESSION['ID'], "Du fant et dirkesett når du utførte en kriminell handling!", $pdo);
+                    }
                 }
 
                 if (AS_session_row($_SESSION['ID'], 'AS_mission', $pdo) == 2 || AS_session_row($_SESSION['ID'], 'AS_mission', $pdo) == 12) {

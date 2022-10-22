@@ -63,8 +63,10 @@ if (!isset($_GET['side'])) {
                     $stmt = $pdo->prepare($sql);
                     $stmt->execute();
 
-                    $text = "Du har fullført skytetrening og har fått " . weapons(AS_session_row($_SESSION['ID'], 'AS_weapon', $pdo)) . " som nytt våpen";
-                    send_notification($_SESSION['ID'], $text, $pdo);
+                    if (notificationSettings('weaponLevelUp', $_SESSION['ID'], $pdo)) {
+                        $text = "Du har fullført skytetrening og har fått " . weapons(AS_session_row($_SESSION['ID'], 'AS_weapon', $pdo)) . " som nytt våpen";
+                        send_notification($_SESSION['ID'], $text, $pdo);
+                    }
                 }
 
                 header("Location: ?side=drap&p=skytetrening&trent");

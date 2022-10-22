@@ -197,9 +197,11 @@ if (isset($_POST['kill'])) {
                                                 give_half_hp($_SESSION['ID'], $pdo);
 
                                                 take_fp($def, $acc_id, $pdo);
-                                                $to = $acc_id;
-                                                $text = "Du har blitt angrepet av " . username_plain($_SESSION['ID'], $pdo) . " og mistet " . number($def) . " forsvarspoeng";
-                                                send_notification($to, $text, $pdo);
+                                                if (notificationSettings('getsAttacked', $acc_id, $pdo)) {
+                                                    $to = $acc_id;
+                                                    $text = "Du har blitt angrepet av " . username_plain($_SESSION['ID'], $pdo) . " og mistet " . number($def) . " forsvarspoeng";
+                                                    send_notification($to, $text, $pdo);
+                                                }
 
                                                 echo feedback("Du feilet på drapet på " . $username . ", men gjorde skade på spilleren", "error");
                                             } else {
@@ -208,9 +210,11 @@ if (isset($_POST['kill'])) {
                                                 give_half_hp($_SESSION['ID'], $pdo);
 
                                                 take_fp($amount_fp_remove, $acc_id, $pdo);
-                                                $to = $acc_id;
-                                                $text = "Du har blitt angrepet av " . username_plain($_SESSION['ID'], $pdo) . "og mistet " . number($amount_fp_remove) . " forsvarspoeng";
-                                                send_notification($to, $text, $pdo);
+                                                if (notificationSettings('getsAttacked', $acc_id, $pdo)) {
+                                                    $to = $acc_id;
+                                                    $text = "Du har blitt angrepet av " . username_plain($_SESSION['ID'], $pdo) . "og mistet " . number($amount_fp_remove) . " forsvarspoeng";
+                                                    send_notification($to, $text, $pdo);
+                                                }
 
                                                 echo feedback("Du feilet på drapet på " . $username . ", men gjorde skade på spilleren.", "error");
                                             }

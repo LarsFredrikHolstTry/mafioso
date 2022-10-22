@@ -171,7 +171,7 @@ function role_colors($role_nr)
 function roles($role_nr)
 {
     $role[0] = "Bruker";
-    $role[1] = "Forum moderator";
+    $role[1] = "Support";
     $role[2] = "Moderator";
     $role[3] = "Administrator";
     $role[4] = "Død";
@@ -983,6 +983,27 @@ function player_in_jail($acc_id, $pdo)
         return false;
     } else {
         return true;
+    }
+}
+
+function notificationSettings($what, $id, $pdo)
+{
+    $query = $pdo->prepare("SELECT NOSE_json FROM notificationsettings WHERE NOSE_acc_id=?");
+    $query->execute(array($id));
+    $row_settings = $query->fetch(PDO::FETCH_ASSOC);
+
+    if (!$row_settings) {
+        return true;
+    }
+
+    $query = $pdo->prepare("SELECT NOSE_json FROM notificationsettings WHERE NOSE_acc_id=?");
+    $query->execute(array($id));
+    $row_settings = $query->fetchColumn();
+
+    if (in_array($what, json_decode($row_settings))) {
+        return true;
+    } else {
+        return false;
     }
 }
 

@@ -138,13 +138,13 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
 
                     if (isset($_POST['send_money'])) {
                         user_log($_SESSION['ID'], $_GET['side'], 'Sender penger', $pdo);
-                        if(isset($_POST['text']) && strlen($_POST['text']) <= 100){
+                        if (isset($_POST['text']) && strlen($_POST['text']) <= 100) {
                             if (isset($_POST['number_send']) && isset($_POST['receiver'])) {
                                 $number_send = remove_space($_POST['number_send']);
                                 $receiver = $_POST['receiver'];
                                 $user_exist = user_exist($receiver, $pdo);
                                 $user_id_receiver = get_acc_id($receiver, $pdo);
-                                
+
                                 if (strtolower($receiver) == strtolower(ACC_username($_SESSION['ID'], $pdo))) {
                                     user_log($_SESSION['ID'], $_GET['side'], 'Prøver å sende penger til seg selv', $pdo);
                                     echo feedback("Du kan ikke sende penger til deg selv", "error");
@@ -161,13 +161,15 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                                     $sql = "INSERT INTO bank_transfer (BT_from, BT_to, BT_money, BT_date, BT_text) VALUES (?,?,?,?,?)";
                                     $stmt = $pdo->prepare($sql);
                                     $stmt->execute([$_SESSION['ID'], $user_id_receiver, ($number_send * 0.9), time(), $_POST['text']]);
-                                    
-                                    $text = "Du har mottatt " . number($number_send * 0.9) . " kr av " . username_plain($_SESSION['ID'], $pdo) . "";
-                                    
+
                                     take_bank_money($_SESSION['ID'], $number_send, $pdo);
                                     give_bank_money($user_id_receiver, $number_send * 0.9, $pdo);
-                                    send_notification($user_id_receiver, $text, $pdo);
-                                    
+
+                                    if (notificationSettings('moneyReceived', $user_id_receiver, $pdo)) {
+                                        $text = "Du har mottatt " . number($number_send * 0.9) . " kr av " . username_plain($_SESSION['ID'], $pdo) . "";
+                                        send_notification($user_id_receiver, $text, $pdo);
+                                    }
+
                                     user_log($_SESSION['ID'], $_GET['side'], 'Sender ' . ($number_send * 0.9) . ' til ' . $receiver . '', $pdo);
                                     header("Location: ?side=banken&send=" . ($number_send * 0.9) . "&receiver=$receiver");
                                 }
@@ -206,7 +208,7 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
 
     <div class="col-10 single">
 
-    <div class="col-12">
+        <div class="col-12">
             <div class="content">
                 <h4>20 siste overføringer</h4>
                 <br>
@@ -223,29 +225,29 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                     $statement->execute(array(':id' => $_SESSION['ID']));
                     while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
 
-                        if($row && $row['BT_from'] == $_SESSION['ID']){
+                        if ($row && $row['BT_from'] == $_SESSION['ID']) {
                             $status = 'from';
-                        } elseif($row && $row['BT_to'] == $_SESSION['ID']) {
+                        } elseif ($row && $row['BT_to'] == $_SESSION['ID']) {
                             $status = 'to';
                         }
 
                     ?>
                         <tr>
-                            <td><?php 
+                            <td><?php
 
-                                if($status == 'to'){
-                                    echo ACC_username($row['BT_from'], $pdo); 
+                                if ($status == 'to') {
+                                    echo ACC_username($row['BT_from'], $pdo);
                                 } else {
-                                    echo ACC_username($row['BT_to'], $pdo); 
+                                    echo ACC_username($row['BT_to'], $pdo);
                                 }
 
-                            ?></td>
-                            <td><?php 
-                            if($status == 'to'){ 
-                                echo '<span style="color:var(--ready-color)">+ '.number($row['BT_money']); 
-                            } else { 
-                                echo '<span style="color:var(--clr-rank-mafioso)">- '.number($row['BT_money']); 
-                            } 
+                                ?></td>
+                            <td><?php
+                                if ($status == 'to') {
+                                    echo '<span style="color:var(--ready-color)">+ ' . number($row['BT_money']);
+                                } else {
+                                    echo '<span style="color:var(--clr-rank-mafioso)">- ' . number($row['BT_money']);
+                                }
                                 ?> kr</span></td>
                             <td><?php echo $row['BT_text'] ? $row['BT_text'] : '<span style="color:var(--table-th-cl);">ingen melding</span>'; ?></td>
                             <td><?php echo date_to_text($row['BT_date']); ?></td>
@@ -289,7 +291,7 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                             $('#saldo').text(numberWithSpaces(<?php echo AS_session_row($_SESSION['ID'], 'AS_bankmoney', $pdo) + AS_session_row($_SESSION['ID'], 'AS_money', $pdo); ?>) + ' kr');
                             $('#saldo_top').text(numberWithSpaces(<?php echo AS_session_row($_SESSION['ID'], 'AS_bankmoney', $pdo) + AS_session_row($_SESSION['ID'], 'AS_money', $pdo); ?>) + ' kr');
                             $('#saldo_left').text('0 kr');
-                            
+
                         }
                     }
                 );

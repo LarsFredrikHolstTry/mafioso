@@ -43,6 +43,15 @@
         gap: .5em;
     }
 </style>
+
+<?php
+
+if (isset($_GET['savedVarsel'])) {
+    echo feedback("Varslingene dine ble lagret", "success");
+}
+
+?>
+
 <div class="tab">
     <button class="tablinks" onclick="openCity(event, 'hovedkvarter')" <?php if (empty($_GET)) {  ?> id="defaultOpen" <?php } ?>>Hovedkvarter</button>
     <button class="tablinks" onclick="openCity(event, 'profile')">Rediger profil</button>
@@ -51,6 +60,7 @@
     <button class="tablinks" onclick="openCity(event, 'avatar')">Rediger avatar</button>
     <button class="tablinks" onclick="openCity(event, 'password')" <?php if (isset($_GET['password'])) { ?> id="defaultOpen" <?php } ?>>Endre passord</button>
     <button class="tablinks" onclick="openCity(event, 'verv')">Verv en venn</button>
+    <button class="tablinks" onclick="openCity(event, 'varsel')" <?php if (isset($_GET['varsel'])) { ?> id="defaultOpen" <?php } ?>>Varslinger</button>
     <button class="tablinks" onclick="openCity(event, 'blokker')" <?php if (isset($_GET['blocked'])) { ?> id="defaultOpen" <?php } ?>>Blokker</button>
 </div>
 
@@ -144,39 +154,27 @@
 
     <fieldset id="use-custom-background">
         <legend>Bruk egendefinert bakgrunn på profilen:
-            <input type="checkbox" name="profile_bg_active" id="active_bg"
-            <?php echo AS_session_row($_SESSION['ID'], 'AS_bio_bg_active', $pdo) != NULL ? 'checked' : ''; ?>
-            onchange="toggleBackgroundSettings()">
+            <input type="checkbox" name="profile_bg_active" id="active_bg" <?php echo AS_session_row($_SESSION['ID'], 'AS_bio_bg_active', $pdo) != NULL ? 'checked' : ''; ?> onchange="toggleBackgroundSettings()">
         </legend>
 
         <div id="background-options">
             <fieldset id="background-type">
                 <legend>Bakgrunnstype:</legend>
-                <input type="radio" name="background_type" id="background_type_color" value="color"
-                    <?php echo AS_session_row($_SESSION['ID'], 'AS_bio_bg_active', $pdo) != 'url' ? 'checked' : ''; ?>
-                    onchange="toggleBackgroundType()">
+                <input type="radio" name="background_type" id="background_type_color" value="color" <?php echo AS_session_row($_SESSION['ID'], 'AS_bio_bg_active', $pdo) != 'url' ? 'checked' : ''; ?> onchange="toggleBackgroundType()">
                 <label for="background_type_color">Farge</label>
 
-                <input type="radio" name="background_type" id="background_type_url" value="url"
-                    <?php echo AS_session_row($_SESSION['ID'], 'AS_bio_bg_active', $pdo) == 'url' ? 'checked' : ''; ?>
-                    onchange="toggleBackgroundType()">
-                    <label for="background_type_url">Bilde</label>
+                <input type="radio" name="background_type" id="background_type_url" value="url" <?php echo AS_session_row($_SESSION['ID'], 'AS_bio_bg_active', $pdo) == 'url' ? 'checked' : ''; ?> onchange="toggleBackgroundType()">
+                <label for="background_type_url">Bilde</label>
             </fieldset>
-            
+
             <fieldset id="profile-background-color">
                 <legend>Bakgrunnsfarge:</legend>
-                <input type="color"
-                    id="profileBgColor"
-                    value="<?php echo AS_session_row($_SESSION['ID'], 'AS_bio_bg_color', $pdo) ?? "#0b7ef1"; ?>">
+                <input type="color" id="profileBgColor" value="<?php echo AS_session_row($_SESSION['ID'], 'AS_bio_bg_color', $pdo) ?? "#0b7ef1"; ?>">
             </fieldset>
-            
+
             <fieldset id="profile-background-image">
                 <legend>Bakgrunnsbilde (URL):</legend>
-                <input type="hidden"
-                    id="profileBgURL"
-                    value="<?php echo AS_session_row($_SESSION['ID'], 'AS_bio_bg_image', $pdo); ?>"
-                    pattern="https://(imma.gr|imgur.com)/.*"
-                    title="Bildelenke til imma.gr eller imgur.com">
+                <input type="hidden" id="profileBgURL" value="<?php echo AS_session_row($_SESSION['ID'], 'AS_bio_bg_image', $pdo); ?>" pattern="https://(imma.gr|imgur.com)/.*" title="Bildelenke til imma.gr eller imgur.com">
                 <p>
                     <i>
                         NB: Kun bilder opplastet på
@@ -185,32 +183,31 @@
                     </i>
                 </p>
             </fieldset>
-        </fieldset>
+    </fieldset>
     <button type="submit" id="update_profile" style="margin-top: 10px;">Oppdater profil</button>
     <input type="button" value="Forhåndsvisning" onclick="open_preview()">
-    
-<?php include 'live_preview_profile.php'; ?>
+
+    <?php include 'live_preview_profile.php'; ?>
 
 
 </form>
 
 <template id="colorOptionsTemplate">
-    
+
 </template>
 <script>
     function toggleBackgroundSettings() {
-        if($('#active_bg').is(':checked')){
+        if ($('#active_bg').is(':checked')) {
             $('#background-options').show();
-        }
-        else {
+        } else {
             $('#background-options').hide();
         }
 
         toggleBackgroundType();
     }
 
-    function toggleBackgroundType () {
-        switch($('[name=background_type]:checked').val()) {
+    function toggleBackgroundType() {
+        switch ($('[name=background_type]:checked').val()) {
             case 'color':
                 $('#profile-background-image').hide();
                 $('#profile-background-color').show();
@@ -512,7 +509,97 @@ if (isset($_GET['block_remove'])) {
     <div style="clear: both;"></div>
 </div>
 
+<?php
+
+
+$query = $pdo->prepare("SELECT NOSE_json FROM notificationsettings WHERE NOSE_acc_id=?");
+$query->execute(array($_SESSION['ID']));
+$row_settings = $query->fetch(PDO::FETCH_ASSOC);
+
+if (isset($_POST['save'])) {
+    $arr = [];
+    foreach ($_POST['setting'] as $setting) {
+        array_push($arr, $setting);
+    }
+
+    if (!$row_settings) {
+        $sql = "INSERT INTO notificationsettings (NOSE_acc_id, NOSE_json) VALUES (?,?)";
+        $pdo->prepare($sql)->execute([$_SESSION['ID'], json_encode($arr)]);
+    } else {
+        $sql = "UPDATE notificationsettings SET NOSE_json = ? WHERE NOSE_acc_id = ? ";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([json_encode($arr), $_SESSION['ID']]);
+    }
+
+    header("Location: ?varsel&savedVarsel");
+}
+
+notificationSettings('moneyReceived', $_SESSION['ID'], $pdo);
+
+?>
+<div id="varsel" class="tabcontent">
+
+    <div class="col-12">
+        <div id="varsel_feedback" style="display: none;"><?php echo feedback("Varslinger ble endret", "success"); ?></div>
+        <h4 style="margin-bottom: 20px;">Endre varslinger</h4>
+        <div style="display: flex; flex-direction: column;">
+            <p class="description">Jeg ønsker å motta varslinger dersom...</p>
+            <form method="post">
+                <div class="dfItem">
+                    <input type="checkbox" <?= notificationSettings('moneyReceived', $_SESSION['ID'], $pdo) ? 'checked' : '' ?> name="setting[]" value="moneyReceived" /> Mottar penger i banken
+                </div>
+                <div class="dfItem" style="display: flex;">
+                    <input type="checkbox" name="setting[]" <?= notificationSettings('pumpkin', $_SESSION['ID'], $pdo) ? 'checked' : '' ?> value="pumpkin" style="margin-right: 7px;" /> Får gresskar fra kriminelle handlinger
+                    <div style="margin-left: 5px; border-radius: 2px; padding: 0px 8px 3px 8px; background-color: #FF97C1; color: #9A1663">event</div>
+                </div>
+                <div class="dfItem">
+                    <input type="checkbox" <?= notificationSettings('dirkesett', $_SESSION['ID'], $pdo) ? 'checked' : '' ?> name="setting[]" value="dirkesett" /> Finner dirkesett fra kriminell handling
+                </div>
+                <div class="dfItem">
+                    <input type="checkbox" <?= notificationSettings('getsAttacked', $_SESSION['ID'], $pdo) ? 'checked' : '' ?> name="setting[]" value="getsAttacked" /> Blir angrepet
+                </div>
+                <div class="dfItem">
+                    <input type="checkbox" <?= notificationSettings('weaponLevelUp', $_SESSION['ID'], $pdo) ? 'checked' : '' ?> name="setting[]" value="weaponLevelUp" /> Får bedre våpen fra skytetrening
+                </div>
+                <div class="dfItem">
+                    <input type="checkbox" <?= notificationSettings('joinsFamily', $_SESSION['ID'], $pdo) ? 'checked' : '' ?> name="setting[]" value="joinsFamily" /> Blir med i familien du søkte på
+                </div>
+                <div class="dfItem">
+                    <input type="checkbox" <?= notificationSettings('notJoinFamily', $_SESSION['ID'], $pdo) ? 'checked' : '' ?> name="setting[]" value="notJoinFamily" /> Ikke blir med i familien du søkte på
+                </div>
+                <div class="dfItem">
+                    <input type="checkbox" <?= notificationSettings('activateFamilyDrink', $_SESSION['ID'], $pdo) ? 'checked' : '' ?> name="setting[]" value="activateFamilyDrink" /> Familien din aktiverte familieenergidrikk
+                </div>
+                <div class="dfItem">
+                    <input type="checkbox" <?= notificationSettings('territoriumAttack', $_SESSION['ID'], $pdo) ? 'checked' : '' ?> name="setting[]" value="territoriumAttack" /> Territoriumet til familien ble forsøkt angrepet
+                </div>
+                <div class="dfItem">
+                    <input type="checkbox" <?= notificationSettings('outOfJail', $_SESSION['ID'], $pdo) ? 'checked' : '' ?> name="setting[]" value="outOfJail" /> Blir brytt ut av fengsel
+                </div>
+                <div class="dfItem">
+                    <input type="checkbox" <?= notificationSettings('heistSuccess', $_SESSION['ID'], $pdo) ? 'checked' : '' ?> name="setting[]" value="heistSuccess" /> Klarte heistet du var med i
+                </div>
+                <div class="dfItem">
+                    <input type="checkbox" <?= notificationSettings('soldMarket', $_SESSION['ID'], $pdo) ? 'checked' : '' ?> name="setting[]" value="soldMarket" /> Solgte noe på markedet
+                </div>
+                <div class="dfItem">
+                    <input type="checkbox" <?= notificationSettings('stolenFrom', $_SESSION['ID'], $pdo) ? 'checked' : '' ?> name="setting[]" value="stolenFrom" /> Blir frastjålet noe (bil/ting/penger)
+                </div>
+                <div class="dfItem">
+                    <input type="checkbox" <?= notificationSettings('winLossDices', $_SESSION['ID'], $pdo) ? 'checked' : '' ?> name="setting[]" value="winLossDices" /> Vant/tapte på terninger
+                </div>
+                <button style="margin-top: 20px;" class="btn" name="save" id="saveSettings">Lagre</button>
+            </form>
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
 <style>
+    .dfItem {
+        padding-bottom: 5px;
+    }
+
     .active_theme_p {
         color: <?php echo $color_code[$theme_type]; ?> !important;
     }
@@ -586,17 +673,17 @@ if (isset($_GET['block_remove'])) {
 
     function updateProfile() {
         $.post("app/hjem/profil_post.php", {
-            profile_text: $("#txtarea.profile-bio").val(),
-            background_color: $('#profileBgColor').val(),
-            background_image: $('#profileBgURL').val(),
-            background_type: () => {
-                if(!$('#active_bg').is(':checked')) return null;
-                
-                return $('[name=background_type]:checked').val();
-            },
-        })
-        .fail(err => new Feedback(err.responseText, '#profile', 'error', 10_000))
-        .done(response => new Feedback(response, '#profile', 'success', 4000)); 
+                profile_text: $("#txtarea.profile-bio").val(),
+                background_color: $('#profileBgColor').val(),
+                background_image: $('#profileBgURL').val(),
+                background_type: () => {
+                    if (!$('#active_bg').is(':checked')) return null;
+
+                    return $('[name=background_type]:checked').val();
+                },
+            })
+            .fail(err => new Feedback(err.responseText, '#profile', 'error', 10000))
+            .done(response => new Feedback(response, '#profile', 'success', 4000));
     }
 
     $(document).ready(function() {

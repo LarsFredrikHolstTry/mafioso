@@ -228,11 +228,13 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                                                         give_money($member->ACC_id, $payout, $pdo);
                                                         give_exp($member->ACC_id, $exp, $pdo);
 
-                                                        send_notification(
-                                                            $member->ACC_id,
-                                                            "Dere klarte å avkoble bomben før tiden. Som belønning får du " . number($payout) . " kr!",
-                                                            $pdo
-                                                        );
+                                                        if (notificationSettings('heistSuccess', $member->ACC_id, $pdo)) {
+                                                            send_notification(
+                                                                $member->ACC_id,
+                                                                "Dere klarte å avkoble bomben før tiden. Som belønning får du " . number($payout) . " kr!",
+                                                                $pdo
+                                                            );
+                                                        }
 
                                                         heist_give_cooldown($member->ACC_id, $cooldown[0], $pdo);
 
@@ -355,8 +357,9 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                                                 give_money($member->ACC_id, $money, $pdo);
                                                 give_exp($member->ACC_id, $exp, $pdo);
 
-                                                send_notification($member->ACC_id, $text, $pdo);
-
+                                                if (notificationSettings('heistSuccess', $member->ACC_id, $pdo)) {
+                                                    send_notification($member->ACC_id, $text, $pdo);
+                                                }
                                                 heist_give_cooldown($member->ACC_id, $cooldown[heist_row($heist_id, 'HEIST_type', $pdo)], $pdo);
 
                                                 update_dagens_utfordring($member->ACC_id, 3, $pdo);

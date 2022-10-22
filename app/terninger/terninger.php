@@ -131,8 +131,9 @@ if (isset($_GET['spill'])) {
 
             if ($total_dice_session > $total_dice) {
                 give_money($_SESSION['ID'], $bet * 2, $pdo);
-                send_notification($player, "Du tapte  " . number($bet) . " kr på terninger med " . $total_dice . " mot " . $total_dice_session, $pdo);
-
+                if (notificationSettings('winLossDices', $player, $pdo)) {
+                    send_notification($player, "Du tapte  " . number($bet) . " kr på terninger med " . $total_dice . " mot " . $total_dice_session, $pdo);
+                }
                 update_gambling($_SESSION['ID'], $bet, $pdo);
                 update_gambling($player, -$bet, $pdo);
 
@@ -141,8 +142,9 @@ if (isset($_GET['spill'])) {
                 echo feedback("Du vant!", "success");
             } elseif ($total_dice > $total_dice_session) {
                 give_money($player, $bet * 2, $pdo);
-                send_notification($player, "Du vant  " . number($bet * 2) . " kr på terninger med " . $total_dice . " mot " . $total_dice_session, $pdo);
-
+                if (notificationSettings('winLossDices', $player, $pdo)) {
+                    send_notification($player, "Du vant  " . number($bet * 2) . " kr på terninger med " . $total_dice . " mot " . $total_dice_session, $pdo);
+                }
 
                 update_gambling($_SESSION['ID'], -$bet, $pdo);
                 update_gambling($player, $bet, $pdo);
@@ -153,8 +155,9 @@ if (isset($_GET['spill'])) {
             } else {
                 give_money($player, $bet, $pdo);
                 give_money($_SESSION['ID'], $bet, $pdo);
-
-                send_notification($player, "Du ble tatt på terninger, dere hadde begge " . $total_dice . " i score og det ble uavgjort.", $pdo);
+                if (notificationSettings('winLossDices', $player, $pdo)) {
+                    send_notification($player, "Du ble tatt på terninger, dere hadde begge " . $total_dice . " i score og det ble uavgjort.", $pdo);
+                }
                 user_log($_SESSION['ID'], $side, "Uavgjort og får " . $bet . "kr tilbake", $pdo);
                 echo feedback("Det ble uavgjort", "fail");
             }
