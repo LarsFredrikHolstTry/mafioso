@@ -11,10 +11,11 @@ $cooldown = (60 * 5) + time();
 $moneyWin =         mt_rand(10000000, 100000000);
 $kuler =            mt_rand(10, 50);
 $hemmeligKiste =    mt_rand(0, 1);
+$exp =              mt_rand(5, 50);
 
 $winningStringOriginal = '';
-$winningString = number($moneyWin) . " kr, " . number($kuler) . " kuler";
-$winningStringWithoutHemmeligKiste = number($moneyWin) . "kr og " . number($kuler) . " kuler";
+$winningString = number($moneyWin) . " kr, " . number($exp) . " exp, " . number($kuler) . " kuler";
+$winningStringWithoutHemmeligKiste = number($moneyWin) . "kr, " . number($exp) . " exp og " . number($kuler) . " kuler";
 
 if ($hemmeligKiste == 1) {
     $winningStringOriginal = $winningString . ' og en hemmelig kiste!';
@@ -46,6 +47,7 @@ if (isset($_POST['openSafe'])) {
 
                     give_money($_SESSION['ID'], $moneyWin, $pdo);
                     give_bullets($_SESSION['ID'], $kuler, $pdo);
+                    give_exp($_SESSION['ID'], $exp, $pdo);
 
                     echo feedback("Riktig kode! I safen fant du " . $winningStringOriginal, "success");
                 } elseif ($code < $number) {
