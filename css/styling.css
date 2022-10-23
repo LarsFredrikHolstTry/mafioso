@@ -313,6 +313,10 @@ h3 .v2 {
   float: left;
 }
 
+.upper .logo img {
+  border-radius: 5px;
+}
+
 .rankbar_gun {
   width: 100%;
 }

@@ -16,11 +16,7 @@ function seconds2human($seconds)
 <div class="top_bar">
     <div class="upper">
         <div class="logo">
-            <img src="img/favicon-32x32.png">
-            <span style="color: white; font-size: 20px; margin-left: 10px; position: absolute; margin-top: 4px; font-weight: bolder;">
-                Mafioso 2 <?= $prodOrDev == 'dev' ? '- Utvikling' : '' ?>
-            </span>
-            <p>Kampen om makten</p>
+            <img src="img/header.png">
         </div>
         <div class="rankbar ">
             <center>
