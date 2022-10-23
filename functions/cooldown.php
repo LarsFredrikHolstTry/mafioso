@@ -51,6 +51,28 @@ function crime_give_cooldown($acc_id, $time, $pdo)
     $stmt->execute();
 }
 
+function safe_ready($acc_id, $pdo)
+{
+    $stmt = $pdo->prepare('SELECT * FROM cooldown WHERE CD_acc_id = :cd_acc_id AND CD_safe <= ' . time() . '');
+    $stmt->execute(array(
+        ':cd_acc_id' => $acc_id
+    ));
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$row) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function safe_give_cooldown($acc_id, $time, $pdo)
+{
+    $sql = "UPDATE cooldown SET CD_safe = $time WHERE CD_acc_id='" . $acc_id . "'";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+}
+
 function gta_ready($acc_id, $pdo)
 {
     $stmt = $pdo->prepare('SELECT * FROM cooldown WHERE CD_acc_id = :cd_acc_id AND CD_gta < ' . time() . '');

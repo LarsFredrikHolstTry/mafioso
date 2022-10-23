@@ -235,17 +235,17 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
             $chance = mt_rand(0, 100);
             if (amount_of_things($_SESSION['ID'], $id, $pdo) > 0) {
 
-                if ($chance < 40) {
+                if ($chance < 60) {
                     // tomt
                     echo feedback("Gresskaret var tomt", "error");
                 }
-                if ($chance >= 40 && $chance < 50) {
+                if ($chance >= 60 && $chance < 65) {
                     // Hemmelig kiste
                     $thing_id = 30;
                     update_things($_SESSION['ID'], $thing_id, $pdo);
 
                     echo feedback('Du fant en hemmelig kiste!', 'success');
-                } elseif ($chance >= 50 && $chance < 58) {
+                } elseif ($chance >= 65 && $chance < 69) {
                     // 10-100 exp
                     $min = 10;
                     $max = 100;
@@ -255,7 +255,7 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                     check_rankup($_SESSION['ID'], AS_session_row($_SESSION['ID'], 'AS_rank', $pdo), AS_session_row($_SESSION['ID'], 'AS_exp', $pdo), $pdo);
 
                     echo feedback('Du fikk ' . number($amount) . ' EXP!', 'success');
-                } elseif ($chance >= 58 && $chance < 70) {
+                } elseif ($chance >= 69 && $chance < 78) {
                     // Random bil
                     $min = 0;
                     $max = 19;
@@ -266,7 +266,7 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                     update_garage($_SESSION['ID'], $car_id, $city_id, $pdo);
 
                     echo feedback('Du fant en ' . car($car_id) . ' fra ' . city_name($city_id) . '!', 'success');
-                } elseif ($chance >= 70 && $chance < 80) {
+                } elseif ($chance >= 78 && $chance < 82) {
                     // Random ting
                     $min = 0;
                     $max = 32;
@@ -276,19 +276,19 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                     update_things($_SESSION['ID'], $thing_id, $pdo);
 
                     echo feedback('Du fant en ' . thing($thing_id) . '!', 'success');
-                } elseif ($chance >= 80 && $chance < 90) {
+                } elseif ($chance >= 82 && $chance < 83) {
                     // Energidrikk
                     $thing_id = 29;
                     update_things($_SESSION['ID'], $thing_id, $pdo);
 
                     echo feedback('Du fant en energidrikk!', 'success');
-                } elseif ($chance >= 90 && $chance < 95) {
+                } elseif ($chance >= 83 && $chance < 88) {
                     // Hemmelig kiste
                     $thing_id = 30;
                     update_things($_SESSION['ID'], $thing_id, $pdo);
 
                     echo feedback('Du fant en hemmelig kiste!', 'success');
-                } elseif ($chance >= 95 && $chance <= 100) {
+                } elseif ($chance >= 88 && $chance <= 100) {
                     // penger mellom 5 mill og 20 mill
                     $min = 5000000;
                     $max = 20000000;

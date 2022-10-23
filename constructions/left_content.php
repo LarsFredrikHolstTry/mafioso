@@ -242,6 +242,35 @@ $notInLowestCity = $lowest_tax_city != AS_session_row($_SESSION['ID'], 'AS_city'
             }
             ?></li>
     </a>
+    <a href="?side=dagensSafe">
+        <li <?php if ($side == 'dagensSafe') {
+                echo 'class="active"';
+            } ?>>Dagens safe
+
+            <?php
+
+            $stmt = $pdo->prepare("SELECT * FROM safe_number");
+            $stmt->execute();
+            $row = $stmt->fetch();
+
+            $hasWinner = $row['SAFE_winner'] != 0;
+
+            $stmt_ = $pdo->prepare('SELECT * FROM cooldown WHERE CD_acc_id = :cd_id');
+            $stmt_->execute(array(
+                ':cd_id' => $_SESSION['ID']
+            ));
+            $row_ = $stmt_->fetch(PDO::FETCH_ASSOC);
+
+            $time_left_safe_ = $row_['CD_safe'] - time();
+
+            if ($time_left_safe_ <= 0 && !$hasWinner) {
+                echo pill($useLang->misc->ready, 'success');
+            }
+
+            ?>
+
+        </li>
+    </a>
 </ul>
 <ul class="left_ul">
     <a href="?side=drap">
