@@ -48,6 +48,11 @@ if ($_SESSION['ID'] != 1) {
                 <td>Familie</td>
                 <td>Hver time</td>
             </tr>
+            <tr>
+                <td><a target="_blank" href="cron_jobs/7DSA7dydsaHDNndmsad/dagens_safe.php">cron_jobs/7DSA7dydsaHDNndmsad/dagens_safe.php</a></td>
+                <td>Dagens_safe</td>
+                <td>12:00 hver dag</td>
+            </tr>
         </table>
     </div>
 <?php } ?>
