@@ -1,132 +1,129 @@
 <?php
 
-use Doctrine\Persistence\Mapping\Driver\DefaultFileLocator;
-
 if (isset($_GET['id'])) {
-    $stmt = $pdo->prepare('SELECT * FROM accounts WHERE ACC_id = ?');
-    $stmt->bindParam(1, $_GET['id'], PDO::PARAM_INT);
-    $stmt->execute();
-    $ACC_profile = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if ($ACC_profile && user_exist($ACC_profile['ACC_username'], $pdo)) {
-
-        $stmt = $pdo->prepare('SELECT * FROM accounts_stat WHERE AS_id = ?');
+    if ($_GET['id'] == 1) {
+        include 'skitzo_profil.php';
+    } else {
+        $stmt = $pdo->prepare('SELECT * FROM accounts WHERE ACC_id = ?');
         $stmt->bindParam(1, $_GET['id'], PDO::PARAM_INT);
         $stmt->execute();
-        $AS_profile = $stmt->fetch(PDO::FETCH_ASSOC);
+        $ACC_profile = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if (half_fp($AS_profile['AS_id'], $pdo)) {
-            echo feedback("Brukeren har nylig utført et angrep og har halvt forsvar i 4 timer", "error");
-        }
+        if ($ACC_profile && user_exist($ACC_profile['ACC_username'], $pdo)) {
 
-        switch($AS_profile['AS_bio_bg_active']) {
-            case 'url':  
-                $profile_background = "url(" . $AS_profile['AS_bio_bg_image'] . ")";
-                break;
-            case 'color':
-                $profile_background = $AS_profile['AS_bio_bg_color'];
-                break;
-            default:
-                $profile_background = "var(--container-color)";
-        }
+            $stmt = $pdo->prepare('SELECT * FROM accounts_stat WHERE AS_id = ?');
+            $stmt->bindParam(1, $_GET['id'], PDO::PARAM_INT);
+            $stmt->execute();
+            $AS_profile = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if (half_fp($AS_profile['AS_id'], $pdo)) {
+                echo feedback("Brukeren har nylig utført et angrep og har halvt forsvar i 4 timer", "error");
+            }
+
+            switch ($AS_profile['AS_bio_bg_active']) {
+                case 'url':
+                    $profile_background = "url(" . $AS_profile['AS_bio_bg_image'] . ")";
+                    break;
+                case 'color':
+                    $profile_background = $AS_profile['AS_bio_bg_color'];
+                    break;
+                default:
+                    $profile_background = "var(--container-color)";
+            }
 ?>
 
-        <div class="col-9 single">
-            <div class="content profile-container" style="<?php echo "background:" . $profile_background ?>">
+            <div class="col-9 single">
+                <div class="content profile-container" style="<?php echo "background:" . $profile_background ?>">
 
-                <img class="profile-image"
-                    src="<?php echo $AS_profile['AS_avatar']; ?>"
-                    alt="<?php echo $ACC_profile['ACC_username'] . "'s avatar" ?>">
-                <section class="profile-info" aria-label="Profilinformasjon"
-                    <?php
-                    //Nødvendig for å sørge for at brukerinformasjonen er synlig, uavhengig av fargen på bakgrunnen
-                    if ($AS_profile['AS_bio_bg_active'] != NULL) {
-                        echo 'style="background: hsla(0, 0%, 0%, .3);"';
-                    } ?>
-                >
-                    <div class="profile-row">
-                        <label for="username" class="profile-row-label">Brukernavn:</label>
-                        <div id="username">
-                            <a href="?side=innboks&p=ny&to=<?php echo $ACC_profile['ACC_id']; ?>">
-                                <?php echo $ACC_profile['ACC_username']; ?>
-                            </a>
+                    <img class="profile-image" src="<?php echo $AS_profile['AS_avatar']; ?>" alt="<?php echo $ACC_profile['ACC_username'] . "'s avatar" ?>">
+                    <section class="profile-info" aria-label="Profilinformasjon" <?php
+                                                                                    //Nødvendig for å sørge for at brukerinformasjonen er synlig, uavhengig av fargen på bakgrunnen
+                                                                                    if ($AS_profile['AS_bio_bg_active'] != NULL) {
+                                                                                        echo 'style="background: hsla(0, 0%, 0%, .3);"';
+                                                                                    } ?>>
+                        <div class="profile-row">
+                            <label for="username" class="profile-row-label">Brukernavn:</label>
+                            <div id="username">
+                                <a href="?side=innboks&p=ny&to=<?php echo $ACC_profile['ACC_id']; ?>">
+                                    <?php echo $ACC_profile['ACC_username']; ?>
+                                </a>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="profile-row">
-                        <label for="status" class="profile-row-label">Status:</label>
-                        <div id="status">
-                            <span style="color: <?php echo role_colors($ACC_profile['ACC_type']); ?>;"><?php echo roles($ACC_profile['ACC_type']); ?></span>
+                        <div class="profile-row">
+                            <label for="status" class="profile-row-label">Status:</label>
+                            <div id="status">
+                                <span style="color: <?php echo role_colors($ACC_profile['ACC_type']); ?>;"><?php echo roles($ACC_profile['ACC_type']); ?></span>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="profile-row">
-                        <label for="rank" class="profile-row-label">Rank:</label>
-                        <div class="<?php echo 'rank-' . strtolower(rank_list($AS_profile['AS_rank'])) ?>"><?php echo rank_list($AS_profile['AS_rank']); ?></div>
-                    </div>
-
-                    <div class="profile-row">
-                        <label for="moneyrank" class="profile-row-label">Pengerank:</label>
-                        <div id="moneyrank">
-                            <?php
-                            
-                            echo money_rank($AS_profile['AS_money'] + $AS_profile['AS_bankmoney']); 
-                            
-                            ?>
+                        <div class="profile-row">
+                            <label for="rank" class="profile-row-label">Rank:</label>
+                            <div class="<?php echo 'rank-' . strtolower(rank_list($AS_profile['AS_rank'])) ?>"><?php echo rank_list($AS_profile['AS_rank']); ?></div>
                         </div>
-                    </div>
 
-                    <div class="profile-row">
-                        <label for="kills" class="profile-row-label">Drap:</label>
-                        <div>
-                            <?php echo number(US_session_row($AS_profile['AS_id'], 'US_kills', $pdo)) ?>
+                        <div class="profile-row">
+                            <label for="moneyrank" class="profile-row-label">Pengerank:</label>
+                            <div id="moneyrank">
+                                <?php
+
+                                echo money_rank($AS_profile['AS_money'] + $AS_profile['AS_bankmoney']);
+
+                                ?>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="profile-row">
-                        <label for="family" class="profile-row-label">Familie:</label>
-                        <div>
-                            <?php
-                            if (family_member_exist($ACC_profile['ACC_id'], $pdo)) {
-                                echo family_roles(get_my_familyrole($ACC_profile['ACC_id'], $pdo)) . ' i ';
-                                echo '<a href="?side=familieprofil&id=' . get_familyID(get_my_familyname($ACC_profile['ACC_id'], $pdo), $pdo) . '">' . get_my_familyname($ACC_profile['ACC_id'], $pdo) . '</a>';
-                            } else {
-                                echo 'Ingen';
-                            }
-                            ?>
+                        <div class="profile-row">
+                            <label for="kills" class="profile-row-label">Drap:</label>
+                            <div>
+                                <?php echo number(US_session_row($AS_profile['AS_id'], 'US_kills', $pdo)) ?>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="profile-row">
-                        <label for="mission" class="profile-row-label">Oppdrag:</label>
-                        <div id="mission">
-                            <?php echo $AS_profile['AS_mission'] + 1; ?>
+                        <div class="profile-row">
+                            <label for="family" class="profile-row-label">Familie:</label>
+                            <div>
+                                <?php
+                                if (family_member_exist($ACC_profile['ACC_id'], $pdo)) {
+                                    echo family_roles(get_my_familyrole($ACC_profile['ACC_id'], $pdo)) . ' i ';
+                                    echo '<a href="?side=familieprofil&id=' . get_familyID(get_my_familyname($ACC_profile['ACC_id'], $pdo), $pdo) . '">' . get_my_familyname($ACC_profile['ACC_id'], $pdo) . '</a>';
+                                } else {
+                                    echo 'Ingen';
+                                }
+                                ?>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="profile-row">
-                        <label for="registered" class="profile-row-label">Registrert: </label>
-                        <div id="registered">
-                            <time datetime="<?php echo date("Y-m-d H:i:s", $ACC_profile['ACC_register_date']); ?>"><?php echo date_to_text($ACC_profile['ACC_register_date']); ?></time>
+                        <div class="profile-row">
+                            <label for="mission" class="profile-row-label">Oppdrag:</label>
+                            <div id="mission">
+                                <?php echo $AS_profile['AS_mission'] + 1; ?>
+                            </div>
                         </div>
-                    </div>
-                    
-                    <div class="profile-row">
-                        <label for="last-active" class="profile-row-label">Sist aktiv:</label>
-                        <div id="last-active">
-                            <?php echo date_to_text($ACC_profile['ACC_last_active']); ?>
+
+                        <div class="profile-row">
+                            <label for="registered" class="profile-row-label">Registrert: </label>
+                            <div id="registered">
+                                <time datetime="<?php echo date("Y-m-d H:i:s", $ACC_profile['ACC_register_date']); ?>"><?php echo date_to_text($ACC_profile['ACC_register_date']); ?></time>
+                            </div>
                         </div>
-                    </div>
-                </section>
 
-                <h3 class="profile-header">Profil
-                    <?php if (is_numeric(get_active_charm($ACC_profile['ACC_id'], $pdo))) { ?>
-                        <img style="margin: 0px 0px 0px 7px; width: 25px; height: auto;" title="<?php echo charm_desc(get_active_charm($ACC_profile['ACC_id'], $pdo)); ?>" src="<?php echo charm(get_active_charm($ACC_profile['ACC_id'], $pdo)); ?>">
-                    <?php } ?>
-                </h3>
+                        <div class="profile-row">
+                            <label for="last-active" class="profile-row-label">Sist aktiv:</label>
+                            <div id="last-active">
+                                <?php echo date_to_text($ACC_profile['ACC_last_active']); ?>
+                            </div>
+                        </div>
+                    </section>
 
-                <section class="profile-bio" aria-label="Profil bio">
-                    <?php
+                    <h3 class="profile-header">Profil
+                        <?php if (is_numeric(get_active_charm($ACC_profile['ACC_id'], $pdo))) { ?>
+                            <img style="margin: 0px 0px 0px 7px; width: 25px; height: auto;" title="<?php echo charm_desc(get_active_charm($ACC_profile['ACC_id'], $pdo)); ?>" src="<?php echo charm(get_active_charm($ACC_profile['ACC_id'], $pdo)); ?>">
+                        <?php } ?>
+                    </h3>
+
+                    <section class="profile-bio" aria-label="Profil bio">
+                        <?php
                         $profile_text = $AS_profile['AS_bio'];
                         $profile_text = htmlspecialchars($profile_text);
                         $profile_text = showBBcodes($profile_text);
@@ -147,11 +144,12 @@ if (isset($_GET['id'])) {
 
                         echo $profile_text;
                         ?>
-                </section>
-                
+                    </section>
+
+                </div>
             </div>
-        </div>
 <?php } else {
-        echo feedback("Ugyldig bruker", "blue");
+            echo feedback("Ugyldig bruker", "blue");
+        }
     }
 } ?>
