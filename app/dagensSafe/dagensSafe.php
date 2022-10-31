@@ -77,7 +77,7 @@ if (isset($_POST['openSafe'])) {
                 Dagens safe kan åpnes en gang om dagen og inneholder en stor belønnelse!
                 Koden består av en 4-sifret kode bestående kun av tall. For at du ikke
                 skal legge fra deg for mye oppmerksomhet kan du kun prøve koden hvert 5. minutt.
-                Klokken 00:00 blir koden endret og forsøkene samt vinneren blir nullstilt.
+                Klokken 12:00 blir koden endret og forsøkene samt vinneren blir nullstilt.
             </p>
             <?php
 
