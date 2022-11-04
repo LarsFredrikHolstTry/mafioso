@@ -72,6 +72,12 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
             $contestant_id = get_random_rc_acc_id_contestant($_SESSION['ID'], $pdo);
             $contestant_hk = $contestant_id && get_random_hk_contestant($contestant_id, $pdo);
 
+            echo $my_hk;
+            echo '<br>';
+            echo $contestant_hk;
+            echo '<br>';
+            echo $contestant_id;
+
             if ($contestant_id == null) {
                 echo feedback("Ingen kjører funnet.", "fail");
             } else {

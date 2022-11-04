@@ -269,7 +269,9 @@ ul {
 .active {
   border-right: 3px solid var(--button-bg-color);
   color: var(--text-white-color);
-  background-color: var(--main-bg-color);
+  background-color: var(
+    --main-bg-color
+  ) !important;
   cursor: var(--cursor-hover);
 }
 

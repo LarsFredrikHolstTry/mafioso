@@ -150,6 +150,11 @@ $notInLowestCity = $lowest_tax_city != AS_session_row($_SESSION['ID'], 'AS_city'
             ?>
         </li>
     </a>
+    <!-- <a href="?side=firma">
+        <li <?php if ($side == 'firma') {
+                echo 'class="active"';
+            } ?>>Firma</li>
+    </a> -->
 </ul>
 <ul class="left_ul">
     <?=

@@ -112,16 +112,35 @@ function seconds2human($seconds)
     ?>
 
     <div class="lower">
-        <div id="time_left_event_" class="action_container">
+
+        <div style="<?php
+                    if ($time_left_event_ <= 0) {
+                        echo 'background-color: var(--ready-color);';
+                    } else {
+                        echo 'background-color: var(--not-ready-color);';
+                    }
+                    ?>" id="event_timer" class="action_container">
             <a href="?side=pengeinnkreving"></a>
             <div class="action_icon">
                 <img src="img/topHeaderIcons/pengeinnkreving.svg">
             </div>
             <div class="action_text">
                 <span>Pengeinnkreving</span><br>
-                <span class="ready">Kommer snart</span>
+                <?php
+
+                if ($time_left_event_ <= 0) {
+                    echo '<span class="ready">' . $useLang->misc->ready . '</span>';
+                } else {
+                    echo '<span class="cooldown_top_bar" id="countdowntimer_event">' . $time_left_event_ . 's</span>';
+                ?> <script>
+                        timer(<?php echo $time_left_event_; ?>, "countdowntimer_event");
+                    </script>
+                <?php
+                }
+                ?>
             </div>
         </div>
+
         <div style="<?php
                     if ($time_left_rc_ <= 0 || $time_left_race_ <= 0) {
                         echo 'background-color: var(--ready-color);';
@@ -188,6 +207,7 @@ function seconds2human($seconds)
                 ?>
             </div>
         </div>
+
         <div style="<?php
                     if ($time_left_gta_ <= 0) {
                         echo 'background-color: var(--ready-color);';
@@ -358,37 +378,10 @@ function seconds2human($seconds)
         return false;
     });
 
-    <?php if (AS_session_row($_SESSION['ID'], 'AS_city', $pdo) != 5) { ?>
-        timer_icon(<?php echo $time_left_krim_; ?>, 'krim_timer');
-        timer_icon(<?php echo $time_left_gta_; ?>, 'gta_timer');
-        timer_icon(<?php echo $time_left_brekk_; ?>, 'brekk_timer');
-        timer_icon(<?php echo $time_left_stjel_; ?>, 'stjel_timer');
-        timer_icon(<?php echo $time_left_rc_ < $time_left_race_ ? $time_left_rc_ : $time_left_race_; ?>, 'rc_timer');
-    <?php } else { ?>
-        timer_icon(<?php echo $time_left_event_; ?>, 'event_timer');
-
-        var seconds = <?php echo $diamondHeistEnd ?>;
-
-        function diamantTimer() {
-
-            var days = Math.floor(seconds / 24 / 60 / 60);
-            var hoursLeft = Math.floor((seconds) - (days * 86400));
-            var hours = Math.floor(hoursLeft / 3600);
-            var minutesLeft = Math.floor((hoursLeft) - (hours * 3600));
-            var minutes = Math.floor(minutesLeft / 60);
-            var remainingSeconds = seconds % 60;
-
-            function pad(n) {
-                return (n < 10 ? "" + n : n);
-            }
-            document.getElementById('countdown_diamond').innerHTML = pad(days) + "d " + pad(hours) + "t " + pad(minutes) + "m " + pad(remainingSeconds) + "s";
-            if (seconds == 0) {
-                clearInterval(countdownTimer);
-                document.getElementById('countdown_diamond').innerHTML = "Completed";
-            } else {
-                seconds--;
-            }
-        }
-        var countdownTimer = setInterval('diamantTimer()', 1000);
-    <?php } ?>
+    timer_icon(<?php echo $time_left_krim_; ?>, 'krim_timer');
+    timer_icon(<?php echo $time_left_gta_; ?>, 'gta_timer');
+    timer_icon(<?php echo $time_left_brekk_; ?>, 'brekk_timer');
+    timer_icon(<?php echo $time_left_stjel_; ?>, 'stjel_timer');
+    timer_icon(<?php echo $time_left_rc_ < $time_left_race_ ? $time_left_rc_ : $time_left_race_; ?>, 'rc_timer');
+    timer_icon(<?php echo $time_left_event_; ?>, 'event_timer');
 </script>
