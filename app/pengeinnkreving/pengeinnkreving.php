@@ -119,7 +119,7 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
 
                         if (isset($_POST['leaveGroup'])) {
                             if ($PENG_row['PENG_leader'] == $_SESSION['ID']) {
-                                last_event($_SESSION['ID'], ' sin pengeinnkrevingsgruppe tjente ' . number($PENG_row['PENG_money']) . ' kr per medlem før gruppen ble oppløst.', $pdo);
+                                last_event($_SESSION['ID'], ' sin pengeinnkrevingsgruppe tjente ' . number($PENG_row['PENG_money']) . ' kr før gruppen ble oppløst.', $pdo);
 
                                 $sql = "DELETE FROM peng_group WHERE PENG_leader = " . $_SESSION['ID'];
                                 $pdo->exec($sql);
