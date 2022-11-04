@@ -61,7 +61,7 @@ if (isset($_GET['alt'])) {
         give_exp($PENG_row['PENG_leader'], $exp[$alt], $pdo);
 
         $sql = "INSERT INTO peng_logg (PENGLOG_desc, PENGLOG_pengID, PENGLOG_money, PENGLOG_leader, PENGLOG_date) VALUES (?,?,?,?,?)";
-        $pdo->prepare($sql)->execute(["Gruppen krevde <span style='color: var(--ready-color);'>" . number($money_payout) . "kr</span> " . $logDesc[$alt], $PENG_row['PENG_id'], $money_payout, $_SESSION['ID'], time()]);
+        $pdo->prepare($sql)->execute(["Hvert av medlemmene krevde <span style='color: var(--ready-color);'>" . number($money_payout) . "kr</span> " . $logDesc[$alt], $PENG_row['PENG_id'], $money_payout, $_SESSION['ID'], time()]);
 
 
         header("location: ?side=pengeinnkreving&v=" . $money_payout);
