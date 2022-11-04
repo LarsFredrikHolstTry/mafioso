@@ -4,6 +4,7 @@ $handlingName = ['Krev penger fra en restaurant', 'Krev penger fra en tatovering
 $cooldown = [15, 35, 50];
 $payoutFrom = [1000, 10000, 25000];
 $payoutTo = [5000, 20000, 50000];
+$exp = [1, 2, 3];
 $chance[0] = 15 + $chanceBoost[$PENG_row['PENG_equipment']];
 $chance[1] = 5 + $chanceBoost[$PENG_row['PENG_equipment']];
 $chance[2] = $chanceBoost[$PENG_row['PENG_equipment']];
@@ -54,12 +55,14 @@ if (isset($_GET['alt'])) {
 
         foreach ($members as $member) {
             give_money($member, $money_payout, $pdo);
+            give_exp($member, $exp[$alt], $pdo);
         }
+        give_money($PENG_row['PENG_leader'], $money_payout, $pdo);
+        give_exp($PENG_row['PENG_leader'], $exp[$alt], $pdo);
 
         $sql = "INSERT INTO peng_logg (PENGLOG_desc, PENGLOG_pengID, PENGLOG_money, PENGLOG_leader, PENGLOG_date) VALUES (?,?,?,?,?)";
         $pdo->prepare($sql)->execute(["Gruppen krevde <span style='color: var(--ready-color);'>" . number($money_payout) . "kr</span> " . $logDesc[$alt], $PENG_row['PENG_id'], $money_payout, $_SESSION['ID'], time()]);
 
-        give_money($PENG_row['PENG_leader'], $money_payout, $pdo);
 
         header("location: ?side=pengeinnkreving&v=" . $money_payout);
     }
