@@ -210,11 +210,6 @@ if ($row_firm) {
                 echo 'class="active"';
             } ?>><?php echo $useLang->action->drugSmuggling; ?></li>
     </a>
-    <a href="?side=heist">
-        <li <?php if ($side == 'heist') {
-                echo 'class="active"';
-            } ?>><?php echo $useLang->action->heist; ?></li>
-    </a>
     <a href="?side=oppdrag">
         <li <?php if ($side == 'oppdrag') {
                 echo 'class="active"';
