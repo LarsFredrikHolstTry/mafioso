@@ -8,11 +8,11 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
     echo 'Ugyldig side';
 } else {
 
-    $price_start = 10000000;
+    $price_start = 1000000;
 
     $utstyrName = ['Ingen utstyr', 'Avansert utstyr', 'Medium utstyr', 'Dårlig utstyr'];
     $chanceBoost = [0, 80, 50, 30];
-    $utstyrPrice = ['0', '10000000', '5000000', '1000000'];
+    $utstyrPrice = ['0', '1000000', '500000', '100000'];
     $resetCDPrice = 75;
 
     function getPengGroupid($userId, $pdo)

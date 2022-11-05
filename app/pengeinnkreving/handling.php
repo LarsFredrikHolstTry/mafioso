@@ -2,8 +2,8 @@
 
 $handlingName = ['Krev penger fra en restaurant', 'Krev penger fra en tatoveringsjappe', 'Krev penger fra den lokale Levis sjappa'];
 $cooldown = [15, 35, 50];
-$payoutFrom = [1000, 10000, 25000];
-$payoutTo = [5000, 20000, 50000];
+$payoutFrom = [10000, 100000, 250000];
+$payoutTo = [50000, 200000, 500000];
 $exp = [1, 2, 3];
 $chance[0] = 15 + $chanceBoost[$PENG_row['PENG_equipment']];
 $chance[1] = 5 + $chanceBoost[$PENG_row['PENG_equipment']];
