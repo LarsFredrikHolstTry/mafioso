@@ -191,7 +191,7 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                             å ikke bli for trigger-happy. Utennom det er det bare å kjøre på.</p>
                         <form method="post">
                             <p>
-                                Prisen for å starte en gruppe er 10 000 000kr
+                                Prisen for å starte en gruppe er <?= number($price_start) ?> kr
                             </p>
                             <input type="submit" name="start_group" value="Start gruppe" />
                         </form>
