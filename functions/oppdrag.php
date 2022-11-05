@@ -54,6 +54,8 @@ $mission_text[50] = "Det er på tide å bruke de databrusene til noe nyttig, sty
 $mission_text[51] = "Vi skal arrangere et nytt bryllup og vi trenger 2 stk 1955 Mercedes 300SL Gullwing. Du skaffer disse ved å stjele bil fra Kings Motors i London";
 $mission_text[52] = "Fruen ble så fornøyd med bilene at hun ønsker noen fler kule biler i bryllupet. Skaff meg 5 stk Bugatti La Voiture Noire.";
 $mission_text[53] = "Makan! Hun blir jo aldri fornøyd. Jeg trenger at du skaffer meg 10 stk Rolls-Royce Boat Tail. Dette skal være det aller siste jeg ber deg om når det kommer til biltyveri.";
+$mission_text[54] = "Vil du bli en leder? Da må du vise at du fortjener lederstillingen.";
+$mission_text[55] = "Godt jobbet! Du viser deg fremragede som leder, men du må også klare lagspill og vis derfor at du klarer deg like bra som medlem.";
 
 $total_missions = count($mission_text);
 
@@ -113,6 +115,8 @@ function mission_money($mission_nr)
     $mission_money[51] = 0;
     $mission_money[52] = 100000;
     $mission_money[53] = 750000;
+    $mission_money[54] = 10000000;
+    $mission_money[55] = 10000000;
 
     return $mission_money[$mission_nr];
 }
@@ -173,6 +177,8 @@ function mission_exp($mission_nr)
     $mission_exp[51] = 500;
     $mission_exp[52] = 1500;
     $mission_exp[53] = 3500;
+    $mission_exp[54] = 150;
+    $mission_exp[55] = 150;
 
     return $mission_exp[$mission_nr];
 }
@@ -219,7 +225,7 @@ function mission($mission_nr)
     $mission[37] = "Stjel 100 biler fra Kamero Camilla";
     $mission[38] = "Selg biler for 1 000 000 000 kr";
     $mission[39] = "Skaff 5 stk Mercedes-Benz E-Klasse fra Oslo";
-    $mission[40] = "Skaff 150 000 000 kr fra heist";
+    $mission[40] = "Skaff 150 000 000 kr fra pengeinnkreving";
     $mission[41] = "Bryt ut 200 spillere fra fengsel";
     $mission[42] = "Stjel 100 biler fra Kamero Camilla";
     $mission[43] = "Bryt ut Kamero Camilla fra fengsel";
@@ -233,6 +239,8 @@ function mission($mission_nr)
     $mission[51] = "Stjel 2 stk 1955 Mercedes 300SL Gullwing";
     $mission[52] = "Stjel 5 stk Bugatti La Voiture Noire";
     $mission[53] = "Stjel 10 stk Rolls-Royce Boat Tail";
+    $mission[54] = "Skaff 50 000 000 kr fra pengeinnkreving som leder";
+    $mission[55] = "Skaff 50 000 000 kr fra pengeinnkreving som medlemmer";
 
     return $mission[$mission_nr];
 }

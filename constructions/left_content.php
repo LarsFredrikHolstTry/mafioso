@@ -9,6 +9,16 @@ $lowest_tax_city = $row['CTAX_city'];
 
 $notInLowestCity = $lowest_tax_city != AS_session_row($_SESSION['ID'], 'AS_city', $pdo) && get_city_tax(AS_session_row($_SESSION['ID'], 'AS_city', $pdo), $pdo) > $lowest_tax;
 
+$query = $pdo->prepare("SELECT FIRM_acc_id FROM firma WHERE FIRM_collected = 0 AND FIRM_acc_id = " . $_SESSION['ID'] . "");
+$query->execute();
+$row_firm = $query->fetch(PDO::FETCH_ASSOC);
+
+$payout = false;
+
+if ($row_firm) {
+    $payout = true;
+}
+
 ?>
 
 <div class="user_container">
@@ -150,11 +160,16 @@ $notInLowestCity = $lowest_tax_city != AS_session_row($_SESSION['ID'], 'AS_city'
             ?>
         </li>
     </a>
-    <!-- <a href="?side=firma">
+    <a href="?side=firma">
         <li <?php if ($side == 'firma') {
                 echo 'class="active"';
-            } ?>>Firma</li>
-    </a> -->
+            } ?>>Firma
+            <?php if ($payout) {
+                echo pill('Hent penger', 'success');
+            } ?>
+
+        </li>
+    </a>
 </ul>
 <ul class="left_ul">
     <?=

@@ -56,7 +56,14 @@ if (isset($_GET['alt'])) {
         foreach ($members as $member) {
             give_money($member, $money_payout, $pdo);
             give_exp($member, $exp[$alt], $pdo);
+            if (AS_session_row($member, 'AS_mission', $pdo) == 40 || AS_session_row($member, 'AS_mission', $pdo) == 55) {
+                mission_update(AS_session_row($member, 'AS_mission_count', $pdo) + $money_payout, AS_session_row($member, 'AS_mission', $pdo), mission_criteria(AS_session_row($member, 'AS_mission', $pdo)), $member, $pdo);
+            }
         }
+        if (AS_session_row($PENG_row['PENG_leader'], 'AS_mission', $pdo) == 40 || AS_session_row($PENG_row['PENG_leader'], 'AS_mission', $pdo) == 54) {
+            mission_update(AS_session_row($PENG_row['PENG_leader'], 'AS_mission_count', $pdo) + $money_payout, AS_session_row($PENG_row['PENG_leader'], 'AS_mission', $pdo), mission_criteria(AS_session_row($PENG_row['PENG_leader'], 'AS_mission', $pdo)), $PENG_row['PENG_leader'], $pdo);
+        }
+
         give_money($PENG_row['PENG_leader'], $money_payout, $pdo);
         give_exp($PENG_row['PENG_leader'], $exp[$alt], $pdo);
 

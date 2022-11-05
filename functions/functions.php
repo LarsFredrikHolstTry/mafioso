@@ -3855,6 +3855,8 @@ function mission_criteria($mission_nr)
     $mission_criteria[51] = 2;
     $mission_criteria[52] = 5;
     $mission_criteria[53] = 10;
+    $mission_criteria[54] = 50000000;
+    $mission_criteria[55] = 50000000;
 
     return $mission_criteria[$mission_nr];
 }

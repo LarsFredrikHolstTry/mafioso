@@ -1709,3 +1709,11 @@ table.dataTable td {
       "profile-bio profile-bio";
   }
 }
+
+.hasALl {
+  color: var(--ready-color);
+}
+
+.notAll {
+  color: orange;
+}
