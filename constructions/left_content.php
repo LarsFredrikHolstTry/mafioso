@@ -307,7 +307,7 @@ if ($row_firm) {
 
             $time_left_weapon_ = $row_['CD_weapon'] - time();
 
-            if ($time_left_weapon_ <= 0 && AS_session_row($_SESSION['ID'], 'AS_weapon', $pdo) != 16) {
+            if ($time_left_weapon_ <= 0 && AS_session_row($_SESSION['ID'], 'AS_weapon', $pdo) != 17) {
                 echo pill($useLang->misc->ready, 'success');
             }
 
