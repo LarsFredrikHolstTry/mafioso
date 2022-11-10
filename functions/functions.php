@@ -3094,10 +3094,9 @@ function get_todays_utfordring($id, $pdo)
         $amount_arr[0] = $utford_user['DAUTUS_crime'];
         $amount_arr[1] = $utford_user['DAUTUS_gta'];
         $amount_arr[2] = $utford_user['DAUTUS_brekk'];
-        $amount_arr[3] = $utford_user['DAUTUS_heist'];
-        $amount_arr[4] = $utford_user['DAUTUS_stjel'];
+        $amount_arr[3] = $utford_user['DAUTUS_stjel'];
     } else {
-        $amount_arr = array(0, 0, 0, 0, 0);
+        $amount_arr = array(0, 0, 0, 0);
     }
 
 
@@ -3125,8 +3124,6 @@ function get_todays_utfordring($id, $pdo)
         } elseif ($h == 2) {
             $msg = $arr[$h] . "</b> brekk";
         } elseif ($h == 3) {
-            $msg = $arr[$h] . "</b> heist";
-        } elseif ($h == 4) {
             $msg = $arr[$h] . "</b> stjel fra bruker";
         }
 
@@ -3174,8 +3171,6 @@ function update_dagens_utfordring($id, $type, $pdo)
     } elseif ($type == 2) {
         $sql = "UPDATE dagens_utfordring_user SET DAUTUS_brekk = DAUTUS_brekk + 1 WHERE DAUTUS_acc_id = ? ";
     } elseif ($type == 3) {
-        $sql = "UPDATE dagens_utfordring_user SET DAUTUS_heist = DAUTUS_heist + 1 WHERE DAUTUS_acc_id = ? ";
-    } elseif ($type == 4) {
         $sql = "UPDATE dagens_utfordring_user SET DAUTUS_stjel = DAUTUS_stjel + 1 WHERE DAUTUS_acc_id = ? ";
     }
 
@@ -3236,8 +3231,6 @@ function create_new_utfordring($pdo)
             array_push($arr, mt_rand(10, 20));
         } elseif ($i == 2) {
             array_push($arr, mt_rand(10, 20));
-        } elseif ($i == 3) {
-            array_push($arr, mt_rand(1, 3));
         } elseif ($i == 4) {
             array_push($arr, mt_rand(10, 20));
         }

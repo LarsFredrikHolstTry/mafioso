@@ -58,7 +58,7 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
 
                     $username_steal = ACC_session_row($id_steal, 'ACC_username', $pdo);
 
-                    update_dagens_utfordring($_SESSION['ID'], 4, $pdo);
+                    update_dagens_utfordring($_SESSION['ID'], 3, $pdo);
 
                     steal_give_cooldown($_SESSION['ID'], $cooldown, $pdo);
 
@@ -129,7 +129,7 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
 
                         give_exp($_SESSION['ID'], $exp, $pdo);
                         check_rankup($_SESSION['ID'], AS_session_row($_SESSION['ID'], 'AS_rank', $pdo), AS_session_row($_SESSION['ID'], 'AS_exp', $pdo), $pdo);
-                        update_dagens_utfordring($_SESSION['ID'], 4, $pdo);
+                        update_dagens_utfordring($_SESSION['ID'], 3, $pdo);
 
                         user_log($_SESSION['ID'], $_GET['side'], 'Stjeler ' . car($car_stolen['GA_car_id']) . ' fra ' . ACC_session_row($id_steal, 'ACC_username', $pdo) . '', $pdo);
                         echo feedback("Du klarte å stjele en " . car($car_stolen['GA_car_id']) . " fra " . ACC_session_row($id_steal, 'ACC_username', $pdo), "success");
@@ -173,7 +173,7 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                         give_exp($_SESSION['ID'], $exp, $pdo);
 
                         check_rankup($_SESSION['ID'], AS_session_row($_SESSION['ID'], 'AS_rank', $pdo), AS_session_row($_SESSION['ID'], 'AS_exp', $pdo), $pdo);
-                        update_dagens_utfordring($_SESSION['ID'], 4, $pdo);
+                        update_dagens_utfordring($_SESSION['ID'], 3, $pdo);
 
                         user_log($_SESSION['ID'], $_GET['side'], 'Stjeler ' . thing($thing_id_steal) . ' fra ' . ACC_session_row($id_steal, 'ACC_username', $pdo) . '', $pdo);
                         echo feedback("Du klarte å stjele " . thing($thing_id_steal) . " fra " . ACC_session_row($id_steal, 'ACC_username', $pdo), "success");
@@ -224,7 +224,7 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                         } else {
                             $username_steal = ACC_session_row($id_steal, 'ACC_username', $pdo);
 
-                            update_dagens_utfordring($_SESSION['ID'], 4, $pdo);
+                            update_dagens_utfordring($_SESSION['ID'], 3, $pdo);
 
                             steal_give_cooldown($_SESSION['ID'], $cooldown, $pdo);
 
@@ -292,7 +292,7 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                                     send_notification($id_steal, $msg, $pdo);
                                 }
                                 give_exp($_SESSION['ID'], $exp, $pdo);
-                                update_dagens_utfordring($_SESSION['ID'], 4, $pdo);
+                                update_dagens_utfordring($_SESSION['ID'], 3, $pdo);
 
                                 check_rankup($_SESSION['ID'], AS_session_row($_SESSION['ID'], 'AS_rank', $pdo), AS_session_row($_SESSION['ID'], 'AS_exp', $pdo), $pdo);
                                 user_log($_SESSION['ID'], $_GET['side'], 'stjeler en ' . car($car_stolen['GA_car_id']) . ' fra ' . ACC_session_row($id_steal, 'ACC_username', $pdo) . '', $pdo);
@@ -334,7 +334,7 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                                 give_exp($_SESSION['ID'], $exp, $pdo);
 
                                 check_rankup($_SESSION['ID'], AS_session_row($_SESSION['ID'], 'AS_rank', $pdo), AS_session_row($_SESSION['ID'], 'AS_exp', $pdo), $pdo);
-                                update_dagens_utfordring($_SESSION['ID'], 4, $pdo);
+                                update_dagens_utfordring($_SESSION['ID'], 3, $pdo);
 
                                 user_log($_SESSION['ID'], $_GET['side'], 'stjeler ' . thing($thing_id_steal) . ' fra ' . ACC_session_row($id_steal, 'ACC_username', $pdo) . '', $pdo);
                                 echo feedback("Du klarte å stjele " . thing($thing_id_steal) . " fra " . ACC_session_row($id_steal, 'ACC_username', $pdo), "success");
