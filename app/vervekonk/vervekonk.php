@@ -1,9 +1,9 @@
 <?php
 
-$date_start = DateTime::createFromFormat('d-m-Y H:i:s', '27-02-2022 17:00:00');
+$date_start = DateTime::createFromFormat('d-m-Y H:i:s', '19-11-2022 18:00:00');
 $date_start = $date_start->getTimestamp();
 
-$date_end = DateTime::createFromFormat('d-m-Y H:i:s', '01-04-2022 18:00:00');
+$date_end = DateTime::createFromFormat('d-m-Y H:i:s', '24-12-2022 18:00:00');
 $date_end = $date_end->getTimestamp();
 
 $total_points = 0;
@@ -22,21 +22,21 @@ while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
         <br>
         <b>Regler</b>
         <p class="description">For hver person du verver til mafioso vil du få 2 poeng i konkurransen. For hver gang den du verver går opp i rank får du 3 poeng pr rank. Ledelsen vil holde kontroll på tellingen og det blir også sjekket mot multi på denne konkurransen! Husk at det kun er lov med 1 bruker pr person.</p>
-        <p class="description">Konkurransen varer fra 27. Februar klokken 17:00 til 1. April klokken 18:00</p>
+        <p class="description">Konkurransen varer fra 19. November klokken 18:00 til 24. Desember klokken 18:00</p>
         <br>
         <b>Premier</b>
         <ul>
-            <li style="color: gold;">1. Plass - 600 poeng, 2 500 000 000 kr og en full kryptorigg for valgfri krypto</li>
-            <li style="color: silver;">2. Plass - 350 poeng, 1 500 000 000 kr og en hemmelig kiste</li>
-            <li style="color: #CD7F32;">3. Plass - 200 poeng og 500 000 000 kr</li>
+            <li style="color: gold;">1. Plass - 200 poeng, 2 500 000 000 kr</li>
+            <li style="color: silver;">2. Plass - 150 poeng, 1 500 000 000 kr</li>
+            <li style="color: #CD7F32;">3. Plass - 100 poeng og 500 000 000 kr</li>
         </ul>
         <div style="margin: 20px 0px 30px 0px;">
-            <b style="color: gold;">Bonuspremie! Verve venner - vinn gavekort på 1 000kr fra komplett.no</b>
+            <b style="color: gold;">Bonuspremie! Verve venner - vinn gavekort på 500kr fra komplett.no</b>
             <p class="description">
-                Det blir trekning på 1 gavekort på 1 000 kr på 
+                Det blir trekning på 1 gavekort på 500 kr på 
                 Komplett.no for alle dere som har over 100 poeng
                  på slutten av konkurransen. 
-                 Er det kun 1 som har det så er du garantert gavekortet.</p>
+                 Er det kun 1 som har 100 poeng er denne spilleren garantert gavekortet.</p>
         </div>
         
         <p>Din vervelink: <span id="copy" style="margin-left: 3px; background-color: var(--main-bg-color); padding: 7px 6px;">https://mafioso.no/registrer.php?ver=<?php echo $_SESSION['ID']; ?></span> <a class="a_as_button" id="kopiert" onclick="clickchange(); CopyToClipboard('copy');return false;" href="#">Kopier</a></p>
