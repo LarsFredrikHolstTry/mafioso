@@ -156,13 +156,13 @@ if (!isset($_COOKIE[$cookie_name_remember])) {
                 </div>
             </div>
         </div>
-        <!--
+        
         <div class="col-6 single shadow" id="cookies">Vi bruker informasjonskapsler for å sikre at vi gir deg den beste opplevelsen på nettstedet vårt. <a style="text-decoration: underline" href="cookies.php">Les mer</a>
             <form method="post">
                 <input style="margin: 0; float: right; margin-right: 50px;" type="submit" name="ok" value="ok">
             </form>
         </div>
-        -->
+       
     </body>
 
     </html>

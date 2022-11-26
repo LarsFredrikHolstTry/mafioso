@@ -145,7 +145,15 @@ if (isset($_GET['vip_bonus'])) {
             <a href="?side=blackjack">
                 <div class="col-3">
                     <img class="action_image" src="img/action/gambling/blackjack.png">
-                    <b>Blackjack<!--<span style="color: orange;">Stengt</span>--></b><span class="description" style="float: right;"><?php echo $cashback; ?>% cashback</span>
+                    <b>Blackjack
+                        <!--<span style="color: orange;">Stengt</span>-->
+                    </b><span class="description" style="float: right;"><?php echo $cashback; ?>% cashback</span>
+                </div>
+            </a>
+            <a href="?side=miner">
+                <div class="col-3">
+                    <img class="action_image" src="img/action/gambling/blackjack.png">
+                    <b>Miner</b><span class="description" style="float: right;"><?php echo $cashback; ?>% cashback</span>
                 </div>
             </a>
             <!--         <a href="?side=hestelop">

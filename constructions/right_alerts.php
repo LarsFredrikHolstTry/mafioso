@@ -73,6 +73,9 @@ if (active_energy_drink($_SESSION['ID'], $pdo)) {
     right_alert("#", "Aktiv energidrikk", "2X EXP til " . date_to_text(energy_drink_time($_SESSION['ID'], $pdo)), "energy-drink");
 }
 
+right_alert("?side=julekalender", "Julekalender!", "Åpne julekalenderen for store gaver!", "candy-cane");
+
+
 right_alert("?side=vervekonk", "Vervekonkurranse!", "Vinn gavekort fra komplett på 500kr!", "emoji");
 
 $stmt = $pdo->prepare("SELECT * FROM safe_number");
