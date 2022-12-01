@@ -1294,7 +1294,7 @@ function thing($id)
     $thing[29] = "Energidrikk"; // gir dobbel exp i 30 min
     $thing[30] = "Hemmelig kiste"; // Kan gi penger, kuler eller ingenting.
 
-    $thing[31] = 'Gresskar';
+    $thing[31] = 'Julegave';
     $thing[32] = "Familie energidrikk"; // gir dobbel exp i 30 min
 
     // Julegave

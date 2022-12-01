@@ -308,6 +308,13 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                         $sql = "INSERT INTO christmas (CHR_day, CHR_acc_id, CHR_counter) VALUES (?,?,?)";
                         $pdo->prepare($sql)->execute([date('j'), $_SESSION['ID'], 1]);
                     }
+
+                    if (mt_rand(0, !active_superhelg($pdo) ? 20 : 10) == 0) {
+                        update_things($_SESSION['ID'], 31, $pdo);
+                        if (notificationSettings('pumpkin', $_SESSION['ID'], $pdo)) {
+                            send_notification($_SESSION['ID'], "Du fant en julegave når du utførte en kriminell handling!", $pdo);
+                        }
+                    }
                 }
 
                 if ($alt == 7) {

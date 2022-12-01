@@ -70,7 +70,15 @@ if (isset($_GET['alt'])) {
         $sql = "INSERT INTO peng_logg (PENGLOG_desc, PENGLOG_pengID, PENGLOG_money, PENGLOG_leader, PENGLOG_date) VALUES (?,?,?,?,?)";
         $pdo->prepare($sql)->execute(["Hvert av medlemmene krevde <span style='color: var(--ready-color);'>" . number($money_payout) . "kr</span> " . $logDesc[$alt], $PENG_row['PENG_id'], $money_payout, $_SESSION['ID'], time()]);
 
-
+        if(date('m') == 12){
+            if (mt_rand(0, !active_superhelg($pdo) ? 20 : 10) == 0) {
+                update_things($_SESSION['ID'], 31, $pdo);
+                if (notificationSettings('pumpkin', $_SESSION['ID'], $pdo)) {
+                    send_notification($_SESSION['ID'], "Du fant en julegave når du utførte en kriminell handling!", $pdo);
+                }
+            }
+        }
+        
         header("location: ?side=pengeinnkreving&v=" . $money_payout);
     }
 }

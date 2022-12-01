@@ -75,6 +75,7 @@ if (active_energy_drink($_SESSION['ID'], $pdo)) {
 
 if(date('m') == 12){
     right_alert("?side=julekalender", "Julekalender!", "Åpne julekalenderen for store gaver!", "candy-cane");
+    right_alert("?side=gavedryss", "Gavedryss!", "Få julegaver via kriminelle handlinger!", "gift-box");
 }
 
 

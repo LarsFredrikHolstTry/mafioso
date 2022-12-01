@@ -543,13 +543,13 @@ notificationSettings('moneyReceived', $_SESSION['ID'], $pdo);
         <div id="varsel_feedback" style="display: none;"><?php echo feedback("Varslinger ble endret", "success"); ?></div>
         <h4 style="margin-bottom: 20px;">Endre varslinger</h4>
         <div style="display: flex; flex-direction: column;">
-            <p class="description">Jeg ønsker å motta varslinger dersom...</p>
             <form method="post">
                 <div class="dfItem">
                     <input type="checkbox" <?= notificationSettings('moneyReceived', $_SESSION['ID'], $pdo) ? 'checked' : '' ?> name="setting[]" value="moneyReceived" /> Mottar penger i banken
                 </div>
                 <div class="dfItem" style="display: flex;">
-                    <input type="checkbox" name="setting[]" <?= notificationSettings('pumpkin', $_SESSION['ID'], $pdo) ? 'checked' : '' ?> value="pumpkin" style="margin-right: 7px;" /> Får gresskar fra kriminelle handlinger
+                    <input type="checkbox" name="setting[]" <?= notificationSettings('pumpkin', $_SESSION['ID'], $pdo) ? 'checked' : '' ?> value="pumpkin" style="margin-right: 7px;" /> 
+                    Får julegave fra kriminelle handlinger
                     <div style="margin-left: 5px; border-radius: 2px; padding: 0px 8px 3px 8px; background-color: #FF97C1; color: #9A1663">event</div>
                 </div>
                 <div class="dfItem">
@@ -587,6 +587,9 @@ notificationSettings('moneyReceived', $_SESSION['ID'], $pdo);
                 </div>
                 <div class="dfItem">
                     <input type="checkbox" <?= notificationSettings('winLossDices', $_SESSION['ID'], $pdo) ? 'checked' : '' ?> name="setting[]" value="winLossDices" /> Vant/tapte på terninger
+                </div>
+                <div class="dfItem">
+                    <input type="checkbox" <?= notificationSettings('email', $_SESSION['ID'], $pdo) ? 'checked' : '' ?> name="setting[]" value="email" /> E-post reklame
                 </div>
                 <button style="margin-top: 20px;" class="btn" name="save" id="saveSettings">Lagre</button>
             </form>
