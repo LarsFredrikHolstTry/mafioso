@@ -86,7 +86,7 @@ if(isset($_GET['open'])){
 				array_push($outcomeArr, $outcome_str);
 			} elseif(!in_array('exp', $outcomeType) && $chance > 40 && $chance <= 50){
 				array_push($outcomeType, 'exp');
-				$amount = mt_rand(10, 10000);
+				$amount = mt_rand(10, 1000);
 
 				$outcome_str = number($amount) . " exp";
 				give_exp($_SESSION['ID'], $amount, $pdo);
