@@ -1358,7 +1358,7 @@ function thing_price($id)
     $thing_price[37] = 0;
     $thing_price[38] = 0;
 
-    $thing_price[39] = 0;
+    $thing_price[39] = 100000000;
     $thing_price[40] = 1500;
 
     return $thing_price[$id];
