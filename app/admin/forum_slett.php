@@ -16,12 +16,23 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     $title = $FRM_row['FRM_title'];
     $content = $FRM_row['FRM_content'];
 
-    if (isset($_POST['slett'])) {
-        $sql = "DELETE FROM forum WHERE FRM_id = $frm_id";
-        $pdo->exec($sql);
+    $orgquery = $pdo->prepare("SELECT FRM_fam_id FROM forum WHERE FRM_id = ?");
+    $orgquery->execute(array($topic_id == 0 ? $id : $topic_id));
+    $org_row = $orgquery->fetch(PDO::FETCH_ASSOC);
+    
+    $fam_id = $org_row['FRM_fam_id'];
 
-        echo feedback("Posten ble slettet", "success");
-    }
+    if($fam_id && (get_my_familyID($_SESSION['ID'], $pdo) != $fam_id || get_my_familyrole($_SESSION['ID'], $pdo) != 0)){
+        echo feedback('Du har ikke tilgang!', 'error');
+    } elseif(!$fam_id && ACC_session_row($_SESSION['ID'], 'ACC_type', $pdo) == 0) {
+        echo feedback('Ingen tilgang!', 'error');
+    } else {
+        if (isset($_POST['slett'])) {
+            $sql = "DELETE FROM forum WHERE FRM_id = $frm_id";
+            $pdo->exec($sql);
+
+            echo feedback("Posten ble slettet", "success");
+        }
 
 ?>
     <div class="content">
@@ -44,6 +55,6 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
             </form>
         </div>
     </div>
-<?php } else {
+<?php } } else {
     echo feedback("Ugyldig ID", "fail");
 }

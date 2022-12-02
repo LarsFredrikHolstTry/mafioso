@@ -4,7 +4,9 @@ if (!isset($_GET['side'])) {
     die();
 }
 
-if (ACC_session_row($_SESSION['ID'], 'ACC_type', $pdo) >= 1) {
+$whitelistedPage = $_GET['adminside'] == 'forum_rediger' || $_GET['adminside'] == 'forum_slett';
+
+if (ACC_session_row($_SESSION['ID'], 'ACC_type', $pdo) >= 1 || $whitelistedPage) {
 
     $pages[0] = "nyhet";
     $pages[1] = "cronjobs";

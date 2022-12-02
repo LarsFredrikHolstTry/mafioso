@@ -1821,7 +1821,7 @@ function get_my_familyID($id, $pdo)
     $family_mem_row = $query->fetch(PDO::FETCH_ASSOC);
 
     $query = $pdo->prepare("SELECT FAM_id FROM family WHERE FAM_id = ?");
-    $query->execute(array($family_mem_row['FAMMEM_fam_id']));
+    $query->execute(array($family_mem_row['FAMMEM_fam_id'] ?? null) );
     $family_row = $query->fetch(PDO::FETCH_ASSOC);
 
     return $family_row['FAM_id'] ?? NULL;

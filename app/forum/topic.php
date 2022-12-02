@@ -64,6 +64,7 @@ if (!isset($_GET['side'])) {
                 if ($cat == 3 && $fam_id != get_my_familyID($_SESSION['ID'], $pdo)) {
                     echo feedback("Ingen tilgang", "error");
                 } else {
+                    $canEditOrDeletePost = $cat == 3 && get_my_familyrole($_SESSION['ID'], $pdo) == 0;
 
                     if ($closed == 1) {
                         $closed = true;
@@ -176,7 +177,7 @@ if (!isset($_GET['side'])) {
                                         echo " - Redigert " . date_to_text(edited_date($ID_forum, $pdo)) . " av " . ACC_username(edited_by($ID_forum, $pdo), $pdo);
                                     } ?>
 
-                                    <?php if (ACC_session_row($_SESSION['ID'], 'ACC_type', $pdo) != 0) { ?>
+                                    <?php if ($canEditOrDeletePost || ACC_session_row($_SESSION['ID'], 'ACC_type', $pdo) != 0) { ?>
                                         <a href="?side=admin&adminside=forum_rediger&id=<?php echo $ID_forum; ?>">Rediger</a> | <a href="?side=admin&adminside=forum_slett&id=<?php echo $ID_forum; ?>">Slett</a> | <?php if (!$closed) { ?><a href="?side=admin&adminside=forum_steng&id=<?php echo $ID_forum; ?>">Steng</a><?php } else { ?><a href="?side=admin&adminside=forum_apne&id=<?php echo $ID_forum; ?>">Åpne</a><?php } ?>
                                     <?php } ?>
 
@@ -324,7 +325,7 @@ if (!isset($_GET['side'])) {
                                                     echo " - Redigert " . date_to_text(edited_date($id_forum, $pdo)) . " av " . ACC_username(edited_by($id_forum, $pdo), $pdo);
                                                 } ?>
 
-                                                <?php if (ACC_session_row($_SESSION['ID'], 'ACC_type', $pdo) != 0) { ?>
+                                                <?php if ($canEditOrDeletePost || ACC_session_row($_SESSION['ID'], 'ACC_type', $pdo) != 0) { ?>
                                                     <a href="?side=admin&adminside=forum_rediger&id=<?php echo $id_forum; ?>">Rediger</a> | <a href="?side=admin&adminside=forum_slett&id=<?php echo $id_forum; ?>">Slett</a>
                                                 <?php } ?>
 
