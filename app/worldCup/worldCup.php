@@ -143,7 +143,7 @@ if(isset($_GET['started'])){
 						$money_outcome = ($row_['WC_bet']*$match_row['WCM_home_odds'])/100;
 
 						send_notification($row_['WC_acc_id'], $match_row['WCM_home'].' vant kampen og du vant '.number($money_outcome).' kr!', $pdo);
-						give_money($_SESSION['ID'], $money_outcome, $pdo);
+						give_money($row_['WC_acc_id'], $money_outcome, $pdo);
 					}
 
 					header("Location: ?side=worldCup");
@@ -170,7 +170,7 @@ if(isset($_GET['started'])){
 						$money_outcome = ($row_['WC_bet']*$match_row['WCM_draw_odds'])/100;
 
 						send_notification($row_['WC_acc_id'], $match_row['WCM_draw'].' vant kampen og du vant '.number($money_outcome).' kr!', $pdo);
-						give_money($_SESSION['ID'], $money_outcome, $pdo);
+						give_money($row_['WC_acc_id'], $money_outcome, $pdo);
 					}
 
 					header("Location: ?side=worldCup");
@@ -201,7 +201,7 @@ if(isset($_GET['started'])){
 						$money_outcome = ($row_['WC_bet']*$match_row['WCM_awa_odds'])/100;
 
 						send_notification($row_['WC_acc_id'], $match_row['WCM_awa'].' vant kampen og du vant '.number($money_outcome).' kr!', $pdo);
-						give_money($_SESSION['ID'], $money_outcome, $pdo);
+						give_money($row_['WC_acc_id'], $money_outcome, $pdo);
 					}
 
 					header("Location: ?side=worldCup");
