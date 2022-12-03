@@ -15,7 +15,7 @@ if(isset($_GET['regret'])){
 }
 
 if(isset($_GET['started'])){
-	echo feedback('Du kan ikke angre en startet kamp!', 'error');
+	echo feedback('Du kan ikke angre eller sette innsats på en startet kamp!', 'error');
 }
 ?>
 
@@ -67,6 +67,10 @@ if(isset($_GET['started'])){
 				}
 
 				if(isset($_POST[$row['WCM_id']])){
+					if($match_started){
+						header("Location: ?side=worldCup&started");
+					}
+
 					$bet = remove_space($_POST['betAmount']);
 					$team = $_POST['betTeam'];
 					$odds = 0;
@@ -127,6 +131,10 @@ if(isset($_GET['started'])){
 					$stmt_ = $pdo->prepare('SELECT * FROM world_cup_bet WHERE WC_match_id = '.$id.' AND WC_team = 0');
 					$stmt_->execute();
 
+					$sql__ = "UPDATE world_cup_match SET WCM_outcome = 1 WHERE WCM_id = '" . $id . "'";
+					$stmt__ = $pdo->prepare($sql__);
+					$stmt__->execute();
+
 					$query_match = $pdo->prepare("SELECT * FROM world_cup_match WHERE WCM_id=?");
 					$query_match->execute(array($id));
 					$match_row = $query_match->fetch(PDO::FETCH_ASSOC);
@@ -137,6 +145,8 @@ if(isset($_GET['started'])){
 						send_notification($row_['WC_acc_id'], $match_row['WCM_home'].' vant kampen og du vant '.number($money_outcome).' kr!', $pdo);
 						give_money($_SESSION['ID'], $money_outcome, $pdo);
 					}
+
+					header("Location: ?side=worldCup");
 				}
 
 				if(isset($_POST[$row['WCM_id'].'_draw'])){
@@ -144,6 +154,10 @@ if(isset($_GET['started'])){
 					$new_string = explode("_", $string);
 
 					$id = $new_string[0];
+
+					$sql__ = "UPDATE world_cup_match SET WCM_outcome = 1 WHERE WCM_id = '" . $id . "'";
+					$stmt__ = $pdo->prepare($sql__);
+					$stmt__->execute();
 
 					$stmt_ = $pdo->prepare('SELECT * FROM world_cup_bet WHERE WC_match_id = '.$id.' AND WC_team = 1');
 					$stmt_->execute();
@@ -158,6 +172,8 @@ if(isset($_GET['started'])){
 						send_notification($row_['WC_acc_id'], $match_row['WCM_draw'].' vant kampen og du vant '.number($money_outcome).' kr!', $pdo);
 						give_money($_SESSION['ID'], $money_outcome, $pdo);
 					}
+
+					header("Location: ?side=worldCup");
 				}
 
 				if(isset($_POST[$row['WCM_id'].'_away'])){
@@ -169,6 +185,10 @@ if(isset($_GET['started'])){
 					$new_string = explode("_", $string);
 
 					$id = $new_string[0];
+
+					$sql__ = "UPDATE world_cup_match SET WCM_outcome = 1 WHERE WCM_id = '" . $id . "'";
+					$stmt__ = $pdo->prepare($sql__);
+					$stmt__->execute();
 
 					$stmt_ = $pdo->prepare('SELECT * FROM world_cup_bet WHERE WC_match_id = '.$id.' AND WC_team = 2');
 					$stmt_->execute();
@@ -183,6 +203,8 @@ if(isset($_GET['started'])){
 						send_notification($row_['WC_acc_id'], $match_row['WCM_awa'].' vant kampen og du vant '.number($money_outcome).' kr!', $pdo);
 						give_money($_SESSION['ID'], $money_outcome, $pdo);
 					}
+
+					header("Location: ?side=worldCup");
 				}
 			
 			?>
@@ -258,7 +280,7 @@ if(isset($_GET['started'])){
 					</div>
 					</div>
 					<?php 
-						if($_SESSION['ID'] == 1){
+						if($_SESSION['ID'] == 1 && $row['WCM_outcome'] == 0){
 							?>
 							<div style="display: flex; justify-content: center">
 								<div style="display: flex; justify-content: center; flex-direction: column">
