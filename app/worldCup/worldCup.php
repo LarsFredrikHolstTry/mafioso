@@ -19,7 +19,7 @@ if(isset($_GET['started'])){
 }
 ?>
 
-<div class="col-8 single">
+<div class="col-10 single">
     <div class="content">
 			<h4>Fotball-VM i Qatar 2022 ⚽</h4>
 			<p class="description"> 
@@ -32,14 +32,14 @@ if(isset($_GET['started'])){
 				<li>➖ Man kan ikke kombinere kampene, men kun satse på 1 og 1 kamp</li>
 				<li>➖ Når kampen har startet er det ikke mulig å angre eller satse på kampen, det er derfor viktig å legge innsats før kampen starter</li>
 				<li>➖ Minste innsats er <?= number($min_bet) ?> kr</li>
-				<li>➖ Tallene i gul indikerer oddsen. Venstre = hjemmelagets odds, midten = uavgjort odds, høyre = bortelagets odds</li>
+				<li>➖ Oddsen er definert i boksene under lagene. H = Hjemmeodds, U = Uavgjort odds, B = Borteodds</li>
 			</ul>
 
 			<br><br>
 			<h4>Tilgjengelige kamper</h4>
 			<?php 
 			
-			$stmt = $pdo->prepare('SELECT * FROM world_cup_match WHERE WCM_outcome = 0');
+			$stmt = $pdo->prepare('SELECT * FROM world_cup_match WHERE WCM_outcome = 0 ORDER BY WCM_start_date');
 			$stmt->execute(array());
 	
 			foreach ($stmt as $row) {
@@ -208,49 +208,58 @@ if(isset($_GET['started'])){
 				}
 			
 			?>
-			<div class="col-12 nice-boxshadow" style="margin-top: 10px;">
+			<div class="col-6 nice-boxshadow" style="margin-top: 10px;">
 				<div class="content">
 					<form method="post">
 					<div style="display: flex; justify-content: center; margin-bottom: 10px;">
 						<span style="margin-left: 10px;"><?php
 						if($match_started){ ?>
 								<span class="blink_me">LIVE</span
-					<?php } else {
-						echo date_to_text($row['WCM_start_date']); 
-					}
-						 ?></span>
+									<?php 
+						} else {
+							echo date_to_text($row['WCM_start_date']); 
+						}
+									?>
+						 </span>
 					</div>
 
-					<div style="display: flex; justify-content: space-between;">
-						<span>
+					<div style="display: flex; justify-content: space-around;">
+						<div style="display: flex; align-items: center;">
 							<img class="team_img" src="img/vm/<?= strtolower($row['WCM_home']) ?>.svg" />
 							<span class="description"><?= $row['WCM_home'] ?></span>
-							<br><br>
-							<span><span style="font-weight: bold; color: yellow;">
-							<?php if(!$hasBetted && !$match_started){ ?><input type="radio" name="betTeam" value="0"> <?php } ?>
-							<?= $row['WCM_home_odds']/100 ?>
-						</span></span> 
-						</span> 
-						<span>VS.
-							<br>
-							<span style="opacity: 0">Uavgjort</span>
-							<br><br>
-							<span><span style="font-weight: bold; color: yellow;">
-							<?php if(!$hasBetted && !$match_started){ ?> <input type="radio" name="betTeam" value="1"> <?php } ?>
-							<?= $row['WCM_draw_odds']/100 ?>
-						</span></span>  
-						</span> 
-						<span>
+						</div>
+						<div style="display: flex; align-items: center;">
+							VS
+						</div>
+						<div style="display: flex; align-items: center;">
 							<img class="team_img" src="img/vm/<?= strtolower($row['WCM_away']) ?>.svg" />
 							<span class="description"><?= $row['WCM_away'] ?></span>
-							<br><br>
-							<span><span style="font-weight: bold; color: yellow;">
-							<?php if(!$hasBetted && !$match_started){ ?> <input type="radio" name="betTeam" value="2"> <?php } ?>
-							<?= $row['WCM_away_odds']/100 ?>
-						</span></span> 
-						</span>
+						</div>
 					</div>
-					
+
+					<?php if(!$hasBetted && !$match_started){ ?>
+					<div style="display: flex; justify-content: space-around;">
+						<div>
+							<div class="button">
+								<input type="radio" id="home" name="betTeam" value="0" />
+								<label class="btn btn-default" for="home">H <?= $row['WCM_home_odds']/100 ?></label>
+							</div>
+						</div>
+						<div >
+							<div class="button">
+								<input type="radio" id="draw" name="betTeam" value="1" />
+								<label class="btn btn-default" for="draw">U <?= $row['WCM_draw_odds']/100 ?></label>
+							</div>
+						</div>
+						<div>
+							<div class="button">
+								<input type="radio" id="away" name="betTeam" value="2" />
+								<label class="btn btn-default" for="away">B <?= $row['WCM_away_odds']/100 ?></label>
+							</div>
+						</div>
+					</div>
+					<?php } ?>
+
 					<div style="display: flex; justify-content: center; margin-top: 15px;">
 					<?php if(!$hasBetted && !$match_started){ ?>
 						<div>
@@ -297,6 +306,7 @@ if(isset($_GET['started'])){
 							<?php
 						}
 					?>
+
 				</form>
 			</div>
 			<?php } ?>
@@ -309,9 +319,9 @@ number_space("#number");
 <style>
 .nice-boxshadow{
 	border-radius: 7px;
-	-moz-box-shadow: 0px 1px 5px 0px #101010;
-	-webkit-box-shadow: 0px 1px 5px 0px #101010;
-	box-shadow: 0px 1px 5px 0px #101010;
+	-moz-box-shadow: 0px 2px 2px 1px #101010;
+	-webkit-box-shadow: 0px 2px 2px 1px #101010;
+	box-shadow: 0px 2px 2px 1px #101010;
 }
 
 .team_img {
@@ -329,5 +339,56 @@ number_space("#number");
     opacity: 0;
   }
 }
+
+
+
+.button {
+  width: 70px;
+  height: 30px;
+  position: relative;
+	margin: 20px 0px;
+}
+
+.button label,
+.button input {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+	text-align: center;
+}
+
+.button input[type="radio"] + label, .button input[type="radio"] {
+	background-color: grey;
+	border-radius: 4px;
+	transition: .2s;
+}
+
+
+.button input[type="radio"] {
+  opacity: 0.011;
+  z-index: 100;
+}
+
+.button input[type="radio"]:hover + label, .button input[type="radio"]:hover {
+	background-color: orange;
+	cursor: pointer;
+	border-radius: 4px;
+}
+
+.button input[type="radio"]:checked + label {
+  background: var(--button-bg-color);
+  border-radius: 4px;
+}
+
+.button label {
+  cursor: pointer;
+  z-index: 90;
+  line-height: 1.8em;
+	padding: 3px 10px;
+}
+
 
 </style>
