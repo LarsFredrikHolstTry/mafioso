@@ -39,7 +39,7 @@ if(isset($_GET['started'])){
 			<h4>Tilgjengelige kamper</h4>
 			<?php 
 			
-			$stmt = $pdo->prepare('SELECT * FROM world_cup_match WHERE WCM_start_date >= '.time() - 12000);
+			$stmt = $pdo->prepare('SELECT * FROM world_cup_match WHERE WCM_outcome = 0');
 			$stmt->execute(array());
 	
 			foreach ($stmt as $row) {
