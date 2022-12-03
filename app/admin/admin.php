@@ -4,7 +4,9 @@ if (!isset($_GET['side'])) {
     die();
 }
 
-$whitelistedPage = $_GET['adminside'] == 'forum_rediger' || $_GET['adminside'] == 'forum_slett';
+if(isset($_GET['adminside'])){
+    $whitelistedPage = $_GET['adminside'] == 'forum_rediger' || $_GET['adminside'] == 'forum_slett';
+}
 
 if (ACC_session_row($_SESSION['ID'], 'ACC_type', $pdo) >= 1 || $whitelistedPage) {
 
@@ -28,6 +30,7 @@ if (ACC_session_row($_SESSION['ID'], 'ACC_type', $pdo) >= 1 || $whitelistedPage)
     $pages[17] = "forum_rediger";
     $pages[18] = "oppdrag_oversikt";
     $pages[19] = "drapsfri";
+    $pages[20] = "fotballVm";
 
     $admin = array(1, 11);
     $forummod = array(1, 2, 3, 5, 11);

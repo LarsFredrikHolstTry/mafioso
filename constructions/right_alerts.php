@@ -78,6 +78,8 @@ if(date('m') == 12){
     right_alert("?side=gavedryss", "Gavedryss!", "Få julegaver via kriminelle handlinger!", "gift-box");
 }
 
+right_alert("?side=worldCup", "VM I Qatar!", "Sats på kamp og vinn penger!", "soccer");
+
 
 right_alert("?side=vervekonk", "Vervekonkurranse!", "Vinn gavekort fra komplett på 500kr!", "emoji");
 
