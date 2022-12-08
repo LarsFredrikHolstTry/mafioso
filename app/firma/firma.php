@@ -76,9 +76,7 @@ if (isset($_POST['money_out'])) {
         <h4>Firma</h4>
         <p class="description">
             Med firma kan du hente ut inntekt hver time. Hvor mye du får utbetalt per time
-            varierer på hvilket firma du eier. Dersom man er medlem i en familie kan man kjøpe
-            firmaboost for en gitt pengesum som kan gi medlemmene i familien 10%, 25% og 50% ekstra utbetaling
-            per time.
+            varierer på hvilket firma du eier.
         </p>
         <center style="margin-bottom: 10px;">
             <p>Du eier <?= number($total_firms) ?> firmaer og får <?= number($money_payout_total) ?> kr utbetalt per time</p>
