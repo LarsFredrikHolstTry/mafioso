@@ -4100,3 +4100,12 @@ function get_bot_id($username, $pdo)
     $row = $query->fetch(PDO::FETCH_ASSOC);
     return $row['ACC_id'] ?? NULL;
 }
+
+function numberOfFirms($acc_id, $type, $pdo)
+{
+    $stmt = $pdo->prepare("SELECT count(*) FROM firma WHERE FIRM_acc_id = ? AND FIRM_type = ?");
+    $stmt->execute([$acc_id, $type]);
+    $amount = $stmt->fetchColumn();
+
+    return $amount;
+}

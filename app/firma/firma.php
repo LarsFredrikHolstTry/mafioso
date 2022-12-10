@@ -5,15 +5,6 @@ $price = array(25000000, 75000000, 150000000, 500000000, 1500000000, 5000000000)
 $payout = array(200000, 372000, 800000, 1400000, 2500000, 7500000);
 $maxAmount = array(5, 4, 3, 2, 1, 1);
 
-function numberOfFirms($acc_id, $type, $pdo)
-{
-    $stmt = $pdo->prepare("SELECT count(*) FROM firma WHERE FIRM_acc_id = ? AND FIRM_type = ?");
-    $stmt->execute([$acc_id, $type]);
-    $amount = $stmt->fetchColumn();
-
-    return $amount;
-}
-
 if (isset($_GET['bought'])) {
     echo feedback('Du kjøpte ' . $firms[$_GET['bought']], 'success');
 }

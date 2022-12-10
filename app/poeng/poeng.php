@@ -106,6 +106,7 @@ if ($sthandler->rowCount() > 0) {
                 $boost[15] = "6 time happy hour";
                 $boost[16] = "12 time happy hour";
                 $boost[17] = "24 time happy hour";
+                $boost[18] = "Selg firma";
 
                 $boost_price[0] = 6;
                 $boost_price[1] = 8;
@@ -125,6 +126,7 @@ if ($sthandler->rowCount() > 0) {
                 $boost_price[15] = 250;
                 $boost_price[16] = 400;
                 $boost_price[17] = 700;
+                $boost_price[18] = 150;
 
                 $boost_info[0] = "Unngå at spillere penger fra deg. Går ut ved midnatt.";
                 $boost_info[1] = "Utvider plasse i garasjen med 10 plasser";
@@ -144,6 +146,7 @@ if ($sthandler->rowCount() > 0) {
                 $boost_info[15] = "Kjøp 6 time happy hour";
                 $boost_info[16] = "Kjøp 12 time happy hour";
                 $boost_info[17] = "Kjøp 24 time happy hour";
+                $boost_info[18] = "Dette vil selge alle dine firma for innkjøpspris";
 
                 $point_icons[0] = "img/poeng/type_0.png";
                 $point_icons[1] = "img/poeng/type_1.png";
@@ -164,8 +167,8 @@ if ($sthandler->rowCount() > 0) {
                 $point_icons[16] = "img/poeng/type_16.png";
                 $point_icons[17] = "img/poeng/type_17.png";
 
+                $legal = array(0, 1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19);
                 if (isset($_GET['bonus'])) {
-                    $legal = array(0, 1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17);
                     if (in_array($_GET['bonus'], $legal)) {
                         if (AS_session_row($_SESSION['ID'], 'AS_lyddemper', $pdo) != 0 && $_GET['bonus'] == 6) {
                             echo feedback("Du har allerede lyddemper", "fail");
@@ -266,13 +269,27 @@ if ($sthandler->rowCount() > 0) {
                             } elseif ($_GET['bonus'] == 17) {
                                 $happyhour = 38;
                                 update_things($_SESSION['ID'], $happyhour, $pdo);
+                            } elseif($_GET['bonus'] == 18){
+                                $firma_buy_price = 0;
+                                $firms = array('7-Eleven', 'Levis butikk', 'Restaurant', 'Aksjemeglerhus', 'Strømselskap', 'Skipsmegler i Maritim foretning');
+                                $price = array(25000000, 75000000, 150000000, 500000000, 1500000000, 5000000000);
+
+                                for ($i = 0; $i < count($firms); $i++) {
+                                    $firma_buy_price = $firma_buy_price + ($price[$i] * numberOfFirms($_SESSION['ID'], $i, $pdo));
+                                }
+
+                                if($firma_buy_price > 0){
+                                    give_money($_SESSION['ID'], $firma_buy_price, $pdo);
+                                    $sql = "DELETE FROM firma WHERE FIRM_acc_id = ".$_SESSION['ID']."";
+                                    $pdo->exec($sql);
+                                } else {
+                                    header("Location: ?side=poeng");
+                                }
                             } else {
                                 echo feedback('ugyldig ID', 'fail');
                             }
-
                             take_poeng($_SESSION['ID'], $boost_price[$_GET['bonus']], $pdo);
-
-                            header("Location: ?side=poeng&bonus_bought=" . $_GET['bonus'] . "");
+                            header("Location: ?side=poeng&bonus_bought=" . $_GET['bonus']);
                         }
                     } else {
                         echo feedback("Ugyldig handling", "fail");
@@ -280,13 +297,13 @@ if ($sthandler->rowCount() > 0) {
                 }
 
                 if (isset($_GET['bonus_bought'])) {
-                    $legal = array(0, 1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17);
-
                     $boost[6] = "Lyddemper";
 
                     if (in_array($_GET['bonus_bought'], $legal)) {
                         if ($_GET['bonus_bought'] == 4) {
                             echo feedback("Du satt ned byskatten til 0% i " . city_name(AS_session_row($_SESSION['ID'], 'AS_city', $pdo)), "success");
+                        } elseif ($_GET['bonus_bought'] == 18) {
+                            echo feedback("Du solgte alle dine firma for innkjøpspris", "success");
                         } else {
                             echo feedback("Du kjøpte " . $boost[$_GET['bonus_bought']] . "", "success");
                         }
