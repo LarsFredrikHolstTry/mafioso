@@ -82,7 +82,7 @@ if(isset($_GET['open'])){
 				$amount = mt_rand(5,100);
 
 				$outcome_str = $amount ." kuler";
-				give_bullets($_SESSION['ID'], $amout, $pdo);
+				give_bullets($_SESSION['ID'], $amount, $pdo);
 				array_push($outcomeArr, $outcome_str);
 			} elseif(!in_array('exp', $outcomeType) && $chance > 40 && $chance <= 50){
 				array_push($outcomeType, 'exp');
