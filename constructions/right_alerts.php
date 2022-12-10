@@ -3,17 +3,17 @@
 if (ACC_session_row($_SESSION['ID'], 'ACC_type', $pdo) > 0) {
     if (total_support_unread($pdo) == 1) {
         echo '<a href="?side=admin&adminside=support">';
-        echo feedback(total_support_unread($pdo) . " ny support!", "fail.svg");
+        echo feedback(total_support_unread($pdo) . " ny support!", "fail");
         echo '</a>';
     } elseif (total_support_unread($pdo) > 1) {
         echo '<a href="?side=admin&adminside=support">';
-        echo feedback(total_support_unread($pdo) . " nye support!", "fail.svg");
+        echo feedback(total_support_unread($pdo) . " nye support!", "fail");
         echo '</a>';
     }
 }
 
 if (player_in_bunker($_SESSION['ID'], $pdo)) {
-    right_alert("?side=bunker", "Bunker", "Du er i bunker til " . date_to_text(time_left_in_bunker($_SESSION['ID'], $pdo)) . "", "bunker.svg");
+    right_alert("?side=bunker", "Bunker", "Du er i bunker til " . date_to_text(time_left_in_bunker($_SESSION['ID'], $pdo)), "bunker.svg");
 }
 
 if (player_in_jail($_SESSION['ID'], $pdo)) {
@@ -40,17 +40,17 @@ if (new_notifications($_SESSION['ID'], $pdo) > 0) {
 
 // Høy byskatt
 if (get_city_tax(AS_session_row($_SESSION['ID'], 'AS_city', $pdo), $pdo) > 50) {
-    echo feedback("Byskatten i denne byen er veldig høy! Det anbefales at du reiser til en by med mindre byskatt.", "fail.svg");
+    echo feedback("Byskatten i denne byen er veldig høy! Det anbefales at du reiser til en by med mindre byskatt.", "fail");
 }
 
 // Full garasje
 if ($full_garage) {
-    echo feedback("Garasjen din er full! Du kan enten kjøpe mer plass på <a href='?side=poeng'>poengsiden</a> eller selge biler i <a href='?side=garasje'>garasjen</a>", "fail.svg");
+    echo feedback("Garasjen din er full! Du kan enten kjøpe mer plass på <a href='?side=poeng'>poengsiden</a> eller selge biler i <a href='?side=garasje'>garasjen</a>", "fail");
 }
 
 // Fullt lager
 if ($full_storage) {
-    echo feedback("Lageret ditt er fullt! Du kan enten kjøpe mer plass på <a href='?side=poeng'>poengsiden</a> eller selge ting på <a href='?side=lager'>lageret</a>", "fail.svg");
+    echo feedback("Lageret ditt er fullt! Du kan enten kjøpe mer plass på <a href='?side=poeng'>poengsiden</a> eller selge ting på <a href='?side=lager'>lageret</a>", "fail");
 }
 
 // Konkurranse
