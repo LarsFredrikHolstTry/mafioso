@@ -169,7 +169,7 @@ if(isset($_GET['started'])){
 					foreach ($stmt_ as $row_) {
 						$money_outcome = ($row_['WC_bet']*$match_row['WCM_draw_odds'])/100;
 
-						send_notification($row_['WC_acc_id'], $match_row['WCM_draw'].' vant kampen og du vant '.number($money_outcome).' kr!', $pdo);
+						send_notification($row_['WC_acc_id'], 'Kampen mellom '.$match_row['WCM_home'].' og '.$match_row['WCM_away'].' endte uavgjort og du vant '.number($money_outcome).' kr!', $pdo);
 						give_money($row_['WC_acc_id'], $money_outcome, $pdo);
 					}
 
@@ -198,9 +198,9 @@ if(isset($_GET['started'])){
 					$match_row = $query_match->fetch(PDO::FETCH_ASSOC);
 			
 					foreach ($stmt_ as $row_) {
-						$money_outcome = ($row_['WC_bet']*$match_row['WCM_awa_odds'])/100;
+						$money_outcome = ($row_['WC_bet'] * $match_row['WCM_away_odds'])/100;
 
-						send_notification($row_['WC_acc_id'], $match_row['WCM_awa'].' vant kampen og du vant '.number($money_outcome).' kr!', $pdo);
+						send_notification($row_['WC_acc_id'], $match_row['WCM_away'].' vant kampen og du vant '.number($money_outcome).' kr!', $pdo);
 						give_money($row_['WC_acc_id'], $money_outcome, $pdo);
 					}
 

@@ -4,7 +4,7 @@ include_once 'functions/oppdrag.php';
 
 $vito = "Vito";
 
-$cooldown = 1800 + time();
+$cooldown = 60 + time();
 
 if (active_drapsfri($pdo)) {
     echo feedback("Det er ikke mulig å drepe under drapsfri", "blue");
@@ -30,6 +30,19 @@ $weapon_add[16] = 37;
 $weapon_add[17] = 50;
 $weapon_add[18] = 75;
 $weapon_add[19] = 100;
+
+$hour = date('Hi');
+$from = 2000;
+$to = 2100;
+$isKillTime = $hour >= $from && $hour < $to;
+
+if(active_drapsfri($pdo)){
+    echo feedback('Det er drapsfri Fra '. date_to_text(drapsfri_info('DRAPFRI_start', $pdo)) . " til " . date_to_text(drapsfri_info('DRAPFRI_end', $pdo)), 'blue');
+} else {
+    if($isKillTime){
+        echo feedback('Det er drapstid fra 20:00 til 21:00', 'blue');
+    }
+}
 
 if (isset($_POST['kill'])) {
     if (kill_ready($_SESSION['ID'], $pdo)) {
@@ -68,8 +81,10 @@ if (isset($_POST['kill'])) {
                 } else {
 
 
-                    if (active_drapsfri($pdo)) {
-                        echo feedback("Det er ikke mulig å drepe under drapsfri!", "error");
+                    if (!$isKillTime) {
+                        echo feedback('Drap er kun tilgjengelig mellom 20:00 til 21:00', 'error');
+                    } elseif(active_drapsfri($pdo)){
+                        echo feedback('Det er drapsfri', 'error');
                     } else {
 
                         $username = $_POST['username'];
@@ -326,6 +341,10 @@ if (isset($_POST['nullstill'])) {
         } else {
         ?>
             <form method="post">
+                <p class="description">
+                    Drapstid varer fra 20:00 til 21:00. Dersom det er drapsfri vil det vises i menyen til høyre. 
+                    Ventetid per angrep er 60 sekunder og forsvaret blir halvvert i 15 minutter.
+                </p>
                 <div class="col-6">
                     <h4>Hvem ønsker du å drepe?</h4>
                     <p class="description">Administrator og moderator ikke drepes.</p>
@@ -337,7 +356,7 @@ if (isset($_POST['nullstill'])) {
                     <input type="text" name="bullet_amount" id="number" placeholder="Antall kuler...">
                 </div>
                 <p class="description">
-                    Husk at når du angriper vil ditt forsvar bli halvvert i 4 timer.<br>
+                    Husk at når du angriper vil ditt forsvar bli halvvert i 15 minutter<br>
                     Antall kuler som trengs varierer, sjekk <a href="?side=drap&p=kalkulator">kalkulator</a></p>
                 <input type="submit" name="kill" style="width: 100%;" value="Drep spiller">
             </form>

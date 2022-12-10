@@ -17,7 +17,7 @@ if (isset($_GET['id'])) {
             $AS_profile = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if (half_fp($AS_profile['AS_id'], $pdo)) {
-                echo feedback("Brukeren har nylig utført et angrep og har halvt forsvar i 4 timer", "error");
+                echo feedback("Brukeren har nylig utført et angrep og har halvt forsvar i 15 minutter", "error");
             }
 
             switch ($AS_profile['AS_bio_bg_active']) {

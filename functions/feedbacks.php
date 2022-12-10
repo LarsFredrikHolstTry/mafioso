@@ -12,7 +12,7 @@ function feedback(string $msg, string $feedbackType)
         'blue'      => 'fi-rr-info',
         'cooldown'  => 'fi-rr-alarm-clock',
         'money'     => 'fi-rr-dollar',
-        'airport'     => 'fi-rr-plane'
+        'airport'   => 'fi-rr-plane'
 
     );
 
@@ -25,7 +25,7 @@ function right_alert($link, $header, $text, $icon)
     <a href="' . $link . '">
         <div class="margin_bottom action_container_event">
             <div class="action_icon">
-                <img src="img/icons/' . $icon . '.svg">
+                <img src="img/icons/' . $icon . '">
             </div>
             <div class="action_text">
                 <span style="color: white;">' . $header . '</span><br>

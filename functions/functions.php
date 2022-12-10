@@ -2972,7 +2972,7 @@ function get_active_charm($id, $pdo)
 
 function give_half_hp($acc_id, $pdo)
 {
-    $date = time() + 14400;
+    $date = time() + 900;
     $sql = "INSERT INTO half_fp (HALFFP_acc_id, HALFFP_date) VALUES (?,?)";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$acc_id, $date]);
@@ -3050,21 +3050,6 @@ function marked_listings($cat, $pdo)
     $count = $stmt->fetchColumn();
 
     return $count;
-}
-
-function GetPrice($from, $to)
-{
-    $from = (trim(strtoupper($from)));
-    $to = (trim(strtoupper($to)));
-    $url = 'curl -s -H "CB-VERSION: 2017-12-06" "https://api.coinbase.com/v2/prices/' . $from . '-' . $to . '/spot"';
-    $tmp = shell_exec($url);
-    $data = json_decode($tmp, true);
-
-    if ($data && $data['data'] && $data['data']['amount']) {
-        return (float)$data['data']['amount'];
-    }
-
-    return null;
 }
 
 function get_detektiv_lvl($id, $pdo)
