@@ -60,7 +60,7 @@ if (active_konk($pdo)) {
 
 // superhelg
 if (active_superhelg($pdo)) {
-    right_alert("?side=superhelg", active_superhelg_title($pdo), "Dobbel EXP & verdi", "rocket.svg");
+    right_alert("?side=superhelg", active_superhelg_title($pdo), "Dobbel EXP & verdi", "confetti.png");
 }
 
 // Aktiv energidrikk
