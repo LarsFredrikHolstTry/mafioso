@@ -91,7 +91,7 @@ if (isset($_POST['kill'])) {
                         if (user_exist($username, $pdo)) {
                             $acc_id = get_acc_id($username, $pdo);
 
-                            if ($acc_id == 33) {
+                            if ($acc_id == get_bot_id('Joe Bananas', $pdo)) {
                                 echo feedback("Utpressings-botter kan ikke drepes", "error");
                             } else {
                                 $query = $pdo->prepare("SELECT * FROM accounts WHERE ACC_id = ?");

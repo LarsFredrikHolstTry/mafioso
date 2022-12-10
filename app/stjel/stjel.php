@@ -70,14 +70,14 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
 
                         steal_give_cooldown($_SESSION['ID'], $cooldown, $pdo);
                     } else {
-                        if ($id_steal == 33) {
+                        if ($id_steal == get_bot_id('Joe Bananas', $pdo)) {
                             $money_amount = mt_rand(10000, 20000);
+                            give_money($_SESSION['ID'], $money_amount, $pdo);
                         } else {
                             $money_amount = mt_rand($min_steal, $steal_money);
+                            give_money($_SESSION['ID'], $money_amount, $pdo);
+                            take_money($id_steal, $money_amount, $pdo);
                         }
-
-                        give_money($_SESSION['ID'], $money_amount, $pdo);
-                        take_money($id_steal, $money_amount, $pdo);
 
                         if (AS_session_row($_SESSION['ID'], 'AS_mission', $pdo) == 22) {
                             mission_update(AS_session_row($_SESSION['ID'], 'AS_mission_count', $pdo) + $money_amount, AS_session_row($_SESSION['ID'], 'AS_mission', $pdo), mission_criteria(AS_session_row($_SESSION['ID'], 'AS_mission', $pdo)), $_SESSION['ID'], $pdo);
@@ -236,14 +236,14 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
 
                                 steal_give_cooldown($_SESSION['ID'], $cooldown, $pdo);
                             } else {
-                                if ($id_steal == 33) {
+                                if ($id_steal == get_bot_id('Joe Bananas', $pdo)) {
                                     $money_amount = mt_rand(10000, 20000);
+                                    give_money($_SESSION['ID'], $money_amount, $pdo);
                                 } else {
                                     $money_amount = mt_rand($min_steal, $steal_money);
+                                    give_money($_SESSION['ID'], $money_amount, $pdo);
+                                    take_money($id_steal, $money_amount, $pdo);
                                 }
-
-                                give_money($_SESSION['ID'], $money_amount, $pdo);
-                                take_money($id_steal, $money_amount, $pdo);
 
                                 if (AS_session_row($_SESSION['ID'], 'AS_mission', $pdo) == 22) {
                                     mission_update(AS_session_row($_SESSION['ID'], 'AS_mission_count', $pdo) + $money_amount, AS_session_row($_SESSION['ID'], 'AS_mission', $pdo), mission_criteria(AS_session_row($_SESSION['ID'], 'AS_mission', $pdo)), $_SESSION['ID'], $pdo);

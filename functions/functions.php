@@ -4092,3 +4092,11 @@ function getPrisonBuyoutPrice()
 {
     return 50000;
 }
+
+function get_bot_id($username, $pdo)
+{
+    $query = $pdo->prepare("SELECT ACC_id FROM accounts WHERE ACC_username = ?");
+    $query->execute(array($username));
+    $row = $query->fetch(PDO::FETCH_ASSOC);
+    return $row['ACC_id'] ?? NULL;
+}
