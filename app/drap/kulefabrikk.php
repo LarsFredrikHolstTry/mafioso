@@ -60,9 +60,9 @@ if (!isset($_GET['side'])) {
     }
 
     if (isset($_POST['buy_bullets'])) {
-        $_POST['bullet_amount'] = remove_space($_POST['bullet_amount']);
-        if (isset($_POST['bullet_amount']) && is_numeric($_POST['bullet_amount']) && $_POST['bullet_amount'] > 0) {
-            $amount = $_POST['bullet_amount'];
+        $amount = round(remove_space($_POST['bullet_amount']));
+        if (isset($amount) && is_numeric($amount) && $amount > 0) {
+            $amount = $amount;
             $total_price = $price_pr_bullet * $amount;
 
             if ($total_price > AS_session_row($_SESSION['ID'], 'AS_money', $pdo)) {
