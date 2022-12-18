@@ -73,7 +73,7 @@ if(date('m') == 12){
     right_alert("?side=gavedryss", "Gavedryss!", "Få julegaver via kriminelle handlinger!", "gift-box.svg");
 }
 
-right_alert("?side=worldCup", "VM I Qatar!", "Sats på kamp og vinn penger!", "soccer.svg");
+// right_alert("?side=worldCup", "VM I Qatar!", "Sats på kamp og vinn penger!", "soccer.svg");
 
 $hour = date('Hi');
 $from = 2000;
