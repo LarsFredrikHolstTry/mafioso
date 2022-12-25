@@ -68,10 +68,10 @@ if (active_energy_drink($_SESSION['ID'], $pdo)) {
     right_alert("#", "Aktiv energidrikk", "2X EXP til " . date_to_text(energy_drink_time($_SESSION['ID'], $pdo)), "energy-drink.svg");
 }
 
-if(date('m') == 12){
-    right_alert("?side=julekalender", "Julekalender!", "Åpne julekalenderen for store gaver!", "candy-cane.svg");
-    right_alert("?side=gavedryss", "Gavedryss!", "Få julegaver via kriminelle handlinger!", "gift-box.svg");
-}
+// if(date('m') == 12){
+//     right_alert("?side=julekalender", "Julekalender!", "Åpne julekalenderen for store gaver!", "candy-cane.svg");
+//     right_alert("?side=gavedryss", "Gavedryss!", "Få julegaver via kriminelle handlinger!", "gift-box.svg");
+// }
 
 // right_alert("?side=worldCup", "VM I Qatar!", "Sats på kamp og vinn penger!", "soccer.svg");
 

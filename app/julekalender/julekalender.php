@@ -1,5 +1,9 @@
 <?php
 
+if($_SESSION['ID'] != 251525215){
+	echo feedback('Julekalenderen er over for i år! Vi sees i 2023', 'blue');
+} else {
+
 $isDecember = date('m') == 12;
 $day = date('j');
 $criteria = 20;
@@ -211,6 +215,7 @@ if(isset($_GET['open'])){
     </div>
 </div>
 
+<?php } ?>
 <style>
 	.gift_div {
 		display: flex;
