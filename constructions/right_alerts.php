@@ -87,7 +87,7 @@ if($isKillTime){
     }
 }
 
-right_alert("?side=vervekonk", "Vervekonkurranse!", "Vinn gavekort fra komplett på 500kr!", "emoji.svg");
+// right_alert("?side=vervekonk", "Vervekonkurranse!", "Vinn gavekort fra komplett på 500kr!", "emoji.svg");
 
 $stmt = $pdo->prepare("SELECT * FROM safe_number");
 $stmt->execute();
