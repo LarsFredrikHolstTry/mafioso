@@ -50,6 +50,15 @@ if (isset($_GET['savedVarsel'])) {
     echo feedback("Varslingene dine ble lagret", "success");
 }
 
+$seven_days = 604800;
+$my_start_time = false;
+$start_time_over = ACC_session_row($_SESSION['ID'], 'ACC_register_date', $pdo) + $seven_days;
+
+
+if($start_time_over > time()){
+    echo feedback('Du har startbeskyttelse frem til '.date_to_text($start_time_over), 'blue');
+}
+
 ?>
 
 <div class="tab">
