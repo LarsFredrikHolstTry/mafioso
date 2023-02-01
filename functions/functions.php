@@ -3272,11 +3272,11 @@ function money_by_midnight($money_value, $pdo)
 
     if ($money_value < $money[0]) {
         return round($money_value * $tenant[0]);
-    } elseif ($money_value >= $money[0] && $money_value < $money[1]) {
+    } elseif ($money_value > $money[0] && $money_value <= $money[1]) {
         return round($money_value * $tenant[1]);
-    } elseif ($money_value >= $money[1] && $money_value < $money[2]) {
+    } elseif ($money_value > $money[1] && $money_value <= $money[2]) {
         return round($money_value * $tenant[2]);
-    } elseif ($money_value >= $money[2]  && $money_value <= $money[3]) {
+    } elseif ($money_value > $money[2]  && $money_value <= $money[3]) {
         return round($money_value * $tenant[3]);
     } else {
         return round($money_value * 0);
