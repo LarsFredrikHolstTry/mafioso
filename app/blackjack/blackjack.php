@@ -225,6 +225,9 @@ if (false && $_SESSION['ID'] != 1) {
                         // Dealer vinner
                         end_blackjack($_SESSION['ID'], $pdo);
 
+                        $bet = get_bj_bet($_SESSION['ID'], $pdo);
+                        update_gambling($_SESSION['ID'], -$bet, $pdo);
+
                         header("Location: ?side=blackjack&fb=dv");
                     } elseif ($user_total > $dealer_stop && $user_total <= 21) {
                         // Spiller vinner
