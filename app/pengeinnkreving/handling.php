@@ -43,7 +43,7 @@ if (isset($_GET['alt'])) {
         $sql = "DELETE FROM peng_group WHERE PENG_id = " . $PENG_row['PENG_id'] . "";
         $pdo->exec($sql);
 
-        last_event($_SESSION['ID'], ' sin pengeinnkrevingsgruppe tjente ' . number($PENG_row['PENG_money']) . ' kr per medlem før gruppen ble oppløst.', $pdo);
+        last_event($_SESSION['ID'], ' sin pengeinnkrevingsgruppe tjente ' . number($PENG_row['PENG_money']) . ' kr før gruppen ble oppløst.', $pdo);
 
         header("location: ?side=pengeinnkreving&m");
     } else {
