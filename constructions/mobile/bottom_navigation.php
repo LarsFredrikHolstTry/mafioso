@@ -18,30 +18,18 @@ $time_left_event_ = $row_['CD_event'] - time();
 
 
 <div class="col-12 mobile_top" style="background-color: var(--main-bg-color); bottom: 0px; z-index: 1000; position: absolute; position: fixed;">
-    <form method="post">
-        <button type="submit" name="<?php echo $name; ?>" style="float:left; width:20%; background: none; padding: 0; margin: 0;">
-            <div class="content" style="padding: 7px; margin-right: 7px;">
-                <p style="text-align: center; font-size: 11px;">
-                    <?php if (!player_in_bunker($_SESSION['ID'], $pdo)) {
-                        echo 'Gå i bunker';
-                    } else {
-                        echo 'Gå ut';
-                    } ?>
-                </p>
-            </div>
-        </button>
-    </form>
-    <?php if (AS_session_row($_SESSION['ID'], 'AS_city', $pdo) == 5) { ?>
+
+
         <div style="width:13.3%; float:left;">
-            <a href="?side=gruve">
-                <div id="event_timer_mobile" class="content" style="<?php
+            <a href="?side=pengeinnkreving">
+                <div id="krim_timer_mobile" class="content" style="<?php
                                                                     if ($time_left_event_ <= 0) {
                                                                         echo 'background-color: var(--ready-color);';
                                                                     } else {
                                                                         echo 'background-color: var(--not-ready-color);';
                                                                     }
                                                                     ?> color: black; padding: 7px; margin-right: 7px;">
-                    <img style="display: block; margin-bottom: 0px; margin: 0 auto; width: 25px; height: auto;" src="img/topHeaderIcons/cave.svg">
+                    <img style="display: block; margin-bottom: 0px; margin: 0 auto; width: 25px; height: auto;" src="img/topHeaderIcons/pengeinnkreving.svg">
                     <p style="text-align: center; font-size: 11px; margin: 10px 0px 0px 0px;">
                         <?php
 
@@ -58,7 +46,6 @@ $time_left_event_ = $row_['CD_event'] - time();
                 </div>
             </a>
         </div>
-    <?php } else { ?>
 
         <div style="width:13.3%; float:left;">
             <a href="?side=rc">
@@ -224,7 +211,6 @@ $time_left_event_ = $row_['CD_event'] - time();
                 </div>
             </a>
         </div>
-    <?php } ?>
 </div>
 
 <script>

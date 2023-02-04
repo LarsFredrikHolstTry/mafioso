@@ -87,36 +87,19 @@ if ($row_firm) {
 </div>
 
 <ul class="left_ul">
+<?php
 
-    <?php
+//Garasje og lager antall / maxantall
+//Garasje
+$cars_in_garage = total_cars($_SESSION['ID'], $pdo);
+$max_garage = US_max_cars($_SESSION['ID'], $pdo);
+$full_garage = $cars_in_garage >= $max_garage;
+//Lager
+$things_in_storage = total_things($_SESSION['ID'], $pdo);
+$max_storage = US_max_things($_SESSION['ID'], $pdo);
+$full_storage = $things_in_storage >= $max_storage;
 
-    $price_for_bunker_use = 500000;
-
-    // Hvis brukeren ikke er i bunker
-    if (!player_in_bunker($_SESSION['ID'], $pdo)) {
-        $class = 'button_warning';
-        $bunker_text = 'Gå i bunker. Pris: ' . number(get_bunker_price($_SESSION['ID'], $pdo)) . 'kr';
-        $name = 'bunker_in';
-    } else {
-        $class = 'button_success';
-        $bunker_text = 'Gå ut av bunker';
-        $name = 'bunker_out';
-    }
-
-    //Garasje og lager antall / maxantall
-    //Garasje
-    $cars_in_garage = total_cars($_SESSION['ID'], $pdo);
-    $max_garage = US_max_cars($_SESSION['ID'], $pdo);
-    $full_garage = $cars_in_garage >= $max_garage;
-    //Lager
-    $things_in_storage = total_things($_SESSION['ID'], $pdo);
-    $max_storage = US_max_things($_SESSION['ID'], $pdo);
-    $full_storage = $things_in_storage >= $max_storage;
-    ?>
-
-    <form method="post">
-        <input style="margin: 0px 0px 10px 50px;" class="<?php echo $class; ?>" type="submit" name="<?php echo $name; ?>" value="<?php echo $bunker_text; ?>" />
-    </form>
+?>
 
     <?php if (has_eiendeler($_SESSION['ID'], $pdo)) { ?>
         <a href="?side=bedrift">

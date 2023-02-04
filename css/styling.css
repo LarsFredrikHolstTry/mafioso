@@ -661,6 +661,11 @@ h3 .v2 {
 	background: rgb(22, 11, 11) !important;
 }
 
+.button_warning:hover {
+	color: white !important;
+	background: rgb(49, 25, 25) !important;
+}
+
 .button_success {
 	color: rgb(204, 232, 205) !important;
 	background: rgb(12, 19, 13) !important;

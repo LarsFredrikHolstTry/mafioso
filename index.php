@@ -99,6 +99,12 @@ $starttime = microtime(true);
             header("Location: ?side=drap&p=bunker&bunker_status=out");
         }
 
+        $new_player = false;
+
+        if(AS_session_row($_SESSION['ID'], 'AS_exp', $pdo) < 5000){
+            $new_player = true;
+        }
+
         include 'constructions/left.php';
 
         ?>

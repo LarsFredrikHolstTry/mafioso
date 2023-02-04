@@ -124,6 +124,29 @@ if (isset($_POST['create_bunker'])) {
         }
 
         ?>
+
+
+        <?php
+
+        $price_for_bunker_use = 500000;
+
+        // Hvis brukeren ikke er i bunker
+        if (!player_in_bunker($_SESSION['ID'], $pdo)) {
+            $class = 'button_warning';
+            $bunker_text = 'Gå i bunker. Pris: ' . number(get_bunker_price($_SESSION['ID'], $pdo)) . 'kr';
+            $name = 'bunker_in';
+        } else {
+            $class = 'button_success';
+            $bunker_text = 'Gå ut av bunker';
+            $name = 'bunker_out';
+        }
+
+        ?>
+
+        <form method="post">
+            <input style="margin-top: 20px; width: 100%;" class="<?php echo $class; ?>" type="submit" name="<?php echo $name; ?>" value="<?php echo $bunker_text; ?>" />
+        </form>
+
         <form method="post">
             <div class="custom-select" style="width:100%; margin-top: 20px;">
                 <select style="width: 100%;" name="bunker_id" required>
