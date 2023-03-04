@@ -112,7 +112,7 @@ if(isset($_GET['str'])){
         if($dagensUtfordring){
             ?>
             <h3>Dagens utfordring</h3>
-            <p class="description"><?php echo $utford_user['DAUTUS_level'] > 3 ? 'Du er ferdig for i dag! Kom tilbake i morgen for nye utfordringer' : $levelsArr[$level] ?>
+            <p class="description"><?php echo $utford_user && $utford_user['DAUTUS_level'] > 3 ? 'Du er ferdig for i dag! Kom tilbake i morgen for nye utfordringer' : $levelsArr[$level] ?>
             <br><br>
             <?php
 
