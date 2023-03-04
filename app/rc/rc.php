@@ -102,6 +102,7 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                     $race_win_money = mt_rand(150, 350);
 
                     give_money($_SESSION['ID'], $race_win_money, $pdo);
+                    update_dagens_utfordring($_SESSION['ID'], 4, $pdo);
 
                     user_log($_SESSION['ID'], $_GET['side'], 'race vinn', $pdo);
                     header("Location: ?side=rc&win=" . $contestant_id . "&money=" . $race_win_money);

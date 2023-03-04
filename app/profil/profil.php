@@ -1,9 +1,6 @@
 <?php
 
 if (isset($_GET['id'])) {
-    if ($_GET['id'] == 1) {
-        include 'skitzo_profil.php';
-    } else {
         $stmt = $pdo->prepare('SELECT * FROM accounts WHERE ACC_id = ?');
         $stmt->bindParam(1, $_GET['id'], PDO::PARAM_INT);
         $stmt->execute();
@@ -151,5 +148,4 @@ if (isset($_GET['id'])) {
 <?php } else {
             echo feedback("Ugyldig bruker", "blue");
         }
-    }
 } ?>

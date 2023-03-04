@@ -93,7 +93,11 @@ $stmt = $pdo->prepare("SELECT * FROM safe_number");
 $stmt->execute();
 $row = $stmt->fetch();
 
-$hasWinner = $row['SAFE_winner'] != 0;
+$hasWinner = false;
+
+if($row){
+    $hasWinner = $row['SAFE_winner'] != 0;
+}
 
 if (!$hasWinner) {
     right_alert("?side=dagensSafe", "Dagens safe", "Safen er ikke åpnet for i dag!", "safe.svg");

@@ -4,8 +4,8 @@ $query = $pdo->prepare("SELECT CTAX_tax, CTAX_city FROM city_tax ORDER BY CTAX_t
 $query->execute();
 $row = $query->fetch(PDO::FETCH_ASSOC);
 
-$lowest_tax = $row['CTAX_tax'];
-$lowest_tax_city = $row['CTAX_city'];
+$lowest_tax = $row['CTAX_tax'] ?? 0;
+$lowest_tax_city = $row['CTAX_city'] ?? 0;
 
 $notInLowestCity = $lowest_tax_city != AS_session_row($_SESSION['ID'], 'AS_city', $pdo) && get_city_tax(AS_session_row($_SESSION['ID'], 'AS_city', $pdo), $pdo) > $lowest_tax;
 
@@ -251,7 +251,11 @@ $full_storage = $things_in_storage >= $max_storage;
             $stmt->execute();
             $row = $stmt->fetch();
 
-            $hasWinner = $row['SAFE_winner'] != 0;
+            $hasWinner = false;
+
+            if($row){
+                $hasWinner = $row['SAFE_winner'] != 0;
+            }
 
             $stmt_ = $pdo->prepare('SELECT * FROM cooldown WHERE CD_acc_id = :cd_id');
             $stmt_->execute(array(

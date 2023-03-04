@@ -3061,90 +3061,15 @@ function get_detektiv_lvl($id, $pdo)
     return $DETK_row['DETK_lvl'] ?? NULL;
 }
 
-function get_todays_utfordring($id, $pdo)
-{
-    $query = $pdo->prepare("SELECT * FROM dagens_utfordring ORDER BY DAUT_date DESC LIMIT 1");
-    $query->execute(array());
-    $utford = $query->fetch(PDO::FETCH_ASSOC);
-
-    $query = $pdo->prepare("SELECT * FROM dagens_utfordring_user WHERE DAUTUS_acc_id = ?");
-    $query->execute(array($id));
-    $utford_user = $query->fetch(PDO::FETCH_ASSOC);
-
-    $arr = json_decode($utford['DAUT_json']);
-    $payout = $utford['DAUT_payout_char'];
-    $payout_val = $utford['DAUT_payout_id'];
-
-    if ($utford_user) {
-        $amount_arr[0] = $utford_user['DAUTUS_crime'];
-        $amount_arr[1] = $utford_user['DAUTUS_gta'];
-        $amount_arr[2] = $utford_user['DAUTUS_brekk'];
-        $amount_arr[3] = $utford_user['DAUTUS_stjel'];
-    } else {
-        $amount_arr = array(0, 0, 0, 0);
-    }
-
-
-    echo '<div>
-        <b style="color: var(--button-bg-color);">Utbetaling: ';
-    if ($payout == 0) {
-        echo number($payout_val) . " kr";
-    } elseif ($payout == 1) {
-        echo number($payout_val) . " kuler";
-    } elseif ($payout == 2) {
-        echo number($payout_val) . " forsvar";
-    } elseif ($payout == 3) {
-        echo 'Energidrikk';
-    } elseif ($payout == 4) {
-        echo 'Hemmelig kiste';
-    }
-
-    echo '</b></div><br>';
-
-    for ($h = 0; $h < count($arr); $h++) {
-        if ($h == 0) {
-            $msg = $arr[$h] . "</b> kriminaliteter";
-        } elseif ($h == 1) {
-            $msg = $arr[$h] . "</b> biltyveri";
-        } elseif ($h == 2) {
-            $msg = $arr[$h] . "</b> brekk";
-        } elseif ($h == 3) {
-            $msg = $arr[$h] . "</b> stjel fra bruker";
-        }
-
-        if ($amount_arr[$h] * (100 / $arr[$h]) < 100) {
-            $math = $amount_arr[$h] * (100 / $arr[$h]);
-        } else {
-            $math = 100;
-        }
-
-        echo '<div>Utfør <b style="color: var(--button-bg-color);">' . $msg . '<b style="float: right;">' . $amount_arr[$h] . '/' . $arr[$h] . '</b></div>';
-
-        echo '<div class="wrapper" style="margin-top: 5px;">
-			<div class="progress-bar">
-				<span class="progress-bar-fill" style="width: ' . $math . '%;"></span>
-			</div>
-		</div><br>';
-    }
-}
-
 function update_dagens_utfordring($id, $type, $pdo)
 {
     $query = $pdo->prepare("SELECT * FROM dagens_utfordring_user WHERE DAUTUS_acc_id = ?");
     $query->execute(array($id));
     $utford_user = $query->fetch(PDO::FETCH_ASSOC);
 
-    $query = $pdo->prepare("SELECT * FROM dagens_utfordring ORDER BY DAUT_date DESC LIMIT 1");
-    $query->execute(array());
-    $utford = $query->fetch(PDO::FETCH_ASSOC);
-
-    if (!$utford) {
-        return; // Missing daily challange in database. Consider handeling this better
-    }
-    $arr = json_decode($utford['DAUT_json']);
-
     if (!$utford_user) {
         $sql = "INSERT INTO dagens_utfordring_user (DAUTUS_acc_id) VALUES (?)";
+        $rc = 5;
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$id]);
     }
@@ -3157,100 +3082,102 @@ function update_dagens_utfordring($id, $type, $pdo)
         $sql = "UPDATE dagens_utfordring_user SET DAUTUS_brekk = DAUTUS_brekk + 1 WHERE DAUTUS_acc_id = ? ";
     } elseif ($type == 3) {
         $sql = "UPDATE dagens_utfordring_user SET DAUTUS_stjel = DAUTUS_stjel + 1 WHERE DAUTUS_acc_id = ? ";
+    } elseif ($type == 4) {
+        $sql = "UPDATE dagens_utfordring_user SET DAUTUS_rc = DAUTUS_rc + 1 WHERE DAUTUS_acc_id = ? ";
     }
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$id]);
+}
 
-    $score = 0;
+function getDagensUtfordring($id, $pdo){
 
-    if ($utford_user && $arr) {
-        $utfordring_arr[0] = $utford_user['DAUTUS_crime'];
-        $utfordring_arr[1] = $utford_user['DAUTUS_gta'];
-        $utfordring_arr[2] = $utford_user['DAUTUS_brekk'];
-        $utfordring_arr[3] = $utford_user['DAUTUS_heist'];
-        $utfordring_arr[4] = $utford_user['DAUTUS_stjel'];
+    $query = $pdo->prepare("SELECT DAUTUS_level FROM dagens_utfordring_user WHERE DAUTUS_acc_id = " . $id . "");
+    $query->execute();
+    $row_user = $query->fetch(PDO::FETCH_ASSOC);
 
-        for ($i = 0; $i < count($arr); $i++) {
-            if ($arr && $utfordring_arr && $utfordring_arr[$i] >= $arr[$i])
-                $score++;
-        }
-    } else {
-        $utfordring_arr = array($score, $score, $score, $score, $score);
+    $stmt = $pdo->prepare("SELECT DAUT_json FROM dagens_utfordring");
+    $stmt->execute();
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    $level = 0;
+
+    if($row_user){
+        $level = $row_user['DAUTUS_level'];
     }
 
-    if ($arr && $score >= count($arr) && $utford_user['DAUTUS_status'] == 0) {
-        if ($utford['DAUT_payout_char'] == 0) {
-            give_money($id, $utford['DAUT_payout_id'], $pdo);
-            $text = "Du har vellykket utført dagens utfordring og får " . number($utford['DAUT_payout_id']) . " kr";
-        } elseif ($utford['DAUT_payout_char'] == 1) {
-            give_bullets($id, $utford['DAUT_payout_id'], $pdo);
-            $text = "Du har vellykket utført dagens utfordring og får " . number($utford['DAUT_payout_id']) . " kuler";
-        } elseif ($utford['DAUT_payout_char'] == 2) {
-            give_fp($utford['DAUT_payout_id'], $id, $pdo);
-            $text = "Du har vellykket utført dagens utfordring og får " . number($utford['DAUT_payout_id']) . " forsvarspoeng";
-        } elseif ($utford['DAUT_payout_char'] == 3) {
-            update_things($id, 29, $pdo);
-            $text = "Du har vellykket utført dagens utfordring og får en energidrikk";
-        } elseif ($utford['DAUT_payout_char'] == 4) {
-            update_things($id, 30, $pdo);
-            $text = "Du har vellykket utført dagens utfordring og får en hemmelig skiste";
+    if($level > 3){
+        $level = 3;
+    }
+
+    if($row){
+        $array = json_decode($row['DAUT_json'], true);
+
+        foreach ($array as $obj) {
+            if ($obj['level'] === $level) {
+                $json = $obj['json'][0];
+                $values = array(
+                    "crime" =>  $json['crime'],
+                    "gta" =>    $json['gta'] ?? 0,
+                    "rc" =>     $json['rc'] ?? 0,
+                    "steal" =>  $json['steal'] ?? 0
+                );
+                return $values;
+            }
         }
-
-        send_notification($id, $text, $pdo);
-
-        $sql = "UPDATE dagens_utfordring_user SET DAUTUS_status = 1 WHERE DAUTUS_acc_id = ? ";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([$id]);
+    } else {
+        return false;
     }
 }
 
 function create_new_utfordring($pdo)
 {
-    $arr = array();
+    $easyUtf = array(
+        (object) array(
+            'crime' => mt_rand(20, 30)
+        ),
+    );
 
-    for ($i = 0; $i < mt_rand(3, 5); $i++) {
-        if ($i == 0) {
-            array_push($arr, mt_rand(10, 30));
-        } elseif ($i == 1) {
-            array_push($arr, mt_rand(10, 20));
-        } elseif ($i == 2) {
-            array_push($arr, mt_rand(10, 20));
-        } elseif ($i == 4) {
-            array_push($arr, mt_rand(10, 20));
-        }
-    }
+    $mediumUtf = array(
+        (object) array(
+            'crime' => mt_rand(50, 65), 
+            'gta' => mt_rand(10, 15)
+        ),
+    );
 
-    $payout_arr[0] = mt_rand(1000000, 50000000);    // penger
-    $payout_arr[1] = mt_rand(1, 15);                // kuler
-    $payout_arr[2] = mt_rand(200, 10000);           // forsvar
-    $payout_arr[3] = 1;                             // Energidrikk
-    $payout_arr[4] = 2;                             // Hemmelig kiste
+    $hardUtf = array(
+        (object) array(
+            'crime' => mt_rand(110, 130), 
+            'gta' => mt_rand(10, 15),
+            'rc' => mt_rand(35, 45)
+        ),
+    );
 
-    $total_score = 0;
-    $payout = 0;
+    $extremeUtf = array(
+        (object) array(
+            'crime' => mt_rand(250, 350), 
+            'gta' => mt_rand(65, 75),
+            'rc' => mt_rand(95, 105),
+            'steal' => mt_rand(15, 25)
+        ),
+    );
 
-    for ($j = 0; $j < count($arr); $j++) {
-        $total_score = $total_score + $arr[$j];
-    }
+    $people = array(
+        (object) array('level' => 0, 'json' => $easyUtf),
+        (object) array('level' => 1, 'json' => $mediumUtf),
+        (object) array('level' => 2, 'json' => $hardUtf),
+        (object) array('level' => 3, 'json' => $extremeUtf),
+    );
 
-    if ($total_score >= 80 && $total_score <= 100) {
-        $payout = 4;
-    } elseif ($total_score >= 70 && $total_score < 80) {
-        $payout = 3;
-    } elseif ($total_score >= 60 && $total_score < 70) {
-        $payout = 2;
-    } elseif ($total_score >= 50 && $total_score < 60) {
-        $payout = 1;
-    } elseif ($total_score >= 1 && $total_score < 50) {
-        $payout;
-    }
+    // Encode the array as a JSON string
+    $json = json_encode($people);
 
-    $arr = json_encode($arr);
+    $sql = "DELETE FROM dagens_utfordring";
+    $pdo->exec($sql);
 
-    $sql = "INSERT INTO dagens_utfordring (DAUT_date, DAUT_json, DAUT_payout_char, DAUT_payout_id) VALUES (?, ?, ?, ?)";
+    $sql = "INSERT INTO dagens_utfordring (DAUT_json) VALUES (?)";
     $stmt = $pdo->prepare($sql);
-    $stmt->execute([time(), $arr, $payout, $payout_arr[$payout]]);
+    $stmt->execute([$json]);
 }
 
 function money_by_midnight($money_value, $pdo)

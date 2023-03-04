@@ -62,7 +62,7 @@ if($start_time_over > time()){
 ?>
 
 <div class="tab">
-    <button class="tablinks" onclick="openCity(event, 'hovedkvarter')" <?php if (empty($_GET)) {  ?> id="defaultOpen" <?php } ?>>Hovedkvarter</button>
+    <button class="tablinks" onclick="openCity(event, 'hovedkvarter')" <?php if (empty($_GET) || isset($_GET['dagens'])) {  ?> id="defaultOpen" <?php } ?>>Hovedkvarter</button>
     <button class="tablinks" onclick="openCity(event, 'profile')">Rediger profil</button>
     <button class="tablinks" onclick="openCity(event, 'tema')" <?php if (isset($_GET['theme'])) { ?> id="defaultOpen" <?php } ?>>Tema</button>
     <button class="tablinks" onclick="openCity(event, 'ikon')" <?php if (isset($_GET['icon'])) { ?> id="defaultOpen" <?php } ?>>Profil-ikon</button>
@@ -74,165 +74,14 @@ if($start_time_over > time()){
 </div>
 
 <div id="hovedkvarter" class="tabcontent">
-    <div class="col-4">
-        <h3>Velkommen tilbake <?php echo ACC_username($_SESSION['ID'], $pdo); ?></h3>
-        <br>
-        <div class="rankbar">
-            <?php if (AS_session_row($_SESSION['ID'], 'AS_rank', $pdo) < 15) { ?>
-                <span><?php echo number(AS_session_row($_SESSION['ID'], 'AS_exp', $pdo)); ?> av <?php echo number(exp_to(AS_session_row($_SESSION['ID'], 'AS_rank', $pdo))); ?> EXP til <b class="rank"><?php echo rank_list(AS_session_row($_SESSION['ID'], 'AS_rank', $pdo) + 1); ?> </b></span>
-                <p class="description">Framgang: <?php echo round(rank_progress(AS_session_row($_SESSION['ID'], 'AS_rank', $pdo), AS_session_row($_SESSION['ID'], 'AS_exp', $pdo)), 2); ?>%</p>
-                <p class="description">Dagens EXP: <?php echo number(AS_session_row($_SESSION['ID'], 'AS_daily_exp', $pdo)); ?></p>
-            <?php } else {
-                echo number(AS_session_row($_SESSION['ID'], 'AS_exp', $pdo)) . ' EXP';
-            } ?>
-            <div id="progress"></div>
-        </div>
-        <div style="clear: both;"></div>
-        <h3 style="margin-top: 20px;">Dersom du dør</h3>
-        <p class="description">
-            Dersom du dør vil du få en liten boost for å opprette en ny bruker:
-        </p>
-        <?php if (AS_session_row($_SESSION['ID'], 'AS_rank', $pdo) >= 5) { ?>
-            <ul class="description">
-                <li><?php echo number(AS_session_row($_SESSION['ID'], 'AS_exp', $pdo) * 0.1) ?> EXP</li>
-                <li><?php echo number(250000000) ?> kroner</li>
-                <li>50 poeng</li>
-                <li>5 energidrikker</li>
-                <li>1 hemmelig kiste</li>
-                <li>M4A4 som startvåpen</li>
-            </ul>
-
-        <?php } else {
-            echo feedback("Du er ikke høy nok rank for å få boost ved dødsfall. Du må være minst ranken " . rank_list(5) . " for å få boost", "error");
-        } ?>
-    </div>
-    <div class="col-4">
-        <h3>Statistikk</h3>
-        <ul class="description">
-            <li>EXP: <?php echo number(AS_session_row($_SESSION['ID'], 'AS_exp', $pdo)); ?></li>
-
-            <li>EXP i dag: <?php echo number(AS_session_row($_SESSION['ID'], 'AS_daily_exp', $pdo)); ?></li>
-
-            <li>Kriminalitet: <?php echo US_session_row($_SESSION['ID'], 'US_krim_v', $pdo) + US_session_row($_SESSION['ID'], 'US_krim_m', $pdo); ?> (<span style="color: #19bc63;"><?php echo US_session_row($_SESSION['ID'], 'US_krim_v', $pdo); ?></span>/<span style="color: orange;"><?php echo US_session_row($_SESSION['ID'], 'US_krim_m', $pdo); ?></span>)</li>
-
-            <li>Biltyveri: <?php echo US_session_row($_SESSION['ID'], 'US_gta_v', $pdo) + US_session_row($_SESSION['ID'], 'US_gta_m', $pdo); ?> (<span style="color: #19bc63;"><?php echo US_session_row($_SESSION['ID'], 'US_gta_v', $pdo); ?></span>/<span style="color: orange;"><?php echo US_session_row($_SESSION['ID'], 'US_gta_m', $pdo); ?></span>)</li>
-
-            <li>Brekk: <?php echo US_session_row($_SESSION['ID'], 'US_brekk_v', $pdo) + US_session_row($_SESSION['ID'], 'US_brekk_m', $pdo); ?> (<span style="color: #19bc63;"><?php echo US_session_row($_SESSION['ID'], 'US_brekk_v', $pdo); ?></span>/<span style="color: orange;"><?php echo US_session_row($_SESSION['ID'], 'US_brekk_m', $pdo); ?></span>)</li>
-
-            <li>Stjel: <?php echo US_session_row($_SESSION['ID'], 'US_stjel_v', $pdo) + US_session_row($_SESSION['ID'], 'US_stjel_m', $pdo); ?> (<span style="color: #19bc63;"><?php echo US_session_row($_SESSION['ID'], 'US_stjel_v', $pdo); ?></span>/<span style="color: orange;"><?php echo US_session_row($_SESSION['ID'], 'US_stjel_m', $pdo); ?></span>)</li>
-
-            <li>Hurtige oppdrag utført: <?php echo number(US_session_row($_SESSION['ID'], 'US_hurtig_oppdrag', $pdo)); ?></li>
-
-            <li>Utbrytninger: <?php echo number(US_session_row($_SESSION['ID'], 'US_jail', $pdo)); ?></li>
-
-            <?php $profit = total_sold_stocks($_SESSION['ID'], $pdo) - total_bought_stocks($_SESSION['ID'], $pdo); ?>
-            <li>Aksjemarked profitt:
-                <?php if ($profit < 0) { ?>
-                    <span style="color: orange;"><?php echo number($profit); ?></span>
-                <?php } else { ?>
-                    <span style="color: #19bc63;"><?php echo number($profit); ?></span>
-                <?php } ?>
-                kr
-            </li>
-
-            <li>Gambling:
-                <?php if (US_session_row($_SESSION['ID'], 'US_gambling', $pdo) < 0) { ?>
-                    <span style="color: orange;"><?php echo number(US_session_row($_SESSION['ID'], 'US_gambling', $pdo)); ?></span>
-                <?php } else { ?>
-                    <span style="color: #19bc63;"><?php echo number(US_session_row($_SESSION['ID'], 'US_gambling', $pdo)); ?></span>
-                <?php } ?>
-                kr
-            </li>
-
-        </ul>
-    </div>
-    <div class="col-4">
-
-        <h3>Dagens utfordring</h3>
-        <br>
-        <?php echo get_todays_utfordring($_SESSION['ID'], $pdo); ?>
-
-    </div>
-    <div style="clear: both;"></div>
+    <?php include 'hovedkvarter.php'; ?>
 </div>
 
 
 <form onsubmit="updateProfile(this)" action="javascript:void(0)" id="profile" class="tabcontent">
-    <?php include_once '././textarea_style.php'; ?>
-    <textarea id="txtarea" class="profile-bio" style="margin-top: 0px; margin-bottom: 1em; border-top: none; border-radius: 0px;" rows="20"><?php echo AS_session_row($_SESSION['ID'], 'AS_bio', $pdo); ?></textarea>
-
-    <fieldset id="use-custom-background">
-        <legend>Bruk egendefinert bakgrunn på profilen:
-            <input type="checkbox" name="profile_bg_active" id="active_bg" <?php echo AS_session_row($_SESSION['ID'], 'AS_bio_bg_active', $pdo) != NULL ? 'checked' : ''; ?> onchange="toggleBackgroundSettings()">
-        </legend>
-
-        <div id="background-options">
-            <fieldset id="background-type">
-                <legend>Bakgrunnstype:</legend>
-                <input type="radio" name="background_type" id="background_type_color" value="color" <?php echo AS_session_row($_SESSION['ID'], 'AS_bio_bg_active', $pdo) != 'url' ? 'checked' : ''; ?> onchange="toggleBackgroundType()">
-                <label for="background_type_color">Farge</label>
-
-                <input type="radio" name="background_type" id="background_type_url" value="url" <?php echo AS_session_row($_SESSION['ID'], 'AS_bio_bg_active', $pdo) == 'url' ? 'checked' : ''; ?> onchange="toggleBackgroundType()">
-                <label for="background_type_url">Bilde</label>
-            </fieldset>
-
-            <fieldset id="profile-background-color">
-                <legend>Bakgrunnsfarge:</legend>
-                <input type="color" id="profileBgColor" value="<?php echo AS_session_row($_SESSION['ID'], 'AS_bio_bg_color', $pdo) ?? "#0b7ef1"; ?>">
-            </fieldset>
-
-            <fieldset id="profile-background-image">
-                <legend>Bakgrunnsbilde (URL):</legend>
-                <input type="hidden" id="profileBgURL" value="<?php echo AS_session_row($_SESSION['ID'], 'AS_bio_bg_image', $pdo); ?>" pattern="https://(imma.gr|imgur.com)/.*" title="Bildelenke til imma.gr eller imgur.com">
-                <p>
-                    <i>
-                        NB: Kun bilder opplastet på
-                        <a target="_blank" href="//imma.gr">imma.gr</a> eller
-                        <a target="_blank" href="//imgur.com/">imgur.com</a> er tillat
-                    </i>
-                </p>
-            </fieldset>
-    </fieldset>
-    <button type="submit" id="update_profile" style="margin-top: 10px;">Oppdater profil</button>
-    <input type="button" value="Forhåndsvisning" onclick="open_preview()">
-
-    <?php include 'live_preview_profile.php'; ?>
-
-
+    <?php include 'editProfile.php'; ?>
 </form>
 
-<template id="colorOptionsTemplate">
-
-</template>
-<script>
-    function toggleBackgroundSettings() {
-        if ($('#active_bg').is(':checked')) {
-            $('#background-options').show();
-        } else {
-            $('#background-options').hide();
-        }
-
-        toggleBackgroundType();
-    }
-
-    function toggleBackgroundType() {
-        switch ($('[name=background_type]:checked').val()) {
-            case 'color':
-                $('#profile-background-image').hide();
-                $('#profile-background-color').show();
-                $('#profileBgColor').attr('type', 'color');
-                $('#profileBgURL').attr('type', 'hidden');
-                break;
-            case 'url':
-                $('#profile-background-image').show();
-                $('#profile-background-color').hide();
-                $('#profileBgColor').attr('type', 'hidden');
-                $('#profileBgURL').attr('type', 'text');
-                break;
-        }
-    }
-    toggleBackgroundSettings();
-</script>
 
 <div id="avatar" class="tabcontent">
     <div class="col-6">

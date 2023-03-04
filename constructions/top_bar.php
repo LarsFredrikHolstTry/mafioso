@@ -18,7 +18,7 @@ function seconds2human($seconds)
         <div class="logo">
             <img src="img/header.png">
         </div>
-        <div class="rankbar ">
+        <div class="rankbar">
             <center>
                 <span>
                     <?php
