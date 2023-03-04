@@ -3125,8 +3125,6 @@ function getDagensUtfordring($id, $pdo){
                 return $values;
             }
         }
-    } else {
-        return false;
     }
 }
 
