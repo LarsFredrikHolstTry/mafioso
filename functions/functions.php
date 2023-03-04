@@ -3114,7 +3114,7 @@ function getDagensUtfordring($id, $pdo){
         $array = json_decode($row['DAUT_json'], true);
 
         foreach ($array as $obj) {
-            if ($obj['level'] === $level) {
+            if ($obj['level'] == $level) {
                 $json = $obj['json'][0];
                 $values = array(
                     "crime" =>  $json['crime'],
@@ -3125,6 +3125,8 @@ function getDagensUtfordring($id, $pdo){
                 return $values;
             }
         }
+    } else {
+        return false;
     }
 }
 
