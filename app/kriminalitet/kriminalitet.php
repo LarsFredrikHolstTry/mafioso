@@ -295,28 +295,37 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                     mission_update(AS_session_row($_SESSION['ID'], 'AS_mission_count', $pdo) + $payout, AS_session_row($_SESSION['ID'], 'AS_mission', $pdo), mission_criteria(AS_session_row($_SESSION['ID'], 'AS_mission', $pdo)), $_SESSION['ID'], $pdo);
                 }
 
-                if(date('m') == 12){
-                    $query = $pdo->prepare("SELECT * FROM christmas WHERE CHR_acc_id = ? AND CHR_day = ?");
-                    $query->execute(array($_SESSION['ID'], date('j')));
-                    $CHR_today = $query->fetch(PDO::FETCH_ASSOC);
+                // if(date('m') == 12){
+                //     $query = $pdo->prepare("SELECT * FROM christmas WHERE CHR_acc_id = ? AND CHR_day = ?");
+                //     $query->execute(array($_SESSION['ID'], date('j')));
+                //     $CHR_today = $query->fetch(PDO::FETCH_ASSOC);
 
-                    if($CHR_today){
-                        $sql = "UPDATE christmas SET CHR_counter = CHR_counter + 1 WHERE CHR_acc_id = ? AND CHR_day = ? ";
-                        $stmt = $pdo->prepare($sql);
-                        $stmt->execute([$_SESSION['ID'], date('j')]);
-                    } else {
-                        $sql = "INSERT INTO christmas (CHR_day, CHR_acc_id, CHR_counter) VALUES (?,?,?)";
-                        $pdo->prepare($sql)->execute([date('j'), $_SESSION['ID'], 1]);
-                    }
+                //     if($CHR_today){
+                //         $sql = "UPDATE christmas SET CHR_counter = CHR_counter + 1 WHERE CHR_acc_id = ? AND CHR_day = ? ";
+                //         $stmt = $pdo->prepare($sql);
+                //         $stmt->execute([$_SESSION['ID'], date('j')]);
+                //     } else {
+                //         $sql = "INSERT INTO christmas (CHR_day, CHR_acc_id, CHR_counter) VALUES (?,?,?)";
+                //         $pdo->prepare($sql)->execute([date('j'), $_SESSION['ID'], 1]);
+                //     }
 
+                //     if (mt_rand(0, !active_superhelg($pdo) ? 10 : 5) == 0) {
+                //         update_things($_SESSION['ID'], 31, $pdo);
+                //         if (notificationSettings('pumpkin', $_SESSION['ID'], $pdo)) {
+                //             send_notification($_SESSION['ID'], "Du fant en julegave når du utførte en kriminell handling!", $pdo);
+                //         }
+                //     }
+                // }
+
+                if($isEaster){
                     if (mt_rand(0, !active_superhelg($pdo) ? 10 : 5) == 0) {
                         update_things($_SESSION['ID'], 31, $pdo);
                         if (notificationSettings('pumpkin', $_SESSION['ID'], $pdo)) {
-                            send_notification($_SESSION['ID'], "Du fant en julegave når du utførte en kriminell handling!", $pdo);
+                            send_notification($_SESSION['ID'], "Du fant et påskeegg når du utførte en kriminell handling!", $pdo);
                         }
                     }
                 }
-
+                
                 if ($alt == 7) {
                     give_weed($_SESSION['ID'], crime_payout($alt), $pdo);
 

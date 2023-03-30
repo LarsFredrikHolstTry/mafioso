@@ -73,6 +73,10 @@ if (active_energy_drink($_SESSION['ID'], $pdo)) {
 //     right_alert("?side=gavedryss", "Gavedryss!", "Få julegaver via kriminelle handlinger!", "gift-box.svg");
 // }
 
+if($isEaster){
+    right_alert("#", "Påskeegg!", "Få påskeegg fra kriminelle handlinger!", "rabbit.svg");
+}
+
 // right_alert("?side=worldCup", "VM I Qatar!", "Sats på kamp og vinn penger!", "soccer.svg");
 
 $hour = date('Hi');

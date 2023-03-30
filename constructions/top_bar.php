@@ -16,7 +16,12 @@ function seconds2human($seconds)
 <div class="top_bar">
     <div class="upper">
         <div class="logo">
-            <img src="img/header.png">
+            <?php if(!$isEaster){
+               echo '<img src="img/header.png">';
+            } else {
+                echo '<img src="img/easter_logo.png">';
+            }
+            ?>
         </div>
         <div class="rankbar">
             <center>

@@ -260,11 +260,11 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                     mission_update(AS_session_row($_SESSION['ID'], 'AS_mission_count', $pdo) + 1, AS_session_row($_SESSION['ID'], 'AS_mission', $pdo), mission_criteria(AS_session_row($_SESSION['ID'], 'AS_mission', $pdo)), $_SESSION['ID'], $pdo);
                 }
 
-                if(date('m') == 12){
+                if($isEaster){
                     if (mt_rand(0, !active_superhelg($pdo) ? 10 : 5) == 0) {
                         update_things($_SESSION['ID'], 31, $pdo);
                         if (notificationSettings('pumpkin', $_SESSION['ID'], $pdo)) {
-                            send_notification($_SESSION['ID'], "Du fant en julegave når du utførte en kriminell handling!", $pdo);
+                            send_notification($_SESSION['ID'], "Du fant et påskeegg når du utførte en kriminell handling!", $pdo);
                         }
                     }
                 }

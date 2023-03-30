@@ -237,7 +237,7 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
 
                 if ($chance < 60) {
                     // tomt
-                    echo feedback("Julegaven var tom", "error");
+                    echo feedback("Påskeegget var tom", "error");
                 }
                 if ($chance >= 60 && $chance < 65) {
                     // Hemmelig kiste
@@ -302,7 +302,7 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                 $sql = "DELETE FROM things WHERE TH_type = $id AND TH_acc_id = " . $_SESSION['ID'] . " LIMIT 1";
                 $pdo->exec($sql);
             } else {
-                echo feedback("Du har ingen julegaver", "fail");
+                echo feedback("Du har ingen påskeegg", "fail");
             }
         } elseif (isset($_POST[7])) {
             $id = 34;
@@ -444,8 +444,8 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
         $bonus_type[5] = "Familie energidrikk";
         $bonus_name[5] = "Familie energidrikk vil aktivere energidrikk hos alle dine familiemedlemmer. Dersom en i familien allerede har en energidrikk vil den bli erstattet med din.";
 
-        $bonus_type[6] = "Åpne julegaven";
-        $bonus_name[6] = "Åpne julegaven for å se hva nissen Skitzo har gjemt unna til deg!";
+        $bonus_type[6] = "Åpne påskeegg";
+        $bonus_name[6] = "Åpne påskeegget for å se hva påskeharen Skitzo har gjemt unna til deg!";
 
         $bonus_type[7] = "Aktiver happy hour 1 time";
         $bonus_name[7] = "Aktiver for å starte 1 time med happy hour for hele spillet!";
@@ -526,7 +526,7 @@ if (player_in_bunker($_SESSION['ID'], $pdo)) {
                                             echo '<span style="display:none">$pecial item</span><a style="color: var(--button-bg-color);" href="?side=lager&bonus=4">' . $thing . '</a>';
                                         } elseif ($row['TH_type'] == 32) /* Familie energidrikk */ {
                                             echo '<span style="display:none">$pecial item</span><a style="color: var(--button-bg-color);" href="?side=lager&bonus=5">' . $thing . '</a>';
-                                        } elseif ($row['TH_type'] == 31) /* Gresskar */ {
+                                        } elseif ($row['TH_type'] == 31) /* Påskeegg */ {
                                             echo '<span style="display:none">$pecial item</span><a style="color: var(--button-bg-color);" href="?side=lager&bonus=6">' . $thing . '</a>';
                                         } elseif ($row['TH_type'] == 34) /* HH 1t */ {
                                             echo '<span style="display:none">$pecial item</span><a style="color: var(--button-bg-color);" href="?side=lager&bonus=7">' . $thing . '</a>';

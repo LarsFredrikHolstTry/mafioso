@@ -53,6 +53,8 @@ $theme_type = AS_session_row($_SESSION['ID'], 'AS_theme', $pdo);
 
 $starttime = microtime(true);
 
+$isEaster = date('m') == 3 && date('d') == 31 || date('m') == 4 && date('d') >= 1 || date('d') <= 1;
+
 ?>
 
 <html lang="nb">
