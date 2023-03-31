@@ -84,13 +84,13 @@ if (!isset($_GET['side'])) {
                     <input type="text" name="bullets" id="number_bullet" placeholder="Antall kuler">
                     <input type="submit" name="post_in" value="Sett inn">
                 </div>
-                <?php if (get_my_familyrole($_SESSION['ID'], $pdo) == 0) { ?>
-                    <div class="col-12" style="padding: 0">
+                <div class="col-12" style="padding: 0">
                     <p>Antall kuler i familien: <span style="color: #c5c5c5;"><?php echo number(get_family_bullets($my_family_id, $pdo)); ?></span></p>
+                    <?php if (get_my_familyrole($_SESSION['ID'], $pdo) == 0) { ?>
                         <input type="text" name="bullets_out" id="number_bullet2" placeholder="Antall kuler">
                         <input type="submit" name="post_out" value="Ta ut">
-                    </div>
-                <?php } ?>
+                    <?php } ?>
+                </div>
                 <div style="clear: both;"></div>
             </form>
         </div>

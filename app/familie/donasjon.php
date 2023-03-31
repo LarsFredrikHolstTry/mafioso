@@ -58,9 +58,7 @@ if (!isset($_GET['side'])) {
 ?>
     <div class="content">
         <form method="post">
-            <?php if (get_my_familyrole($_SESSION['ID'], $pdo) != 3) { ?>
-                <h3 style="text-align: center;">Penger i familiekassen: <?php echo number(get_my_familybank($my_family_id, $pdo)); ?> kr</h3><br>
-            <?php } ?>
+            <h3 style="text-align: center;">Penger i familiekassen: <?php echo number(get_my_familybank($my_family_id, $pdo)); ?> kr</h3><br>
             <p class="description">Donasjoner kan hjelpe familien ved å bygge kapital som kan brukes for å styrke deres forsvar eller kjøpe familiebedrift.</p>
             <p>Sett inn penger</p>
             <input style="width: 70%;" type="text" id="number" name="value" placeholder="Antall...">
@@ -78,36 +76,36 @@ if (!isset($_GET['side'])) {
         ?>
             <h3 style="margin: 20px 0px 10px 0px;">Transaksjonsliste</h3>
             <table id="datatable" data-order='[[3]]'>
-            <thead>
-                <tr>
-                    <th>Bruker</th>
-                    <th>Handling</th>
-                    <th>Verdi</th>
-                    <th>Dato</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                $my_family = get_my_familyID($_SESSION['ID'], $pdo);
-
-                $action[0] = "<span style='color: green;'>Penger inn</span>";
-                $action[1] = "<span style='color: orange;'>Penger ut</span>";
-                $action[2] = "<span style='color: orange;'>Forsvarspoeng kjøp</span>";
-                $action[3] = "<span style='color: orange;'>Territorium kjøp</span>";
-                $action[4] = "<span style='color: orange;'>Forsvar kjøp</span>";
-
-                $sql = "SELECT * FROM family_donation WHERE FAMDON_fam_id = $my_family ORDER BY FAMDON_date DESC";
-                $stmt = $pdo->query($sql);
-                while ($row_famdon = $stmt->fetch(PDO::FETCH_ASSOC)) {
-
-                ?>
+                <thead>
                     <tr>
-                        <td><?php echo ACC_username($row_famdon['FAMDON_acc_id'], $pdo); ?></td>
-                        <td><?php echo $action[$row_famdon['FAMDON_action']]; ?></td>
-                        <td data-order='<?php echo $row_famdon['FAMDON_value']; ?>'><?php echo number($row_famdon['FAMDON_value']); ?></td>
-                        <td data-order='<?php echo $row_famdon['FAMDON_date']; ?>'><?php echo date_to_text($row_famdon['FAMDON_date']); ?></td>
+                        <th>Bruker</th>
+                        <th>Handling</th>
+                        <th>Verdi</th>
+                        <th>Dato</th>
                     </tr>
-                <?php } ?>
+                </thead>
+                <tbody>
+                    <?php
+                    $my_family = get_my_familyID($_SESSION['ID'], $pdo);
+
+                    $action[0] = "<span style='color: green;'>Penger inn</span>";
+                    $action[1] = "<span style='color: orange;'>Penger ut</span>";
+                    $action[2] = "<span style='color: orange;'>Forsvarspoeng kjøp</span>";
+                    $action[3] = "<span style='color: orange;'>Territorium kjøp</span>";
+                    $action[4] = "<span style='color: orange;'>Forsvar kjøp</span>";
+
+                    $sql = "SELECT * FROM family_donation WHERE FAMDON_fam_id = $my_family ORDER BY FAMDON_date DESC";
+                    $stmt = $pdo->query($sql);
+                    while ($row_famdon = $stmt->fetch(PDO::FETCH_ASSOC)) {
+
+                    ?>
+                        <tr>
+                            <td><?php echo ACC_username($row_famdon['FAMDON_acc_id'], $pdo); ?></td>
+                            <td><?php echo $action[$row_famdon['FAMDON_action']]; ?></td>
+                            <td data-order='<?php echo $row_famdon['FAMDON_value']; ?>'><?php echo number($row_famdon['FAMDON_value']); ?></td>
+                            <td data-order='<?php echo $row_famdon['FAMDON_date']; ?>'><?php echo date_to_text($row_famdon['FAMDON_date']); ?></td>
+                        </tr>
+                    <?php } ?>
                 </tbody>
             </table>
         <?php } ?>
@@ -116,9 +114,9 @@ if (!isset($_GET['side'])) {
         number_space("#number");
         number_space("#number2");
 
-/*         $(document).ready(function() {
-        $('#datatable').DataTable();
-    }); */
+        /*         $(document).ready(function() {
+                $('#datatable').DataTable();
+            }); */
     </script>
     <!-- <script type="text/javascript" src="includes/datatable/datatables.min.js"></script> -->
 <?php } ?>
