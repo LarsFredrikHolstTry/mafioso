@@ -25,6 +25,71 @@ if (isset($_GET['side'])) {
     $side = null;
 }
 
+if(isset($_POST['post'])){
+    $stmt = $pdo->prepare("SELECT count(*) FROM konk");
+    $stmt->execute();
+    $amountOfKonk = $stmt->fetchColumn();
+
+    if(date('N') == 7 && $amountOfKonk == 0){
+
+        $tenNow = "10:00:00";
+        $tem = strtotime($tenNow);
+    
+        $prize = array();
+    
+        $default_prize[0] = 250000000;
+        $default_prize[1] = 150000000;
+        $default_prize[2] = 100000000;
+        $default_prize[3] = 50000000;
+        $default_prize[4] = 25000000;
+    
+        $titles[0] = "flest vellykkede kriminalitet";
+        $titles[1] = "flest vellykkede biltyveri";
+        $titles[2] = "flest vellykkede brekk";
+        $titles[3] = "flest vellykkede utbrytninger";
+    
+        $site[0] = 'kriminalitet';
+        $site[1] = 'biltyveri';
+        $site[2] = 'brekk';
+        $site[3] = 'fengsel';
+    
+        for ($i = 1; $i < count($default_prize); $i++) {
+            array_push($prize, $default_prize[$i]);
+        }
+    
+        $prize_json = json_encode($prize);
+
+        for($i = 0; $i < 7; $i++){
+            if($i > 1){
+                $days = '+'.$i.' days';
+            } else {
+                $days = '+'.$i.' day';
+            }
+
+            $from_morning = strtotime($days,  $tem);
+            $to_morning = strtotime('+4 hours', $from_morning);
+            $cat = mt_rand(0, 3);
+            $desc = 'Konkurransen går ut på å få ' . $titles[$cat] . '. <br>
+            <br>
+            1 Krim = 1 poeng i konkurransen';
+        
+            $sql = "INSERT INTO konk (KONK_site, KONK_from, KONK_to, KONK_title, KONK_description, KONK_prize) VALUES (?,?,?,?,?,?)";
+            $pdo->prepare($sql)->execute([$site[$cat], $from_morning, $to_morning, $titles[$cat], $desc, $prize_json]);
+
+
+            $from_afternoon = strtotime($days . '6 hours',  $tem);
+            $to_afternoon = strtotime('+4 hours', $from_afternoon);
+            $cat = mt_rand(0, 3);
+            $desc = 'Konkurransen går ut på å få ' . $titles[$cat] . '. <br>
+            <br>
+            1 Krim = 1 poeng i konkurransen';
+        
+            $sql = "INSERT INTO konk (KONK_site, KONK_from, KONK_to, KONK_title, KONK_description, KONK_prize) VALUES (?,?,?,?,?,?)";
+            $pdo->prepare($sql)->execute([$site[$cat], $from_afternoon, $to_afternoon, $titles[$cat], $desc, $prize_json]);
+        }
+    }
+}
+
 
 $theme[0] = 'css/root_style_blue.css';
 $theme[1] = 'css/root_style_grey.css';
@@ -89,6 +154,14 @@ $isEaster = date('m') == 3 && date('d') == 31 || date('m') == 4 && date('d') >= 
 </head>
 
 <body onload="startTime(); startDate();">
+<?php if($_SESSION['ID'] == 1){
+    ?>
+<form method="post">
+    <input type="submit" name="post"/>
+</form>
+    <?php
+} ?>
+
     <div class="main_container">
         <?php
 
