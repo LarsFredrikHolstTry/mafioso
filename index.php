@@ -26,7 +26,7 @@ if (isset($_GET['side'])) {
 }
 
 if(isset($_POST['post'])){
-    $stmt = $pdo->prepare("SELECT count(*) FROM konk");
+    $stmt = $pdo->prepare("SELECT count(*) FROM konk WHERE KONK_to > ".time()."");
     $stmt->execute();
     $amountOfKonk = $stmt->fetchColumn();
 
