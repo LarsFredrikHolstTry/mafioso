@@ -31,13 +31,12 @@ if (isset($_GET['id'])) {
 
             <div class="col-9 single">
                 <div class="content profile-container" style="<?php echo "background:" . $profile_background ?>">
-
                     <img class="profile-image" src="<?php echo $AS_profile['AS_avatar']; ?>" alt="<?php echo $ACC_profile['ACC_username'] . "'s avatar" ?>">
                     <section class="profile-info" aria-label="Profilinformasjon" <?php
-                                                                                    //Nødvendig for å sørge for at brukerinformasjonen er synlig, uavhengig av fargen på bakgrunnen
-                                                                                    if ($AS_profile['AS_bio_bg_active'] != NULL) {
-                                                                                        echo 'style="background: hsla(0, 0%, 0%, .3);"';
-                                                                                    } ?>>
+                        //Nødvendig for å sørge for at brukerinformasjonen er synlig, uavhengig av fargen på bakgrunnen
+                        if ($AS_profile['AS_bio_bg_active'] != NULL) {
+                            echo 'style="background: hsla(0, 0%, 0%, .3);"';
+                        } ?>>
                         <div class="profile-row">
                             <label for="username" class="profile-row-label">Brukernavn:</label>
                             <div id="username">
@@ -50,7 +49,15 @@ if (isset($_GET['id'])) {
                         <div class="profile-row">
                             <label for="status" class="profile-row-label">Status:</label>
                             <div id="status">
-                                <span style="color: <?php echo role_colors($ACC_profile['ACC_type']); ?>;"><?php echo roles($ACC_profile['ACC_type']); ?></span>
+                                <?php if(isRichest($_GET['id'], $pdo) && isHighestRanked($_GET['id'], $pdo)){ ?>
+                                    <span style="color: #AA77FF">The Godfather</span>
+                                <?php } elseif(isRichest($_GET['id'], $pdo)){ ?>
+                                    <span style="color: #85bb65">Wolf of Wall St.</span>
+                                <?php } elseif(isHighestRanked($_GET['id'], $pdo)){ ?>
+                                    <span style="color: #B46060">The Boss</span>
+                                <?php } else { ?>
+                                    <span style="color: <?php echo role_colors($ACC_profile['ACC_type'], $ACC_profile['ACC_id'], $pdo); ?>;"><?php echo roles($ACC_profile['ACC_type']); ?></span>
+                                <?php } ?>
                             </div>
                         </div>
 

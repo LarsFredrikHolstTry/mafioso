@@ -47,7 +47,7 @@ if (isset($_GET['sok'])) {
           ?>
             <tr class="cursor_hover clickable-row" data-href="?side=profil&id=<?php echo $row['ACC_id']; ?>">
               <td><img style="max-height: 50px; max-width: 50px;" src="<?php echo AS_session_row($row['ACC_id'], 'AS_avatar', $pdo); ?>"></td>
-              <td><span style="color: <?php echo role_colors($row['ACC_type']); ?>"><?php echo $row['ACC_username']; ?></span></td>
+              <td><span style="color: <?php echo role_colors($row['ACC_type'], $row['ACC_id'], $pdo); ?>"><?php echo $row['ACC_username']; ?></span></td>
               <td data-order="<?php echo rank_index(rank_list($exp)); ?>"><?php
 
                   if (AS_session_row($row['ACC_id'], 'AS_rank', $pdo) >= 15) {
@@ -105,7 +105,7 @@ if (isset($_GET['sok'])) {
         ?>
           <tr class="cursor_hover clickable-row" data-href="?side=profil&id=<?php echo $row['ACC_id']; ?>">
             <td><img style="max-height: 50px; max-width: 50px;" src="<?php echo AS_session_row($row['ACC_id'], 'AS_avatar', $pdo); ?>"></td>
-            <td><span style="color: <?php echo role_colors($row['ACC_type']); ?>"><?php echo $row['ACC_username']; ?></span></td>
+            <td><span style="color: <?php echo role_colors($row['ACC_type'], $row['ACC_id'], $pdo); ?>"><?php echo $row['ACC_username']; ?></span></td>
             <td data-order="<?php echo rank_index(rank_list($rank)); ?>"><?php
 
                 if (AS_session_row($row['ACC_id'], 'AS_rank', $pdo) >= 15) {

@@ -3,7 +3,7 @@
     <div class="content">
         <div class="forum_ts">
             <div class="forum_name">
-                <?php echo '<a style="color: ' . role_colors(ACC_session_row($_SESSION['ID'], 'ACC_type', $pdo)) . ';" href="?side=profil&id=' . $_SESSION['ID'] . '">' . ACC_username($_SESSION['ID'], $pdo) . '</a>'; ?>
+                <?php echo '<a style="color: ' . role_colors(ACC_session_row($_SESSION['ID'], 'ACC_type', $pdo), $_SESSION['ID'], $pdo) . ';" href="?side=profil&id=' . $_SESSION['ID'] . '">' . ACC_username($_SESSION['ID'], $pdo) . '</a>'; ?>
             </div>
             <div class="forum_name">
                 <a href="?side=profil&id=<?php echo $_SESSION['ID']; ?>">

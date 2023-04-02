@@ -154,18 +154,26 @@ function get_acc_id($username, $pdo)
     return $ACC_row['ACC_id'] ?? NULL;
 }
 
-function role_colors($role_nr)
+function role_colors($role_nr, $acc_id = null, $pdo = null)
 {
-    $role[0] = "#FFFFFF";
-    $role[1] = "#ffa500";
-    $role[2] = "#3F9FDF";
-    $role[3] = "#E91E63";
-    $role[4] = "#9c0000";
-    $role[5] = "#607D8B";
-    $role[6] = "#921FF0";
-    $role[7] = "#7D572C";
-
-    return $role[$role_nr];
+    if($acc_id && isRichest($acc_id, $pdo) && isHighestRanked($acc_id, $pdo)){
+        return '#AA77FF';
+    } elseif($acc_id && isRichest($acc_id, $pdo)){
+        return '#85BB65';
+    } elseif($acc_id && isHighestRanked($acc_id, $pdo)){
+        return '#B46060';
+    } else {
+        $role[0] = "#FFFFFF";
+        $role[1] = "#ffa500";
+        $role[2] = "#3F9FDF";
+        $role[3] = "#E91E63";
+        $role[4] = "#9c0000";
+        $role[5] = "#607D8B";
+        $role[6] = "#921FF0";
+        $role[7] = "#7D572C";
+    
+        return $role[$role_nr];
+    }
 }
 
 function roles($role_nr)
@@ -275,9 +283,9 @@ function ACC_username($id, $pdo)
         }
 
         return '
-        <div class="tooltip_user"><a style="font-weight: ' . $font_weight . '; color: ' . role_colors($row['ACC_type']) . '" href="?side=profil&id=' . $row['ACC_id'] . '">' . $row['ACC_username'] . '</a>
+        <div class="tooltip_user"><a style="font-weight: ' . $font_weight . '; color: ' . role_colors($row['ACC_type'], $id, $pdo) . '" href="?side=profil&id=' . $row['ACC_id'] . '">' . $row['ACC_username'] . '</a>
         <div class="tooltiptext_user" style="text-align: left;">
-                Brukernavn: <a style="color: ' . role_colors($row['ACC_type']) . '" href="?side=profil&id=' . $row['ACC_id'] . '">' . $row['ACC_username'] . '</a>' . status_last_active($id, $pdo) . '<br>
+                Brukernavn: <a style="color: ' . role_colors($row['ACC_type'], $id, $pdo) . '" href="?side=profil&id=' . $row['ACC_id'] . '">' . $row['ACC_username'] . '</a>' . status_last_active($id, $pdo) . '<br>
                 Rank: <span style="' . $rank_color . '"> ' . rank_list(AS_session_row($id, 'AS_rank', $pdo)) . '</span><br>
                 Pengestatus: ' . money_rank(AS_session_row($id, 'AS_money', $pdo) + AS_session_row($id, 'AS_bankmoney', $pdo)) . '<br>
                 Sist aktiv: ' . date_to_text($row['ACC_last_active']) . '
@@ -4035,4 +4043,52 @@ function numberOfFirms($acc_id, $type, $pdo)
     $amount = $stmt->fetchColumn();
 
     return $amount;
+}
+
+function isRichest($acc_id, $pdo){
+        $i = 1;
+
+        $sql = 'SELECT 
+        accounts_stat.AS_id, (accounts_stat.AS_money + accounts_stat.AS_bankmoney) as total_money
+    FROM 
+        accounts_stat, accounts
+    WHERE
+        accounts_stat.AS_id = accounts.ACC_id
+    AND 
+        accounts.ACC_type = 0
+    ORDER BY total_money DESC
+    ';
+        $stmt = $pdo->query($sql);
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+
+        if ($row['AS_id'] == $acc_id) {
+           return true;
+        }
+
+        return false;
+    }
+}
+
+function isHighestRanked($acc_id, $pdo){
+    $i = 1;
+
+    $sql = 'SELECT
+        accounts_stat.AS_id, (accounts_stat.AS_exp + 0) as total_exp
+        FROM 
+        accounts_stat, accounts
+        WHERE
+        accounts_stat.AS_id = accounts.ACC_id
+        AND 
+        accounts.ACC_type = 0
+        ORDER BY total_exp DESC
+        ';
+    $stmt = $pdo->query($sql);
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+
+    if ($row['AS_id'] == $acc_id) {
+       return true;
+    }
+
+    return false;
+}
 }

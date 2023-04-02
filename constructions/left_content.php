@@ -25,7 +25,7 @@ if ($row_firm) {
     <a href="?side=profil&id=<?php echo $_SESSION['ID']; ?>"><img id="left_avatar" src="<?php echo AS_session_row($_SESSION['ID'], 'AS_avatar', $pdo); ?>">
     </a>
     <ul class="user_ul">
-        <li class="df aic"><i title="Brukernavn" class="mgr-12 fi fi-rr-user"></i> <a href="?side=profil&id=<?php echo $_SESSION['ID']; ?>"><?php echo username_plain($_SESSION['ID'], $pdo); ?></a></li>
+        <li class="df aic"><i title="Brukernavn" class="mgr-12 fi fi-rr-user"></i> <a style="color: <?= role_colors(ACC_session_row($_SESSION['ID'], 'ACC_type', $pdo), $_SESSION['ID'], $pdo) ?>" href="?side=profil&id=<?php echo $_SESSION['ID']; ?>"><?php echo username_plain($_SESSION['ID'], $pdo); ?></a></li>
         <li class="df aic"><i title="Rank" class="mgr-12 fi fi-rr-trophy"></i> <a href="#"><?php echo rank_list(AS_session_row($_SESSION['ID'], 'AS_rank', $pdo)); ?></a></li>
         <li class="df aic"><i title="Penger" class="mgr-12 fi fi-rr-dollar"></i> <a id="saldo_left" href="?side=banken"><?php echo str_replace('{value}', number(AS_session_row($_SESSION['ID'], 'AS_money', $pdo)), $useLang->index->money); ?></a></li>
         <li class="df aic"><i title="By" class="mgr-12 fi fi-rr-building"></i> <a href="?side=flyplass">
