@@ -13,7 +13,6 @@ function feedback(string $msg, string $feedbackType)
         'cooldown'  => 'fi-rr-alarm-clock',
         'money'     => 'fi-rr-dollar',
         'airport'   => 'fi-rr-plane'
-
     );
 
     return '<div class="feedback ' . $feedbackType . '"><i class="fi ' . $icon[$feedbackType] . '"></i><span>' . $msg . '</span></div>';
