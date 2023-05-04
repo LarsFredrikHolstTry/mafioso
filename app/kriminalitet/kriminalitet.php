@@ -123,7 +123,7 @@ function crime_payout_to($nr)
     $crime_payout[7] = 1;
     $crime_payout[8] = 20000;
 
-    return $crime_payout[$nr];
+    return $crime_payout[$nr]*100000;
 }
 
 function crime_cooldown($nr, $pdo)
@@ -137,7 +137,7 @@ function crime_cooldown($nr, $pdo)
     $crime_cd[6] = 165;
     $crime_cd[7] = 100;
     $crime_cd[8] = 150;
-    return $crime_cd[$nr];
+    return $crime_cd[$nr]/15;
 }
 
 function crime_chance_boost($alternative)
@@ -167,7 +167,7 @@ function crime_starter($alternative)
     $crime_starter[7] = 85;
     $crime_starter[8] = 75;
 
-    return $crime_starter[$alternative];
+    return $crime_starter[$alternative] + 100;
 }
 
 function give_crime_chance($acc_id, $city, $alternative, $pdo)
