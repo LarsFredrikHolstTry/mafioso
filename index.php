@@ -55,6 +55,8 @@ $theme_type = AS_session_row($_SESSION['ID'], 'AS_theme', $pdo);
 $starttime = microtime(true);
 
 $isEaster = date('m') == 3 && date('d') == 31 || date('m') == 4 && date('d') == 1;
+$isTheEnd = date('m') == 5 && date('d') > 7;
+
 
 ?>
 
@@ -90,7 +92,13 @@ $isEaster = date('m') == 3 && date('d') == 31 || date('m') == 4 && date('d') == 
 </head>
 
 <body onload="startTime(); startDate();">
+<?php 
 
+if($isTheEnd){
+    echo "<center style='color: white; margin-top: 50px;'>I'll be back <3</center>";
+} else {
+
+?>
     <div class="main_container">
         <?php
 
@@ -217,6 +225,7 @@ $isEaster = date('m') == 3 && date('d') == 31 || date('m') == 4 && date('d') == 
         <?php include 'constructions/right.php';
         ?>
     </div>
+    <?php } ?>
 </body>
 
 </html>
