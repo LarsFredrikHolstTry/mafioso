@@ -402,11 +402,11 @@ function give_exp($id, $amount, $pdo)
     $amount = floor($amount);
 
     if (active_energy_drink($id, $pdo)) {
-        $amount = $amount * 2;
+        $amount = $amount * 100;
     }
 
     if (active_superhelg($pdo)) {
-        $amount = $amount * 2;
+        $amount = $amount * 100;
     }
 
     $sql = "UPDATE accounts_stat SET AS_exp = AS_exp + ?, AS_daily_exp = AS_daily_exp + ? WHERE AS_id = ? ";
